@@ -12,6 +12,10 @@ public protocol RealRepresentable: Codable,
 
     static func isValid(_ realValue: Real) -> Bool
 
+    static func requireValid(_ realValue: Real,
+                             file: StaticString,
+                             line: UInt) -> Real
+
     init?(realValue: Real)
 
     init(_ realValue: Real)
@@ -48,6 +52,29 @@ public protocol RealRepresentable: Codable,
 // MARK: - (defaults)
 
 extension RealRepresentable {
+
+    // MARK: Public Type Properties
+
+    public static var invalidMessage: String {
+        "real value must be valid"
+    }
+
+    // MARK: Public Type Methods
+
+    public static func isValid(_ realValue: Real) -> Bool {
+        true
+    }
+
+    public static func requireValid(_ realValue: Real,
+                                    file: StaticString = #file,
+                                    line: UInt = #line) -> Real {
+        precondition(isValid(realValue),
+                     invalidMessage,
+                     file: file,
+                     line: line)
+
+        return realValue
+    }
 
     // MARK: Public Initializers
 
