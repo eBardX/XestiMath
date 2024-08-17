@@ -244,10 +244,10 @@ extension ExactInteger {
     public static prefix func ~ (n: Self) -> Self {
         switch n {
         case let .large(val):
-            return .large(~val)
+                .large(~val)
 
         case let .small(val):
-            return .small(~val)
+                .small(~val)
         }
     }
 
@@ -256,20 +256,20 @@ extension ExactInteger {
     public var isEven: Bool {
         switch self {
         case let .large(val):
-            return (val & 1) == 0
+            (val & 1) == 0
 
         case let .small(val):
-            return (val & 1) == 0
+            (val & 1) == 0
         }
     }
 
     public var isOdd: Bool {
         switch self {
         case let .large(val):
-            return (val & 1) != 0
+            (val & 1) != 0
 
         case let .small(val):
-            return (val & 1) != 0
+            (val & 1) != 0
         }
     }
 
@@ -401,9 +401,9 @@ public func remainder(_ n1: ExactInteger,
 public func sqrt(_ z: ExactInteger) -> ExactInteger {
     switch z {
     case let .large(val):
-        return .large(val.squareRoot())
+            .large(val.squareRoot())
 
     case let .small(val):
-        return .large(BigInt(val).squareRoot())
+            .large(BigInt(val).squareRoot())
     }
 }

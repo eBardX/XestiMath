@@ -79,120 +79,120 @@ extension ExactInteger {
     public var doubleValue: Double {
         switch self {
         case let .large(val):
-            return Double(val)
+            Double(val)
 
         case let .small(val):
-            return Double(val)
+            Double(val)
         }
     }
 
     public var floatValue: Float {
         switch self {
         case let .large(val):
-            return Float(val)
+            Float(val)
 
         case let .small(val):
-            return Float(val)
+            Float(val)
         }
     }
 
     public var int16Value: Int16 {
         switch self {
         case let .large(val):
-            return Int16(val)
+            Int16(val)
 
         case let .small(val):
-            return Int16(val)
+            Int16(val)
         }
     }
 
     public var int32Value: Int32 {
         switch self {
         case let .large(val):
-            return Int32(val)
+            Int32(val)
 
         case let .small(val):
-            return Int32(val)
+            Int32(val)
         }
     }
 
     public var int64Value: Int64 {
         switch self {
         case let .large(val):
-            return Int64(val)
+            Int64(val)
 
         case let .small(val):
-            return Int64(val)
+            Int64(val)
         }
     }
 
     public var int8Value: Int8 {
         switch self {
         case let .large(val):
-            return Int8(val)
+            Int8(val)
 
         case let .small(val):
-            return Int8(val)
+            Int8(val)
         }
     }
 
     public var intValue: Int {
         switch self {
         case let .large(val):
-            return Int(val)
+            Int(val)
 
         case let .small(val):
-            return val
+            val
         }
     }
 
     public var uint16Value: UInt16 {
         switch self {
         case let .large(val):
-            return UInt16(val)
+            UInt16(val)
 
         case let .small(val):
-            return UInt16(val)
+            UInt16(val)
         }
     }
 
     public var uint32Value: UInt32 {
         switch self {
         case let .large(val):
-            return UInt32(val)
+            UInt32(val)
 
         case let .small(val):
-            return UInt32(val)
+            UInt32(val)
         }
     }
 
     public var uint64Value: UInt64 {
         switch self {
         case let .large(val):
-            return UInt64(val)
+            UInt64(val)
 
         case let .small(val):
-            return UInt64(val)
+            UInt64(val)
         }
     }
 
     public var uint8Value: UInt8 {
         switch self {
         case let .large(val):
-            return UInt8(val)
+            UInt8(val)
 
         case let .small(val):
-            return UInt8(val)
+            UInt8(val)
         }
     }
 
     public var uintValue: UInt {
         switch self {
         case let .large(val):
-            return UInt(val)
+            UInt(val)
 
         case let .small(val):
-            return UInt(val)
+            UInt(val)
         }
     }
 }
@@ -208,13 +208,13 @@ extension ExactInteger {
         switch (lhs, rhs) {
         case (.large, .large),
             (.small, .small):
-            return (lhs, rhs)
+            (lhs, rhs)
 
         case let (.large, .small(rval)):
-            return (lhs, .large(BigInt(rval)))
+            (lhs, .large(BigInt(rval)))
 
         case let (.small(lval), .large):
-            return (.large(BigInt(lval)), rhs)
+            (.large(BigInt(lval)), rhs)
         }
     }
 
@@ -265,10 +265,10 @@ extension ExactInteger: CustomPlaygroundDisplayConvertible {
     public var playgroundDescription: Any {
         switch self {
         case let .large(val):
-            return "large<\(val.playgroundDescription)>"
+            "large<\(val.playgroundDescription)>"
 
         case let .small(val):
-            return "small<\(val.description)>"
+            "small<\(val.description)>"
         }
     }
 }
@@ -279,10 +279,10 @@ extension ExactInteger: CustomStringConvertible {
     public var description: String {
         switch self {
         case let .large(val):
-            return val.description
+            val.description
 
         case let .small(val):
-            return val.description
+            val.description
         }
     }
 }

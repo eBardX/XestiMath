@@ -12,13 +12,13 @@ extension Real: NumberOps {
     public static prefix func - (z: Self) -> Self {
         switch z {
         case let .exactInteger(val):
-            return .exactInteger(-val)
+                .exactInteger(-val)
 
         case let .floatingPoint(val):
-            return .floatingPoint(-val)
+                .floatingPoint(-val)
 
         case let .fraction(val):
-            return .fraction(-val)
+                .fraction(-val)
         }
     }
 
@@ -307,10 +307,10 @@ extension Real: NumberOps {
     public var inexactValue: Self {
         switch self {
         case .floatingPoint:
-            return self
+            self
 
         default:
-            return .floatingPoint(doubleValue)
+                .floatingPoint(doubleValue)
         }
     }
 
@@ -336,63 +336,63 @@ extension Real: NumberOps {
     public var isExact: Bool {
         switch self {
         case .floatingPoint:
-            return false
+            false
 
         default:
-            return true
+            true
         }
     }
 
     public var isFinite: Bool {
         switch self {
         case let .floatingPoint(val):
-            return val.isFinite
+            val.isFinite
 
         default:
-            return true
+            true
         }
     }
 
     public var isInexact: Bool {
         switch self {
         case .floatingPoint:
-            return true
+            true
 
         default:
-            return false
+            false
         }
     }
 
     public var isInfinite: Bool {
         switch self {
         case let .floatingPoint(val):
-            return val.isInfinite
+            val.isInfinite
 
         default:
-            return false
+            false
         }
     }
 
     public var isInteger: Bool {
         switch self {
         case .exactInteger:
-            return true
+            true
 
         case .floatingPoint:
-            return isExactInteger
+            isExactInteger
 
         case let .fraction(val):
-            return val.isExactInteger
+            val.isExactInteger
         }
     }
 
     public var isNaN: Bool {
         switch self {
         case let .floatingPoint(val):
-            return val.isNaN
+            val.isNaN
 
         default:
-            return false
+            false
         }
     }
 
@@ -422,10 +422,10 @@ extension Real: NumberOps {
     public var isRational: Bool {
         switch self {
         case let .floatingPoint(val):
-            return val.isFinite
+            val.isFinite
 
         default:
-            return true
+            true
         }
     }
 
@@ -444,18 +444,28 @@ extension Real: NumberOps {
     public var numerator: Self {
         switch Self.checkRational(self) {
         case .exactInteger:
-            return self
+            self
 
         case .floatingPoint:
-            return Self.checkInteger(self)
+            Self.checkInteger(self)
 
         case let .fraction(val):
-            return .exactInteger(val.numerator)
+                .exactInteger(val.numerator)
         }
     }
 
     public var real: Self {
         self
+    }
+
+    public var simplified: Self {
+        switch self {
+        case let .fraction(val):
+            val.isExactInteger ? .exactInteger(val.numerator) : self
+
+        default:
+            self
+        }
     }
 
     // MARK: Private Type Properties
@@ -504,13 +514,13 @@ public func atanh(_ z: Real) -> Real {
 public func ceiling(_ x: Real) -> Real {
     switch x {
     case .exactInteger:
-        return x
+        x
 
     case let .floatingPoint(val):
-        return .floatingPoint(ceil(val))
+            .floatingPoint(ceil(val))
 
     case let .fraction(val):
-        return .exactInteger(val.ceiling())
+            .exactInteger(val.ceiling())
     }
 }
 
@@ -542,13 +552,13 @@ public func expb(_ z: Real,
 public func floor(_ x: Real) -> Real {
     switch x {
     case .exactInteger:
-        return x
+        x
 
     case let .floatingPoint(val):
-        return .floatingPoint(floor(val))
+            .floatingPoint(floor(val))
 
     case let .fraction(val):
-        return .exactInteger(val.floor())
+            .exactInteger(val.floor())
     }
 }
 
@@ -696,13 +706,13 @@ public func remainder(_ n1: Real,
 public func round(_ x: Real) -> Real {
     switch x {
     case .exactInteger:
-        return x
+        x
 
     case let .floatingPoint(val):
-        return .floatingPoint(round(val))
+            .floatingPoint(round(val))
 
     case let .fraction(val):
-        return .exactInteger(val.round())
+            .exactInteger(val.round())
     }
 }
 
@@ -729,12 +739,12 @@ public func tanh(_ z: Real) -> Real {
 public func truncate(_ x: Real) -> Real {
     switch x {
     case .exactInteger:
-        return x
+        x
 
     case let .floatingPoint(val):
-        return .floatingPoint(trunc(val))
+            .floatingPoint(trunc(val))
 
     case let .fraction(val):
-        return .exactInteger(val.truncate())
+            .exactInteger(val.truncate())
     }
 }

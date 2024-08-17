@@ -117,15 +117,12 @@ extension Real {
     }
 
     public var exactIntegerValue: ExactInteger {
-        precondition(isExactInteger,
-                     "\(self) is not an exact integer")
-
-        switch self {
+        switch Self.checkInteger(self) {
         case let .exactInteger(val):
             return val
 
         case let .floatingPoint(val):
-            return .small(Int(val))   // let ExactInteger figure it out?
+            return .init(Int64(val))
 
         case let .fraction(val):
             return val.numerator
