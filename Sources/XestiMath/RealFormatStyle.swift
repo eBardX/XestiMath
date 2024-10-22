@@ -58,7 +58,7 @@ public struct RealFormatStyle {
     }
 
     public func rounded(rule: Configuration.RoundingRule = .toNearestOrEven,
-                        increment: Double? = nil) -> Self {
+                        increment: Real? = nil) -> Self {
         var copy = self
             
         copy.collection.rounding = rule
