@@ -6,8 +6,8 @@ public struct RealFormatStyle {
 
     // MARK: Public Nested Types
 
-    public typealias Configuration = NumberFormatStyleConfiguration
-    
+    public typealias Configuration = RealFormatStyleConfiguration
+
     internal var collection: Configuration.Collection = Configuration.Collection()
 
     // MARK: Public Initializers
@@ -41,14 +41,6 @@ public struct RealFormatStyle {
         return copy
     }
 
-    public func notation(_ notation: Configuration.Notation) -> Self {
-        var copy = self
-            
-        copy.collection.notation = notation
-            
-        return copy
-    }
-
     public func precision(_ precision: Configuration.Precision) -> Self {
         var copy = self
 
@@ -57,26 +49,18 @@ public struct RealFormatStyle {
         return copy
     }
 
-    public func rounded(rule: Configuration.RoundingRule = .toNearestOrEven,
-                        increment: Real? = nil) -> Self {
-        var copy = self
-            
-        copy.collection.rounding = rule
-            
-        if let increment {
-            copy.collection.roundingIncrement = .integer(value: increment)
-        }
-            
-        return copy
-    }
-
-    public func scale(_ multiplicand: Double) -> Self {
-        var copy = self
-            
-        copy.collection.scale = multiplicand
-            
-        return copy
-    }
+//    public func rounded(rule: Configuration.RoundingRule = .toNearestOrEven,
+//                        increment: Real? = nil) -> Self {
+//        var copy = self
+//            
+//        copy.collection.rounding = rule
+//            
+//        if let increment {
+//            copy.collection.roundingIncrement = .integer(value: increment)
+//        }
+//            
+//        return copy
+//    }
 
     public func sign(strategy: Configuration.SignDisplayStrategy) -> Self {
         var copy = self
@@ -89,19 +73,19 @@ public struct RealFormatStyle {
 
 // MARK:  - FormatStyle
 
-extension RealFormatStyle: FormatStyle {
-    public func format(_ value: Real) -> String {
-        ""
-    }
-
-    public func locale(_ locale: Locale) -> Self {
-        var copy = self
-            
-        copy.locale = locale
-            
-        return copy
-    }
-}
+//extension RealFormatStyle: FormatStyle {
+//    public func format(_ value: Real) -> String {
+//        ""
+//    }
+//
+//    public func locale(_ locale: Locale) -> Self {
+//        var copy = self
+//            
+//        copy.locale = locale
+//            
+//        return copy
+//    }
+//}
 
 // MARK:  -
 
@@ -122,14 +106,14 @@ extension RealFormatStyle {
 
 // MARK:  -
 
-extension FormatStyle where Self == RealFormatStyle {
-
-    // MARK: Public Type Properties
-
-    public static var number: RealFormatStyle {
-        .init()
-    }
-}
+//extension FormatStyle where Self == RealFormatStyle {
+//
+//    // MARK: Public Type Properties
+//
+//    public static var number: RealFormatStyle {
+//        .init()
+//    }
+//}
 
 // MARK:  -
 
