@@ -7,6 +7,8 @@ public struct RealFormatStyle {
     // MARK: Public Nested Types
 
     public typealias Configuration = NumberFormatStyleConfiguration
+    
+    internal var collection: Configuration.Collection = Configuration.Collection()
 
     // MARK: Public Initializers
 
@@ -24,32 +26,64 @@ public struct RealFormatStyle {
     // MARK: Public Instance Methods
 
     public func decimalSeparator(strategy: Configuration.DecimalSeparatorDisplayStrategy) -> Self {
-        self
+        var copy = self
+        
+        copy.collection.decimalSeparatorStrategy = strategy
+            
+        return copy
     }
 
     public func grouping(_ group: Configuration.Grouping) -> Self {
-        self
+        var copy = self
+            
+        copy.collection.group = group
+            
+        return copy
     }
 
     public func notation(_ notation: Configuration.Notation) -> Self {
-        self
+        var copy = self
+            
+        copy.collection.notation = notation
+            
+        return copy
     }
 
     public func precision(_ precision: Configuration.Precision) -> Self {
-        self
+        var copy = self
+
+        copy.collection.precision = precision
+        
+        return copy
     }
 
     public func rounded(rule: Configuration.RoundingRule = .toNearestOrEven,
                         increment: Double? = nil) -> Self {
-        self
+        var copy = self
+            
+        copy.collection.rounding = rule
+            
+        if let increment {
+            copy.collection.roundingIncrement = .integer(value: increment)
+        }
+            
+        return copy
     }
 
     public func scale(_ multiplicand: Double) -> Self {
-        self
+        var copy = self
+            
+        copy.collection.scale = multiplicand
+            
+        return copy
     }
 
     public func sign(strategy: Configuration.SignDisplayStrategy) -> Self {
-        self
+        var copy = self
+        
+        copy.collection.signDisplayStrategy = strategy
+            
+        return copy
     }
 }
 
@@ -61,7 +95,11 @@ extension RealFormatStyle: FormatStyle {
     }
 
     public func locale(_ locale: Locale) -> Self {
-        self
+        var copy = self
+            
+        copy.locale = locale
+            
+        return copy
     }
 }
 
