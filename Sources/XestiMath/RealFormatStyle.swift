@@ -65,20 +65,35 @@ extension RealFormatStyle {
 
 extension RealFormatStyle: FormatStyle {
     public func format(_ value: Real) -> String {
-        ""
+        switch value {
+        case let .exactInteger(eiValue):
+            switch eiValue {
+            case let .large(lgValue):
+                formatBigInt(lgValue)
+
+            case let .small(intValue):
+                formatInt(intValue)
+            }
+
+        case let .floatingPoint(dblValue):
+            formatDouble(dblValue)
+
+        case let .fraction(fracValue):
+            formatFraction(fracValue)
+        }
     }
 }
 
 // MARK: -
 
- extension FormatStyle where Self == RealFormatStyle {
+extension FormatStyle where Self == RealFormatStyle {
 
     // MARK: Public Type Properties
 
-    public static var number: RealFormatStyle {
+    public static var number: Self {
         .init()
     }
- }
+}
 
 // MARK: -
 
@@ -87,10 +102,14 @@ extension Real {
     // MARK: Public Instance Methods
 
     public func formatted() -> String {
-        ""
+        RealFormatStyle().format(self)
     }
 
-    // public func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S: FormatStyle
+    public func formatted<S>(_ format: S) -> S.FormatOutput where Self == S.FormatInput, S: FormatStyle {
+        format.format(self)
+    }
 
-    // public func formatted<S>(_ format: S) -> S.FormatOutput where S: FormatStyle, S.FormatInput: Real
+    // public func formatted<S>(_ format: S) -> S.FormatOutput where S: FormatStyle, S.FormatInput: Real {
+    //    format.format(S.FormatInput(self))
+    // }
 }
