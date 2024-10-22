@@ -4,118 +4,83 @@ import Foundation
 
 public struct RealFormatStyle {
 
-    // MARK: Public Nested Types
-
-    public typealias Configuration = RealFormatStyleConfiguration
-
-    internal var collection: Configuration.Collection = Configuration.Collection()
-
     // MARK: Public Initializers
 
     public init(locale: Locale = .autoupdatingCurrent) {
+        self.alwaysDisplaysFloatingPointSeparator = false
+        self.alwaysDisplaysFractionSeparator = false
+        self.displaysGrouping = true
         self.locale = locale
     }
 
     // MARK: Public Instance Properties
 
-    public let locale: Locale
+    public private(set) var alwaysDisplaysFloatingPointSeparator: Bool
+    public private(set) var alwaysDisplaysFractionSeparator: Bool
+    public private(set) var displaysGrouping: Bool
+    public private(set) var locale: Locale
+    // public private(set) var precision: Precision?
+}
 
-    // public var attributed: RealFormatStyle.Attributed {
-    // }
+// MARK: -
+
+extension RealFormatStyle {
 
     // MARK: Public Instance Methods
 
-    public func decimalSeparator(strategy: Configuration.DecimalSeparatorDisplayStrategy) -> Self {
+    public func alwaysDisplaysFloatingPointSeparator(_ on: Bool) -> Self {
         var copy = self
-        
-        copy.collection.decimalSeparatorStrategy = strategy
-            
+
+        copy.alwaysDisplaysFloatingPointSeparator = on
+
         return copy
     }
 
-    public func grouping(_ group: Configuration.Grouping) -> Self {
+    public func alwaysDisplaysFractionSeparator(_ on: Bool) -> Self {
         var copy = self
-            
-        copy.collection.group = group
-            
+
+        copy.alwaysDisplaysFractionSeparator = on
+
         return copy
     }
 
-    public func precision(_ precision: Configuration.Precision) -> Self {
+    public func displaysGrouping(_ on: Bool) -> Self {
         var copy = self
 
-        copy.collection.precision = precision
-        
+        copy.displaysGrouping = on
+
         return copy
     }
 
-//    public func rounded(rule: Configuration.RoundingRule = .toNearestOrEven,
-//                        increment: Real? = nil) -> Self {
-//        var copy = self
-//            
-//        copy.collection.rounding = rule
-//            
-//        if let increment {
-//            copy.collection.roundingIncrement = .integer(value: increment)
-//        }
-//            
-//        return copy
-//    }
-
-    public func sign(strategy: Configuration.SignDisplayStrategy) -> Self {
+    public func locale(_ locale: Locale) -> Self {
         var copy = self
-        
-        copy.collection.signDisplayStrategy = strategy
-            
+
+        copy.locale = locale
+
         return copy
     }
 }
 
-// MARK:  - FormatStyle
+// MARK: - FormatStyle
 
-//extension RealFormatStyle: FormatStyle {
-//    public func format(_ value: Real) -> String {
-//        ""
-//    }
-//
-//    public func locale(_ locale: Locale) -> Self {
-//        var copy = self
-//            
-//        copy.locale = locale
-//            
-//        return copy
-//    }
-//}
-
-// MARK:  -
-
-extension RealFormatStyle {
-    public struct Attributed: FormatStyle {
-
-        // MARK: Public Instance Methods
-
-        public func format(_ value: Real) -> AttributedString {
-            .init()
-        }
-
-        public func locale(_ locale: Locale) -> Self {
-            self
-        }
+extension RealFormatStyle: FormatStyle {
+    public func format(_ value: Real) -> String {
+        ""
     }
 }
 
-// MARK:  -
+// MARK: -
 
-//extension FormatStyle where Self == RealFormatStyle {
-//
-//    // MARK: Public Type Properties
-//
-//    public static var number: RealFormatStyle {
-//        .init()
-//    }
-//}
+ extension FormatStyle where Self == RealFormatStyle {
 
-// MARK:  -
+    // MARK: Public Type Properties
+
+    public static var number: RealFormatStyle {
+        .init()
+    }
+ }
+
+// MARK: -
 
 extension Real {
 
