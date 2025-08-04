@@ -1,4 +1,4 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2024–2025 John Gary Pusey (see LICENSE.md)
 
 import BigInt
 
@@ -7,18 +7,18 @@ extension ExactInteger {
     // MARK: Public Type Methods
 
     public static prefix func - (z: Self) -> Self {
-        switch z {
+        switch z.value {
         case let .large(val):
-            return .large(-val)
+            return Self(large: -val)
 
         case let .small(val):
             let result = 0.subtractingReportingOverflow(val)
 
             if result.overflow {
-                return .large(-BigInt(val))
+                return Self(large: -BigInt(val))
             }
 
-            return .small(result.partialValue)
+            return Self(small: result.partialValue)
         }
     }
 
@@ -26,21 +26,21 @@ extension ExactInteger {
                           z2: Self) -> Self {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
-            return .large(val1 - val2)
+            return Self(large: val1 - val2)
 
         case let (.small(val1), .small(val2)):
             let result = val1.subtractingReportingOverflow(val2)
 
             if result.overflow {
-                return .large(BigInt(val1) - BigInt(val2))
+                return Self(large: BigInt(val1) - BigInt(val2))
             }
 
-            return .small(result.partialValue)
+            return Self(small: result.partialValue)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -48,21 +48,21 @@ extension ExactInteger {
                           z2: Self) -> Self {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
-            return .large(val1 * val2)
+            return Self(large: val1 * val2)
 
         case let (.small(val1), .small(val2)):
             let result = val1.multipliedReportingOverflow(by: val2)
 
             if result.overflow {
-                return .large(BigInt(val1) * BigInt(val2))
+                return Self(large: BigInt(val1) * BigInt(val2))
             }
 
-            return .small(result.partialValue)
+            return Self(small: result.partialValue)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -70,21 +70,21 @@ extension ExactInteger {
                           z2: Self) -> Self {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
-            return .large(val1 / val2)
+            return Self(large: val1 / val2)
 
         case let (.small(val1), .small(val2)):
             let result = val1.dividedReportingOverflow(by: val2)
 
             if result.overflow {
-                return .large(BigInt(val1) / BigInt(val2))
+                return Self(large: BigInt(val1) / BigInt(val2))
             }
 
-            return .small(result.partialValue)
+            return Self(small: result.partialValue)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -97,15 +97,15 @@ extension ExactInteger {
                           n2: Self) -> Self {
         let (tmp1, tmp2) = coerce(n1, n2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
-            return .large(val1 & val2)
+            return Self(large: val1 & val2)
 
         case let (.small(val1), .small(val2)):
-            return .small(val1 & val2)
+            return Self(small: val1 & val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -113,15 +113,15 @@ extension ExactInteger {
                           n2: Self) -> Self {
         let (tmp1, tmp2) = coerce(n1, n2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
-            return .large(val1 % val2)
+            return Self(large: val1 % val2)
 
         case let (.small(val1), .small(val2)):
-            return .small(val1 % val2)
+            return Self(small: val1 % val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -129,15 +129,15 @@ extension ExactInteger {
                           n2: Self) -> Self {
         let (tmp1, tmp2) = coerce(n1, n2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
-            return .large(val1 ^ val2)
+            return Self(large: val1 ^ val2)
 
         case let (.small(val1), .small(val2)):
-            return .small(val1 ^ val2)
+            return Self(small: val1 ^ val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -145,21 +145,21 @@ extension ExactInteger {
                           z2: Self) -> Self {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
-            return .large(val1 + val2)
+            return Self(large: val1 + val2)
 
         case let (.small(val1), .small(val2)):
             let result = val1.addingReportingOverflow(val2)
 
             if result.overflow {
-                return .large(BigInt(val1) + BigInt(val2))
+                return Self(large: BigInt(val1) + BigInt(val2))
             }
 
-            return .small(result.partialValue)
+            return Self(small: result.partialValue)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -167,7 +167,7 @@ extension ExactInteger {
                           x2: Self) -> Bool {
         let (tmp1, tmp2) = coerce(x1, x2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
             return val1 < val2
 
@@ -175,22 +175,22 @@ extension ExactInteger {
             return val1 < val2
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
     public static func << (n: Self,
                            k: Int) -> Self {
-        switch n {
+        switch n.value {
         case let .large(val):
-            return .large(val << k)
+            return Self(large: val << k)
 
         case let .small(val):
             if k > 0 {
-                return .large(BigInt(val) << k)
+                return Self(large: BigInt(val) << k)
             }
 
-            return .small(val << k) // cannot overflow
+            return Self(small: val << k)    // cannot overflow
         }
     }
 
@@ -198,7 +198,7 @@ extension ExactInteger {
                            z2: Self) -> Bool {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
             return val1 == val2
 
@@ -206,22 +206,22 @@ extension ExactInteger {
             return val1 == val2
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
     public static func >> (n: Self,
                            k: Int) -> Self {
-        switch n {
+        switch n.value {
         case let .large(val):
-            return .large(val >> k)
+            return Self(large: val >> k)
 
         case let .small(val):
             if k < 0 {
-                return .large(BigInt(val) >> k)
+                return Self(large: BigInt(val) >> k)
             }
 
-            return .small(val >> k) // cannot overflow
+            return Self(small: val >> k)    // cannot overflow
         }
     }
 
@@ -229,32 +229,32 @@ extension ExactInteger {
                           n2: Self) -> Self {
         let (tmp1, tmp2) = coerce(n1, n2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
-            return .large(val1 | val2)
+            return Self(large: val1 | val2)
 
         case let (.small(val1), .small(val2)):
-            return .small(val1 | val2)
+            return Self(small: val1 | val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
     public static prefix func ~ (n: Self) -> Self {
-        switch n {
+        switch n.value {
         case let .large(val):
-                .large(~val)
+            Self(large: ~val)
 
         case let .small(val):
-                .small(~val)
+            Self(small: ~val)
         }
     }
 
     // MARK: Public Instance Properties
 
     public var isEven: Bool {
-        switch self {
+        switch value {
         case let .large(val):
             (val & 1) == 0
 
@@ -264,7 +264,7 @@ extension ExactInteger {
     }
 
     public var isOdd: Bool {
-        switch self {
+        switch value {
         case let .large(val):
             (val & 1) != 0
 
@@ -275,10 +275,10 @@ extension ExactInteger {
 
     // MARK: Public Instance Methods
 
-    public func isMultiple(of n: ExactInteger) -> Bool {
-        let (tmp1, tmp2) = ExactInteger.coerce(self, n)
+    public func isMultiple(of n: Self) -> Bool {
+        let (tmp1, tmp2) = Self.coerce(self, n)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.large(val1), .large(val2)):
             return val1.isMultiple(of: val2)
 
@@ -286,7 +286,7 @@ extension ExactInteger {
             return val1.isMultiple(of: val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 }
@@ -299,15 +299,15 @@ public func gcd(_ n1: ExactInteger,
                 _ n2: ExactInteger) -> ExactInteger {
     let (tmp1, tmp2) = ExactInteger.coerce(abs(n1), abs(n2))
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.large(val1), .large(val2)):
-        return (.large(val1.greatestCommonDivisor(with: val2)))
+        return ExactInteger(large: val1.greatestCommonDivisor(with: val2))
 
     case let (.small(val1), .small(val2)):
-        return .small(Int(UInt.gcd(UInt(val1), UInt(val2))))
+        return ExactInteger(small: Int(UInt.gcd(UInt(val1), UInt(val2))))
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
@@ -333,15 +333,15 @@ public func modulo(_ n1: ExactInteger,
                    _ n2: ExactInteger) -> ExactInteger {
     let (tmp1, tmp2) = ExactInteger.coerce(n1, n2)
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.large(val1), .large(val2)):
-        return .large(val1.modulus(val2))
+        return ExactInteger(large: val1.modulus(val2))
 
     case let (.small(val1), .small(val2)):
-        return .small(Int.modulo(val1, val2))
+        return ExactInteger(small: Int.modulo(val1, val2))
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
@@ -349,15 +349,15 @@ public func quotient(_ n1: ExactInteger,
                      _ n2: ExactInteger) -> ExactInteger {
     let (tmp1, tmp2) = ExactInteger.coerce(n1, n2)
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.large(val1), .large(val2)):
-        return .large(val1 / val2)
+        return ExactInteger(large: val1 / val2)
 
     case let (.small(val1), .small(val2)):
-        return .small(val1 / val2)
+        return ExactInteger(small: val1 / val2)
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
@@ -366,19 +366,19 @@ public func quotientAndRemainder(_ n1: ExactInteger,
                                                          remainder: ExactInteger) {
     let (tmp1, tmp2) = ExactInteger.coerce(n1, n2)
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.large(val1), .large(val2)):
         let (quo, rem) = val1.quotientAndRemainder(dividingBy: val2)
 
-        return (.large(quo), .large(rem))
+        return (ExactInteger(large: quo), ExactInteger(large: rem))
 
     case let (.small(val1), .small(val2)):
         let (quo, rem) = val1.quotientAndRemainder(dividingBy: val2)
 
-        return (.small(quo), .small(rem))
+        return (ExactInteger(small: quo), ExactInteger(small: rem))
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
@@ -386,24 +386,24 @@ public func remainder(_ n1: ExactInteger,
                       _ n2: ExactInteger) -> ExactInteger {
     let (tmp1, tmp2) = ExactInteger.coerce(n1, n2)
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.large(val1), .large(val2)):
-        return .large(val1 % val2)
+        return ExactInteger(large: val1 % val2)
 
     case let (.small(val1), .small(val2)):
-        return .small(val1 % val2)
+        return ExactInteger(small: val1 % val2)
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
 public func sqrt(_ z: ExactInteger) -> ExactInteger {
-    switch z {
+    switch z.value {
     case let .large(val):
-            .large(val.squareRoot())
+        ExactInteger(large: val.squareRoot())
 
     case let .small(val):
-            .large(BigInt(val).squareRoot())
+        ExactInteger(large: BigInt(val).squareRoot())
     }
 }

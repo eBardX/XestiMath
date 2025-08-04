@@ -1,12 +1,8 @@
-// swift-tools-version:5.10
+// swift-tools-version:6.0
+
+// © 2024–2025 John Gary Pusey (see LICENSE.md)
 
 import PackageDescription
-
-let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
-                                     .enableUpcomingFeature("ConciseMagicFile"),
-                                     .enableUpcomingFeature("ExistentialAny"),
-                                     .enableUpcomingFeature("ForwardTrailingClosures"),
-                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
 
 let package = Package(name: "XestiMath",
                       platforms: [.iOS(.v16),
@@ -21,9 +17,7 @@ let package = Package(name: "XestiMath",
                                         dependencies: [.product(name: "BigInt",
                                                                 package: "BigInt"),
                                                        .product(name: "Numerics",
-                                                                package: "swift-numerics")],
-                                        swiftSettings: swiftSettings),
+                                                                package: "swift-numerics")]),
                                 .testTarget(name: "XestiMathTests",
-                                            dependencies: [.target(name: "XestiMath")],
-                                            swiftSettings: swiftSettings)],
-                      swiftLanguageVersions: [.version("5")])
+                                            dependencies: [.target(name: "XestiMath")])],
+                      swiftLanguageModes: [.version("6")])

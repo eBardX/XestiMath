@@ -1,9 +1,24 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2024—2025 John Gary Pusey (see LICENSE.md)
 
-public enum Real {
-    case exactInteger(ExactInteger)
-    case floatingPoint(Double)
-    case fraction(Fraction)
+public struct Real: Sendable {
+
+    // MARK: Internal Initializers
+
+    internal init(exactInteger value: ExactInteger) {
+        self.value = .exactInteger(value)
+    }
+
+    internal init(floatingPoint value: Double) {
+        self.value = .floatingPoint(value)
+    }
+
+    internal init(fraction value: Fraction) {
+        self.value = .fraction(value)
+    }
+
+    // MARK: Internal Instance Properties
+
+    internal let value: Value
 }
 
 // MARK: -
@@ -14,73 +29,37 @@ extension Real {
 
     public init(_ numerator: ExactInteger,
                 _ denominator: ExactInteger) {
-        self = .fraction(Fraction(numerator, denominator))
+        self.init(fraction: Fraction(numerator, denominator))
     }
 
     public init(_ numerator: Int,
                 _ denominator: Int) {
-        self = .fraction(Fraction(numerator, denominator))
+        self.init(fraction: Fraction(numerator, denominator))
     }
 
     public init(_ numerator: Int64,
                 _ denominator: Int64) {
-        self = .fraction(Fraction(numerator, denominator))
+        self.init(fraction: Fraction(numerator, denominator))
     }
 
     public init(_ value: Double) {
-        self = .floatingPoint(value)
+        self.init(floatingPoint: value)
     }
 
     public init(_ value: Float) {
-        self = .floatingPoint(Double(value))
+        self.init(floatingPoint: Double(value))
     }
 
-    public init(_ value: Int) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: Int8) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: Int16) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: Int32) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: Int64) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: UInt) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: UInt8) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: UInt16) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: UInt32) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init(_ value: UInt64) {
-        self = .exactInteger(ExactInteger(value))
-    }
-
-    public init?(_ value: String) {
-        if let tmpValue = Self._parse(value) {
+    public init?<S: StringProtocol>(_ value: S) {
+        if let tmpValue = Self.parse(value) {
             self = tmpValue
         } else {
             return nil
         }
+    }
+
+    public init<T: BinaryInteger>(_ value: T) {
+        self.init(exactInteger: ExactInteger(value))
     }
 }
 
@@ -91,7 +70,7 @@ extension Real {
     // MARK: Public Instance Properties
 
     public var doubleValue: Double {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.doubleValue
 
@@ -103,8 +82,24 @@ extension Real {
         }
     }
 
+//    public var exactIntegerValue: ExactInteger {
+//        precondition(isExactInteger,
+//                     "\(self) is not an exact integer")
+//
+//        switch value {
+//        case let .exactInteger(val):
+//            return val
+//
+//        case .floatingPoint:
+//            return 0
+//
+//        case let .fraction(val):
+//            return val.numerator
+//        }
+//    }
+
     public var floatValue: Float {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.floatValue
 
@@ -116,21 +111,8 @@ extension Real {
         }
     }
 
-    public var exactIntegerValue: ExactInteger {
-        switch Self.checkInteger(self) {
-        case let .exactInteger(val):
-            return val
-
-        case let .floatingPoint(val):
-            return .init(Int64(val))
-
-        case let .fraction(val):
-            return val.numerator
-        }
-    }
-
     public var int16Value: Int16 {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.int16Value
 
@@ -143,7 +125,7 @@ extension Real {
     }
 
     public var int32Value: Int32 {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.int32Value
 
@@ -156,7 +138,7 @@ extension Real {
     }
 
     public var int64Value: Int64 {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.int64Value
 
@@ -169,7 +151,7 @@ extension Real {
     }
 
     public var int8Value: Int8 {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.int8Value
 
@@ -182,7 +164,7 @@ extension Real {
     }
 
     public var intValue: Int {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.intValue
 
@@ -194,8 +176,21 @@ extension Real {
         }
     }
 
+//    public var isExactInteger: Bool {
+//        switch value {
+//        case .exactInteger:
+//            return true
+//
+//        case let .floatingPoint(val):
+//            return Double(Int(val)) == val
+//
+//        case let .fraction(val):
+//            return val.isExactInteger
+//        }
+//    }
+
     public var uint16Value: UInt16 {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.uint16Value
 
@@ -208,7 +203,7 @@ extension Real {
     }
 
     public var uint32Value: UInt32 {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.uint32Value
 
@@ -221,7 +216,7 @@ extension Real {
     }
 
     public var uint64Value: UInt64 {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.uint64Value
 
@@ -234,7 +229,7 @@ extension Real {
     }
 
     public var uint8Value: UInt8 {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.uint8Value
 
@@ -247,7 +242,7 @@ extension Real {
     }
 
     public var uintValue: UInt {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.uintValue
 
@@ -290,58 +285,29 @@ extension Real {
 
     internal static func coerce(_ lhs: Self,
                                 _ rhs: Self) -> (Self, Self) {
-        switch (lhs, rhs) {
+        switch (lhs.value, rhs.value) {
         case (.exactInteger, .exactInteger),
             (.floatingPoint, .floatingPoint),
             (.fraction, .fraction):
             return (lhs, rhs)
 
         case let (.exactInteger(lval), .floatingPoint):
-            return (.floatingPoint(lval.doubleValue), rhs)
+            return (Self(floatingPoint: lval.doubleValue), rhs)
 
         case let (.exactInteger(lval), .fraction):
-            return (.fraction(Fraction(lval, 1, false)), rhs)
+            return (Self(fraction: Fraction(lval, 1, false)), rhs)
 
         case let (.floatingPoint, .exactInteger(rval)):
-            return (lhs, .floatingPoint(rval.doubleValue))
+            return (lhs, Self(floatingPoint: rval.doubleValue))
 
         case let (.floatingPoint, .fraction(rval)):
-            return (lhs, .floatingPoint(rval.doubleValue))
+            return (lhs, Self(floatingPoint: rval.doubleValue))
 
         case let (.fraction, .exactInteger(rval)):
-            return (lhs, .fraction(Fraction(rval, 1, false)))
+            return (lhs, Self(fraction: Fraction(rval, 1, false)))
 
         case let (.fraction(lval), .floatingPoint):
-            return (.floatingPoint(lval.doubleValue), rhs)
-        }
-    }
-
-    // MARK: Internal Instance Properties
-
-    internal var isExactInteger: Bool {
-        switch self {
-        case .exactInteger:
-            return true
-
-        case let .floatingPoint(val):
-            return Double(Int(val)) == val
-
-        case let .fraction(val):
-            return val.isExactInteger
-        }
-    }
-
-    // MARK: Private Type Methods
-
-    private static func _parse(_ value: String) -> Self? {
-        if let tmpValue = ExactInteger(value) {
-            return .exactInteger(tmpValue)
-        } else if let tmpValue = Fraction(value) {
-            return .fraction(tmpValue)
-        } else if let tmpValue = Double(value) {
-            return .floatingPoint(tmpValue)
-        } else {
-            return nil
+            return (Self(floatingPoint: lval.doubleValue), rhs)
         }
     }
 }
@@ -349,6 +315,23 @@ extension Real {
 // MARK: - Codable
 
 extension Real: Codable {
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let stringValue = try container.decode(String.self)
+
+        if let tmpValue = Self.parse(stringValue) {
+            self = tmpValue
+        } else {
+            throw DecodingError.dataCorruptedError(in: container,
+                                                   debugDescription: "Invalid real value")
+        }
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        try container.encode(description)
+    }
 }
 
 // MARK: - Comparable
@@ -360,7 +343,7 @@ extension Real: Comparable {
 
 extension Real: CustomStringConvertible {
     public var description: String {
-        switch self {
+        switch value {
         case let .exactInteger(val):
             return val.description
 

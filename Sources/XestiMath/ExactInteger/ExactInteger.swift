@@ -1,10 +1,22 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2024–2025 John Gary Pusey (see LICENSE.md)
 
 import BigInt
 
-public enum ExactInteger {
-    case large(BigInt)
-    case small(Int)
+public struct ExactInteger: Sendable {
+
+    // MARK: Internal Initializers
+
+    internal init(large value: BigInt) {
+        self.value = .large(value)
+    }
+
+    internal init(small value: Int) {
+        self.value = .small(value)
+    }
+
+    // MARK: Internal Instance Properties
+
+    internal let value: Value
 }
 
 // MARK: -
@@ -13,59 +25,19 @@ extension ExactInteger {
 
     // MARK: Public Initializers
 
-    public init(_ value: Int) {
-        self = .small(value)
-    }
-
-    public init(_ value: Int8) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: Int16) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: Int32) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: Int64) {
-        if value.bitWidth > Int.bitWidth {
-            self = .large(BigInt(value))
-        } else {
-            self = .small(Int(value))
-        }
-    }
-
-    public init?(_ value: String) {
-        if let tmpValue = Self._parse(value) {
+    public init?<S: StringProtocol>(_ value: S) {
+        if let tmpValue = Self.parse(value) {
             self = tmpValue
         } else {
             return nil
         }
     }
 
-    public init(_ value: UInt) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: UInt8) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: UInt16) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: UInt32) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: UInt64) {
-        if value.bitWidth > Int.bitWidth {
-            self = .large(BigInt(value))
+    public init<T: BinaryInteger>(_ value: T) {
+        if let intValue = Int(exactly: value) {
+            self.init(small: intValue)
         } else {
-            self = .small(Int(value))
+            self.init(large: BigInt(value))
         }
     }
 }
@@ -77,7 +49,7 @@ extension ExactInteger {
     // MARK: Public Instance Properties
 
     public var doubleValue: Double {
-        switch self {
+        switch value {
         case let .large(val):
             Double(val)
 
@@ -87,7 +59,7 @@ extension ExactInteger {
     }
 
     public var floatValue: Float {
-        switch self {
+        switch value {
         case let .large(val):
             Float(val)
 
@@ -97,7 +69,7 @@ extension ExactInteger {
     }
 
     public var int16Value: Int16 {
-        switch self {
+        switch value {
         case let .large(val):
             Int16(val)
 
@@ -107,7 +79,7 @@ extension ExactInteger {
     }
 
     public var int32Value: Int32 {
-        switch self {
+        switch value {
         case let .large(val):
             Int32(val)
 
@@ -117,7 +89,7 @@ extension ExactInteger {
     }
 
     public var int64Value: Int64 {
-        switch self {
+        switch value {
         case let .large(val):
             Int64(val)
 
@@ -127,7 +99,7 @@ extension ExactInteger {
     }
 
     public var int8Value: Int8 {
-        switch self {
+        switch value {
         case let .large(val):
             Int8(val)
 
@@ -137,7 +109,7 @@ extension ExactInteger {
     }
 
     public var intValue: Int {
-        switch self {
+        switch value {
         case let .large(val):
             Int(val)
 
@@ -147,7 +119,7 @@ extension ExactInteger {
     }
 
     public var uint16Value: UInt16 {
-        switch self {
+        switch value {
         case let .large(val):
             UInt16(val)
 
@@ -157,7 +129,7 @@ extension ExactInteger {
     }
 
     public var uint32Value: UInt32 {
-        switch self {
+        switch value {
         case let .large(val):
             UInt32(val)
 
@@ -167,7 +139,7 @@ extension ExactInteger {
     }
 
     public var uint64Value: UInt64 {
-        switch self {
+        switch value {
         case let .large(val):
             UInt64(val)
 
@@ -177,7 +149,7 @@ extension ExactInteger {
     }
 
     public var uint8Value: UInt8 {
-        switch self {
+        switch value {
         case let .large(val):
             UInt8(val)
 
@@ -187,7 +159,7 @@ extension ExactInteger {
     }
 
     public var uintValue: UInt {
-        switch self {
+        switch value {
         case let .large(val):
             UInt(val)
 
@@ -205,29 +177,16 @@ extension ExactInteger {
 
     internal static func coerce(_ lhs: Self,
                                 _ rhs: Self) -> (Self, Self) {
-        switch (lhs, rhs) {
+        switch (lhs.value, rhs.value) {
         case (.large, .large),
             (.small, .small):
             (lhs, rhs)
 
         case let (.large, .small(rval)):
-            (lhs, .large(BigInt(rval)))
+            (lhs, Self(large: BigInt(rval)))
 
         case let (.small(lval), .large):
-            (.large(BigInt(lval)), rhs)
-        }
-    }
-
-    // MARK: Private Type Methods
-
-    private static func _parse(_ value: String) -> Self? {
-        guard let biValue = BigInt(value)
-        else { return nil }
-
-        if biValue.bitWidth > Int.bitWidth {
-            return .large(biValue)
-        } else {
-            return .small(Int(biValue))
+            (Self(large: BigInt(lval)), rhs)
         }
     }
 }
@@ -239,7 +198,7 @@ extension ExactInteger: Codable {
         let container = try decoder.singleValueContainer()
         let stringValue = try container.decode(String.self)
 
-        if let tmpValue = Self._parse(stringValue) {
+        if let tmpValue = Self.parse(stringValue) {
             self = tmpValue
         } else {
             throw DecodingError.dataCorruptedError(in: container,
@@ -263,7 +222,7 @@ extension ExactInteger: Comparable {
 
 extension ExactInteger: CustomPlaygroundDisplayConvertible {
     public var playgroundDescription: Any {
-        switch self {
+        switch value {
         case let .large(val):
             "large<\(val.playgroundDescription)>"
 
@@ -277,7 +236,7 @@ extension ExactInteger: CustomPlaygroundDisplayConvertible {
 
 extension ExactInteger: CustomStringConvertible {
     public var description: String {
-        switch self {
+        switch value {
         case let .large(val):
             val.description
 

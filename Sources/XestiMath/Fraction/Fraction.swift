@@ -1,6 +1,6 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2024–2025 John Gary Pusey (see LICENSE.md)
 
-public struct Fraction {
+public struct Fraction: Sendable {
 
     // MARK: Public Initializers
 
@@ -25,8 +25,8 @@ public struct Fraction {
                   true)
     }
 
-    public init?(_ value: String) {
-        if let tmpValue = Self._parse(value) {
+    public init?<S: StringProtocol>(_ value: S) {
+        if let tmpValue = Self.parse(value) {
             self = tmpValue
         } else {
             return nil
@@ -70,85 +70,6 @@ public struct Fraction {
         self.denominator = den
         self.numerator = num
     }
-
-    // MARK: Internal Instance Properties
-
-    internal var isExactInteger: Bool {
-        denominator == 1
-    }
-
-    // MARK: Internal Instance Methods
-
-    internal func ceiling() -> ExactInteger {
-        if numerator < 0 {
-            quotient(numerator, denominator)
-        } else if !numerator.isMultiple(of: denominator) {
-            quotient(numerator, denominator) + 1
-        } else {
-            quotient(numerator, denominator)
-        }
-    }
-
-    internal func floor() -> ExactInteger {
-        if numerator > 0 || numerator.isMultiple(of: denominator) {
-            quotient(numerator, denominator)
-        } else {
-            quotient(numerator, denominator) - 1
-        }
-    }
-
-    internal func round() -> ExactInteger {
-        var quo = numerator / denominator
-
-        let half = denominator / 2
-
-        if numerator < 0 {
-            let delta = (quo * denominator) - numerator
-            let more = (denominator.isEven && delta == half
-                        ? quo.isOdd
-                        : delta > half)
-
-            if more {
-                quo = quo - 1   // swiftlint:disable:this shorthand_operator
-            }
-        } else {
-            let delta = numerator - (quo * denominator)
-            let more = (denominator.isEven && delta == half
-                        ? quo.isOdd
-                        : delta > half)
-
-            if more {
-                quo = quo + 1   // swiftlint:disable:this shorthand_operator
-            }
-        }
-
-        return quo
-    }
-
-    internal func truncate() -> ExactInteger {
-        quotient(numerator, denominator)
-    }
-
-    // MARK: Private Type Methods
-
-    private static func _parse(_ value: String) -> Self? {
-        let pair = value.split(separator: "/",
-                               maxSplits: 1,
-                               omittingEmptySubsequences: false)
-
-        if pair.count == 2 {
-            guard let num = ExactInteger(String(pair[0])),
-                  let den = ExactInteger(String(pair[1]))
-            else { return nil }
-
-            return .init(num, den, true)
-        }
-
-        guard let num = ExactInteger(value)
-        else { return nil }
-
-        return .init(num, 1, false)
-    }
 }
 
 // MARK: -
@@ -159,13 +80,6 @@ extension Fraction {
 
     public var doubleValue: Double {
         numerator.doubleValue / denominator.doubleValue
-    }
-
-    public var exactIntegerValue: ExactInteger {
-        precondition(isExactInteger,
-                     "\(self) is not an exact integer")
-
-        return numerator
     }
 
     public var floatValue: Float {
@@ -220,7 +134,7 @@ extension Fraction: Codable {
         let container = try decoder.singleValueContainer()
         let stringValue = try container.decode(String.self)
 
-        if let tmpValue = Self._parse(stringValue) {
+        if let tmpValue = Self.parse(stringValue) {
             self = tmpValue
         } else {
             throw DecodingError.dataCorruptedError(in: container,
@@ -244,7 +158,11 @@ extension Fraction: Comparable {
 
 extension Fraction: CustomStringConvertible {
     public var description: String {
-        "\(numerator)/\(denominator)"
+        if denominator != 1 {
+            numerator.description + "/" + denominator.description
+        } else {
+            numerator.description
+        }
     }
 }
 

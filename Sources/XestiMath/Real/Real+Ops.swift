@@ -1,7 +1,7 @@
 // © 2024 John Gary Pusey (see LICENSE.md)
 
 import Darwin
-import Numerics
+import RealModule
 
 // swiftlint:disable file_length
 
@@ -10,15 +10,15 @@ extension Real: NumberOps {
     // MARK: Public Type Methods
 
     public static prefix func - (z: Self) -> Self {
-        switch z {
+        switch z.value {
         case let .exactInteger(val):
-                .exactInteger(-val)
+            Self(exactInteger: -val)
 
         case let .floatingPoint(val):
-                .floatingPoint(-val)
+            Self(floatingPoint: -val)
 
         case let .fraction(val):
-                .fraction(-val)
+            Self(fraction: -val)
         }
     }
 
@@ -26,18 +26,18 @@ extension Real: NumberOps {
                           z2: Self) -> Self {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
-            return .exactInteger(val1 - val2)
+            return Self(exactInteger: val1 - val2)
 
         case let (.floatingPoint(val1), .floatingPoint(val2)):
-            return .floatingPoint(val1 - val2)
+            return Self(floatingPoint: val1 - val2)
 
         case let (.fraction(val1), .fraction(val2)):
-            return .fraction(val1 - val2)
+            return Self(fraction: val1 - val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -45,18 +45,18 @@ extension Real: NumberOps {
                           z2: Self) -> Self {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
-            return .exactInteger(val1 * val2)
+            return Self(exactInteger: val1 * val2)
 
         case let (.floatingPoint(val1), .floatingPoint(val2)):
-            return .floatingPoint(val1 * val2)
+            return Self(floatingPoint: val1 * val2)
 
         case let (.fraction(val1), .fraction(val2)):
-            return .fraction(val1 * val2)
+            return Self(fraction: val1 * val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -64,18 +64,18 @@ extension Real: NumberOps {
                           z2: Self) -> Self {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
-            return .fraction(Fraction(val1, val2))
+            return Self(fraction: Fraction(val1, val2))
 
         case let (.floatingPoint(val1), .floatingPoint(val2)):
-            return .floatingPoint(val1 / val2)
+            return Self(floatingPoint: val1 / val2)
 
         case let (.fraction(val1), .fraction(val2)):
-            return .fraction(val1 / val2)
+            return Self(fraction: val1 / val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -84,19 +84,19 @@ extension Real: NumberOps {
         let (tmp1, tmp2) = coerce(Self.checkInteger(n1),
                                   Self.checkInteger(n2))
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
-            return .exactInteger(val1 & val2)
+            return Self(exactInteger: val1 & val2)
 
         case (.floatingPoint, .floatingPoint):
-            return .floatingPoint((tmp1.exactIntegerValue &
-                                   tmp2.exactIntegerValue).doubleValue)
+            return Self(floatingPoint: (tmp1.exactIntegerValue &
+                                        tmp2.exactIntegerValue).doubleValue)
 
         case let (.fraction(val1), .fraction(val2)):
-            return .exactInteger(val1.numerator & val2.numerator)
+            return Self(exactInteger: val1.numerator & val2.numerator)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -105,19 +105,19 @@ extension Real: NumberOps {
         let (tmp1, tmp2) = coerce(Self.checkInteger(n1),
                                   Self.checkInteger(n2))
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
-            return .exactInteger(val1 % val2)
+            return Self(exactInteger: val1 % val2)
 
         case (.floatingPoint, .floatingPoint):
-            return .floatingPoint((tmp1.exactIntegerValue %
-                                   tmp2.exactIntegerValue).doubleValue)
+            return Self(floatingPoint: (tmp1.exactIntegerValue %
+                                        tmp2.exactIntegerValue).doubleValue)
 
         case let (.fraction(val1), .fraction(val2)):
-            return .exactInteger(val1.numerator % val2.numerator)
+            return Self(exactInteger: val1.numerator % val2.numerator)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -126,19 +126,19 @@ extension Real: NumberOps {
         let (tmp1, tmp2) = coerce(Self.checkInteger(n1),
                                   Self.checkInteger(n2))
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
-            return .exactInteger(val1 ^ val2)
+            return Self(exactInteger: val1 ^ val2)
 
         case (.floatingPoint, .floatingPoint):
-            return .floatingPoint((tmp1.exactIntegerValue ^
-                                   tmp2.exactIntegerValue).doubleValue)
+            return Self(floatingPoint: (tmp1.exactIntegerValue ^
+                                        tmp2.exactIntegerValue).doubleValue)
 
         case let (.fraction(val1), .fraction(val2)):
-            return .exactInteger(val1.numerator ^ val2.numerator)
+            return Self(exactInteger: val1.numerator ^ val2.numerator)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -146,18 +146,18 @@ extension Real: NumberOps {
                           z2: Self) -> Self {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
-            return .exactInteger(val1 + val2)
+            return Self(exactInteger: val1 + val2)
 
         case let (.floatingPoint(val1), .floatingPoint(val2)):
-            return .floatingPoint(val1 + val2)
+            return Self(floatingPoint: val1 + val2)
 
         case let (.fraction(val1), .fraction(val2)):
-            return .fraction(val1 + val2)
+            return Self(fraction: val1 + val2)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -165,7 +165,7 @@ extension Real: NumberOps {
                           x2: Self) -> Bool {
         let (tmp1, tmp2) = coerce(x1, x2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
             return val1 < val2
 
@@ -176,7 +176,7 @@ extension Real: NumberOps {
             return val1 < val2
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -184,15 +184,15 @@ extension Real: NumberOps {
                            k: Int) -> Self {
         let tmp = Self.checkInteger(n)
 
-        switch tmp {
+        switch tmp.value {
         case let .exactInteger(val):
-            return .exactInteger(val << k)
+            return Self(exactInteger: val << k)
 
         case .floatingPoint:
-            return .floatingPoint((tmp.exactIntegerValue << k).doubleValue)
+            return Self(floatingPoint: (tmp.exactIntegerValue << k).doubleValue)
 
         case let .fraction(val):
-            return .exactInteger(val.numerator << k)
+            return Self(exactInteger: val.numerator << k)
         }
     }
 
@@ -200,7 +200,7 @@ extension Real: NumberOps {
                            z2: Self) -> Bool {
         let (tmp1, tmp2) = coerce(z1, z2)
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
             return val1 == val2
 
@@ -211,7 +211,7 @@ extension Real: NumberOps {
             return val1 == val2
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
@@ -219,15 +219,15 @@ extension Real: NumberOps {
                            k: Int) -> Self {
         let tmp = Self.checkInteger(n)
 
-        switch tmp {
+        switch tmp.value {
         case let .exactInteger(val):
-            return .exactInteger(val >> k)
+            return Self(exactInteger: val >> k)
 
         case .floatingPoint:
-            return .floatingPoint((tmp.exactIntegerValue >> k).doubleValue)
+            return Self(floatingPoint: (tmp.exactIntegerValue >> k).doubleValue)
 
         case let .fraction(val):
-            return .exactInteger(val.numerator >> k)
+            return Self(exactInteger: val.numerator >> k)
         }
     }
 
@@ -236,34 +236,34 @@ extension Real: NumberOps {
         let (tmp1, tmp2) = coerce(Self.checkInteger(n1),
                                   Self.checkInteger(n2))
 
-        switch (tmp1, tmp2) {
+        switch (tmp1.value, tmp2.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
-            return .exactInteger(val1 | val2)
+            return Self(exactInteger: val1 | val2)
 
         case (.floatingPoint, .floatingPoint):
-            return .floatingPoint((tmp1.exactIntegerValue |
-                                   tmp2.exactIntegerValue).doubleValue)
+            return Self(floatingPoint: (tmp1.exactIntegerValue |
+                                        tmp2.exactIntegerValue).doubleValue)
 
         case let (.fraction(val1), .fraction(val2)):
-            return .exactInteger(val1.numerator | val2.numerator)
+            return Self(exactInteger: val1.numerator | val2.numerator)
 
         default:
-            fatalError("impossible case reached!")
+            fatalError("Impossible case reached!")
         }
     }
 
     public static prefix func ~ (n: Self) -> Self {
         let tmp = Self.checkInteger(n)
 
-        switch tmp {
+        switch tmp.value {
         case let .exactInteger(val):
-            return .exactInteger(~val)
+            return Self(exactInteger: ~val)
 
         case .floatingPoint:
-            return .floatingPoint((~tmp.exactIntegerValue).doubleValue)
+            return Self(floatingPoint: (~tmp.exactIntegerValue).doubleValue)
 
         case let .fraction(val):
-            return .exactInteger(~val.numerator)
+            return Self(exactInteger: ~val.numerator)
         }
     }
 
@@ -274,7 +274,7 @@ extension Real: NumberOps {
     }
 
     public var denominator: Self {
-        switch Self.checkRational(self) {
+        switch Self.checkRational(self).value {
         case .exactInteger:
             return .exactOne
 
@@ -284,16 +284,16 @@ extension Real: NumberOps {
             return .inexactOne
 
         case let .fraction(val):
-            return .exactInteger(val.denominator)
+            return Self(exactInteger: val.denominator)
         }
     }
 
     public var exactValue: Self {
         let tmp = Self.checkInteger(self)
 
-        switch tmp {
+        switch tmp.value {
         case .floatingPoint:
-            return .exactInteger(tmp.exactIntegerValue)
+            return Self(exactInteger: tmp.exactIntegerValue)
 
         default:
             return self
@@ -305,12 +305,12 @@ extension Real: NumberOps {
     }
 
     public var inexactValue: Self {
-        switch self {
+        switch value {
         case .floatingPoint:
             self
 
         default:
-                .floatingPoint(doubleValue)
+            Self(floatingPoint: doubleValue)
         }
     }
 
@@ -321,7 +321,7 @@ extension Real: NumberOps {
     public var isEven: Bool {
         let tmp = Self.checkInteger(self)
 
-        switch tmp {
+        switch tmp.value {
         case let .exactInteger(val):
             return val.isEven
 
@@ -334,7 +334,7 @@ extension Real: NumberOps {
     }
 
     public var isExact: Bool {
-        switch self {
+        switch value {
         case .floatingPoint:
             false
 
@@ -344,7 +344,7 @@ extension Real: NumberOps {
     }
 
     public var isFinite: Bool {
-        switch self {
+        switch value {
         case let .floatingPoint(val):
             val.isFinite
 
@@ -354,7 +354,7 @@ extension Real: NumberOps {
     }
 
     public var isInexact: Bool {
-        switch self {
+        switch value {
         case .floatingPoint:
             true
 
@@ -364,7 +364,7 @@ extension Real: NumberOps {
     }
 
     public var isInfinite: Bool {
-        switch self {
+        switch value {
         case let .floatingPoint(val):
             val.isInfinite
 
@@ -374,12 +374,12 @@ extension Real: NumberOps {
     }
 
     public var isInteger: Bool {
-        switch self {
+        switch value {
         case .exactInteger:
             true
 
-        case .floatingPoint:
-            isExactInteger
+        case let .floatingPoint(val):
+            Double(Int(val)) == val
 
         case let .fraction(val):
             val.isExactInteger
@@ -387,7 +387,7 @@ extension Real: NumberOps {
     }
 
     public var isNaN: Bool {
-        switch self {
+        switch value {
         case let .floatingPoint(val):
             val.isNaN
 
@@ -403,7 +403,7 @@ extension Real: NumberOps {
     public var isOdd: Bool {
         let tmp = Self.checkInteger(self)
 
-        switch tmp {
+        switch tmp.value {
         case let .exactInteger(val):
             return val.isOdd
 
@@ -420,7 +420,7 @@ extension Real: NumberOps {
     }
 
     public var isRational: Bool {
-        switch self {
+        switch value {
         case let .floatingPoint(val):
             val.isFinite
 
@@ -442,7 +442,7 @@ extension Real: NumberOps {
     }
 
     public var numerator: Self {
-        switch Self.checkRational(self) {
+        switch Self.checkRational(self).value {
         case .exactInteger:
             self
 
@@ -450,7 +450,7 @@ extension Real: NumberOps {
             Self.checkInteger(self)
 
         case let .fraction(val):
-                .exactInteger(val.numerator)
+            Self(exactInteger: val.numerator)
         }
     }
 
@@ -459,9 +459,9 @@ extension Real: NumberOps {
     }
 
     public var simplified: Self {
-        switch self {
+        switch value {
         case let .fraction(val):
-            val.isExactInteger ? .exactInteger(val.numerator) : self
+            val.isExactInteger ? Self(exactInteger: val.numerator) : self
 
         default:
             self
@@ -470,11 +470,11 @@ extension Real: NumberOps {
 
     // MARK: Private Type Properties
 
-    private static let exactOne: Real = .exactInteger(1)
-    private static let exactZero: Real = .exactInteger(0)
-    private static let inexactOne: Real = .floatingPoint(1.0)
-    private static let inexactPi: Real = .floatingPoint(.pi)
-    private static let inexactZero: Real = .floatingPoint(0.0)
+    private static let exactOne = Self(exactInteger: 1)
+    private static let exactZero = Self(exactInteger: 0)
+    private static let inexactOne = Self(floatingPoint: 1.0)
+    private static let inexactPi = Self(floatingPoint: .pi)
+    private static let inexactZero = Self(floatingPoint: 0.0)
 }
 
 public func abs(_ x: Real) -> Real {
@@ -482,83 +482,83 @@ public func abs(_ x: Real) -> Real {
 }
 
 public func acos(_ z: Real) -> Real {
-    .floatingPoint(.acos(z.doubleValue))
+    Real(floatingPoint: .acos(z.doubleValue))
 }
 
 public func acosh(_ z: Real) -> Real {
-    .floatingPoint(.acosh(z.doubleValue))
+    Real(floatingPoint: .acosh(z.doubleValue))
 }
 
 public func asin(_ z: Real) -> Real {
-    .floatingPoint(.asin(z.doubleValue))
+    Real(floatingPoint: .asin(z.doubleValue))
 }
 
 public func asinh(_ z: Real) -> Real {
-    .floatingPoint(.asinh(z.doubleValue))
+    Real(floatingPoint: .asinh(z.doubleValue))
 }
 
 public func atan(_ z: Real) -> Real {
-    .floatingPoint(.atan(z.doubleValue))
+    Real(floatingPoint: .atan(z.doubleValue))
 }
 
 public func atan(_ y: Real,
                  _ x: Real) -> Real {
-    .floatingPoint(.atan2(y: y.doubleValue,
-                          x: x.doubleValue))
+    Real(floatingPoint: .atan2(y: y.doubleValue,
+                               x: x.doubleValue))
 }
 
 public func atanh(_ z: Real) -> Real {
-    .floatingPoint(.atanh(z.doubleValue))
+    Real(floatingPoint: .atanh(z.doubleValue))
 }
 
 public func ceiling(_ x: Real) -> Real {
-    switch x {
+    switch x.value {
     case .exactInteger:
         x
 
     case let .floatingPoint(val):
-            .floatingPoint(ceil(val))
+        Real(floatingPoint: ceil(val))
 
     case let .fraction(val):
-            .exactInteger(val.ceiling())
+        Real(exactInteger: val.ceiling())
     }
 }
 
 public func cos(_ z: Real) -> Real {
-    .floatingPoint(.cos(z.doubleValue))
+    Real(floatingPoint: .cos(z.doubleValue))
 }
 
 public func cosh(_ z: Real) -> Real {
-    .floatingPoint(.cosh(z.doubleValue))
+    Real(floatingPoint: .cosh(z.doubleValue))
 }
 
 public func exp(_ z: Real) -> Real {
-    .floatingPoint(.exp(z.doubleValue))
+    Real(floatingPoint: .exp(z.doubleValue))
 }
 
 public func exp2(_ z: Real) -> Real {
-    .floatingPoint(.exp2(z.doubleValue))
+    Real(floatingPoint: .exp2(z.doubleValue))
 }
 
 public func exp10(_ z: Real) -> Real {
-    .floatingPoint(.exp10(z.doubleValue))
+    Real(floatingPoint: .exp10(z.doubleValue))
 }
 
 public func expb(_ z: Real,
                  _ base: Real) -> Real {
-    .floatingPoint(.exp(z.doubleValue * .log(base.doubleValue)))
+    Real(floatingPoint: .exp(z.doubleValue * .log(base.doubleValue)))
 }
 
 public func floor(_ x: Real) -> Real {
-    switch x {
+    switch x.value {
     case .exactInteger:
         x
 
     case let .floatingPoint(val):
-            .floatingPoint(floor(val))
+        Real(floatingPoint: floor(val))
 
     case let .fraction(val):
-            .exactInteger(val.floor())
+        Real(exactInteger: val.floor())
     }
 }
 
@@ -567,20 +567,20 @@ public func gcd(_ n1: Real,
     let (tmp1, tmp2) = Real.coerce(Real.checkInteger(n1),
                                    Real.checkInteger(n2))
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.exactInteger(val1), .exactInteger(val2)):
-        return .exactInteger(gcd(val1, val2))
+        return Real(exactInteger: gcd(val1, val2))
 
     case (.floatingPoint, .floatingPoint):
-        return .floatingPoint(gcd(tmp1.exactIntegerValue,
-                                  tmp2.exactIntegerValue).doubleValue)
+        return Real(floatingPoint: gcd(tmp1.exactIntegerValue,
+                                       tmp2.exactIntegerValue).doubleValue)
 
     case let (.fraction(val1), .fraction(val2)):
-        return .exactInteger(gcd(val1.numerator,
-                                 val2.numerator))
+        return Real(exactInteger: gcd(val1.numerator,
+                                      val2.numerator))
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
@@ -589,38 +589,38 @@ public func lcm(_ n1: Real,
     let (tmp1, tmp2) = Real.coerce(Real.checkInteger(n1),
                                    Real.checkInteger(n2))
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.exactInteger(val1), .exactInteger(val2)):
-        return .exactInteger(lcm(val1, val2))
+        return Real(exactInteger: lcm(val1, val2))
 
     case (.floatingPoint, .floatingPoint):
-        return .floatingPoint(lcm(tmp1.exactIntegerValue,
-                                  tmp2.exactIntegerValue).doubleValue)
+        return Real(floatingPoint: lcm(tmp1.exactIntegerValue,
+                                       tmp2.exactIntegerValue).doubleValue)
 
     case let (.fraction(val1), .fraction(val2)):
-        return .exactInteger(lcm(val1.numerator,
-                                 val2.numerator))
+        return Real(exactInteger: lcm(val1.numerator,
+                                      val2.numerator))
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
 public func log(_ z: Real) -> Real {
-    .floatingPoint(.log(z.doubleValue))
+    Real(floatingPoint: .log(z.doubleValue))
 }
 
 public func log2(_ z: Real) -> Real {
-    .floatingPoint(.log2(z.doubleValue))
+    Real(floatingPoint: .log2(z.doubleValue))
 }
 
 public func log10(_ z: Real) -> Real {
-    .floatingPoint(.log10(z.doubleValue))
+    Real(floatingPoint: .log10(z.doubleValue))
 }
 
 public func logb(_ z: Real,
                  _ base: Real) -> Real {
-    .floatingPoint(.log(z.doubleValue) / .log(base.doubleValue))
+    Real(floatingPoint: .log(z.doubleValue) / .log(base.doubleValue))
 }
 
 public func max(_ x1: Real,
@@ -638,27 +638,27 @@ public func modulo(_ n1: Real,
     let (tmp1, tmp2) = Real.coerce(Real.checkInteger(n1),
                                    Real.checkInteger(n2))
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.exactInteger(val1), .exactInteger(val2)):
-        return .exactInteger(modulo(val1, val2))
+        return Real(exactInteger: modulo(val1, val2))
 
     case (.floatingPoint, .floatingPoint):
-        return .floatingPoint(modulo(tmp1.exactIntegerValue,
-                                     tmp2.exactIntegerValue).doubleValue)
+        return Real(floatingPoint: modulo(tmp1.exactIntegerValue,
+                                          tmp2.exactIntegerValue).doubleValue)
 
     case let (.fraction(val1), .fraction(val2)):
-        return .exactInteger(modulo(val1.numerator,
-                                    val2.numerator))
+        return Real(exactInteger: modulo(val1.numerator,
+                                         val2.numerator))
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
 public func power(_ z1: Real,
                   _ z2: Real) -> Real {
-    .floatingPoint(.pow(z1.doubleValue,
-                        z2.doubleValue))
+    Real(floatingPoint: .pow(z1.doubleValue,
+                             z2.doubleValue))
 }
 
 public func quotient(_ n1: Real,
@@ -666,19 +666,19 @@ public func quotient(_ n1: Real,
     let (tmp1, tmp2) = Real.coerce(Real.checkInteger(n1),
                                    Real.checkInteger(n2))
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.exactInteger(val1), .exactInteger(val2)):
-        return .exactInteger(val1 / val2)
+        return Real(exactInteger: val1 / val2)
 
     case (.floatingPoint, .floatingPoint):
-        return .floatingPoint((tmp1.exactIntegerValue /
-                               tmp2.exactIntegerValue).doubleValue)
+        return Real(floatingPoint: (tmp1.exactIntegerValue /
+                                    tmp2.exactIntegerValue).doubleValue)
 
     case let (.fraction(val1), .fraction(val2)):
-        return .exactInteger(val1.numerator / val2.numerator)
+        return Real(exactInteger: val1.numerator / val2.numerator)
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
@@ -687,64 +687,64 @@ public func remainder(_ n1: Real,
     let (tmp1, tmp2) = Real.coerce(Real.checkInteger(n1),
                                    Real.checkInteger(n2))
 
-    switch (tmp1, tmp2) {
+    switch (tmp1.value, tmp2.value) {
     case let (.exactInteger(val1), .exactInteger(val2)):
-        return .exactInteger(val1 % val2)
+        return Real(exactInteger: val1 % val2)
 
     case (.floatingPoint, .floatingPoint):
-        return .floatingPoint((tmp1.exactIntegerValue %
-                               tmp2.exactIntegerValue).doubleValue)
+        return Real(floatingPoint: (tmp1.exactIntegerValue %
+                                    tmp2.exactIntegerValue).doubleValue)
 
     case let (.fraction(val1), .fraction(val2)):
-        return .exactInteger(val1.numerator % val2.numerator)
+        return Real(exactInteger: val1.numerator % val2.numerator)
 
     default:
-        fatalError("impossible case reached!")
+        fatalError("Impossible case reached!")
     }
 }
 
 public func round(_ x: Real) -> Real {
-    switch x {
+    switch x.value {
     case .exactInteger:
         x
 
     case let .floatingPoint(val):
-            .floatingPoint(round(val))
+        Real(floatingPoint: round(val))
 
     case let .fraction(val):
-            .exactInteger(val.round())
+        Real(exactInteger: val.round())
     }
 }
 
 public func sin(_ z: Real) -> Real {
-    .floatingPoint(.sin(z.doubleValue))
+    Real(floatingPoint: .sin(z.doubleValue))
 }
 
 public func sinh(_ z: Real) -> Real {
-    .floatingPoint(.sinh(z.doubleValue))
+    Real(floatingPoint: .sinh(z.doubleValue))
 }
 
 public func sqrt(_ z: Real) -> Real {
-    .floatingPoint(.sqrt(z.doubleValue))
+    Real(floatingPoint: .sqrt(z.doubleValue))
 }
 
 public func tan(_ z: Real) -> Real {
-    .floatingPoint(.tan(z.doubleValue))
+    Real(floatingPoint: .tan(z.doubleValue))
 }
 
 public func tanh(_ z: Real) -> Real {
-    .floatingPoint(.tanh(z.doubleValue))
+    Real(floatingPoint: .tanh(z.doubleValue))
 }
 
 public func truncate(_ x: Real) -> Real {
-    switch x {
+    switch x.value {
     case .exactInteger:
         x
 
     case let .floatingPoint(val):
-            .floatingPoint(trunc(val))
+        Real(floatingPoint: trunc(val))
 
     case let .fraction(val):
-            .exactInteger(val.truncate())
+        Real(exactInteger: val.truncate())
     }
 }
