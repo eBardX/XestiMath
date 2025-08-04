@@ -1,4 +1,4 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2025 John Gary Pusey (see LICENSE.md)
 
 extension UInt {
 

@@ -1,103 +1,106 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2025 John Gary Pusey (see LICENSE.md)
 
 import BigInt
 
-public enum ExactInteger {
-    case large(BigInt)
-    case small(Int)
+internal struct ExactInteger {
+
+    // MARK: Private Nested Types
+
+    private enum Value {
+        case large(BigInt)
+        case small(Int)
+    }
+
+    // MARK: Private Initializers
+
+    private init(_ value: Value) {
+        self.value = value
+    }
+
+    // MARK: Private Instance Properties
+
+    private let value: Value
 }
 
 // MARK: -
 
 extension ExactInteger {
 
-    // MARK: Public Initializers
+    // MARK: Internal Type Properties
 
-    public init(_ value: Int) {
-        self = .small(value)
-    }
+    internal static let one  = Self(.small(1))
+    internal static let zero = Self(.small(0))
 
-    public init(_ value: Int8) {
-        self = .small(Int(value))
-    }
+    // MARK: Internal Type Methods
 
-    public init(_ value: Int16) {
-        self = .small(Int(value))
-    }
+    internal static func parse(_ text: String,
+                               radix: Number.Radix) -> Self? {
+        let lcText = text.lowercased()
 
-    public init(_ value: Int32) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: Int64) {
-        if value.bitWidth > Int.bitWidth {
-            self = .large(BigInt(value))
-        } else {
-            self = .small(Int(value))
+        if let tval = _matchExactInteger(lcText,
+                                         radix: radix),
+           let rval = BigInt(tval,
+                             radix: radix.rawValue) {
+            return Self(rval)
         }
+
+        return nil
     }
 
-    public init?(_ value: String) {
-        if let tmpValue = Self._parse(value) {
-            self = tmpValue
+    // MARK: Internal Initializers
+
+    internal init?<T: BinaryFloatingPoint>(_ value: T) {
+        if let intValue = Int(exactly: value) {
+            self.init(.small(intValue))
+        } else if let bigIntValue = BigInt(exactly: value) {
+            self.init(.large(bigIntValue))
         } else {
             return nil
         }
     }
 
-    public init(_ value: UInt) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: UInt8) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: UInt16) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: UInt32) {
-        self = .small(Int(value))
-    }
-
-    public init(_ value: UInt64) {
-        if value.bitWidth > Int.bitWidth {
-            self = .large(BigInt(value))
+    internal init<T: BinaryInteger>(_ value: T) {
+        if let intValue = Int(exactly: value) {
+            self.init(.small(intValue))
         } else {
-            self = .small(Int(value))
+            self.init(.large(BigInt(value)))
         }
     }
-}
 
-// MARK: -
+    // MARK: Internal Instance Properties
 
-extension ExactInteger {
-
-    // MARK: Public Instance Properties
-
-    public var doubleValue: Double {
-        switch self {
+    internal var debugDescription: String {
+        switch value {
         case let .large(val):
-            Double(val)
+            "large<\(val.description)>"
 
         case let .small(val):
-            Double(val)
+            "small<\(val.description)>"
         }
     }
 
-    public var floatValue: Float {
-        switch self {
+    internal var description: String {
+        switch value {
         case let .large(val):
-            Float(val)
+            val.description
 
         case let .small(val):
-            Float(val)
+            val.description
         }
     }
 
-    public var int16Value: Int16 {
-        switch self {
+    internal var floatingPointValue: FloatingPoint {
+        switch value {
+        case let .large(val):
+            FloatingPoint(Double(val))
+
+        case let .small(val):
+            FloatingPoint(Double(val))
+        }
+    }
+
+    internal var int16Value: Int16 {
+        switch value {
         case let .large(val):
             Int16(val)
 
@@ -106,8 +109,8 @@ extension ExactInteger {
         }
     }
 
-    public var int32Value: Int32 {
-        switch self {
+    internal var int32Value: Int32 {
+        switch value {
         case let .large(val):
             Int32(val)
 
@@ -116,8 +119,8 @@ extension ExactInteger {
         }
     }
 
-    public var int64Value: Int64 {
-        switch self {
+    internal var int64Value: Int64 {
+        switch value {
         case let .large(val):
             Int64(val)
 
@@ -126,8 +129,8 @@ extension ExactInteger {
         }
     }
 
-    public var int8Value: Int8 {
-        switch self {
+    internal var int8Value: Int8 {
+        switch value {
         case let .large(val):
             Int8(val)
 
@@ -136,8 +139,8 @@ extension ExactInteger {
         }
     }
 
-    public var intValue: Int {
-        switch self {
+    internal var intValue: Int {
+        switch value {
         case let .large(val):
             Int(val)
 
@@ -146,8 +149,58 @@ extension ExactInteger {
         }
     }
 
-    public var uint16Value: UInt16 {
-        switch self {
+    internal var isEven: Bool {
+        switch value {
+        case let .large(val):
+            (val & 1) == 0
+
+        case let .small(val):
+            (val & 1) == 0
+        }
+    }
+
+    internal var isNegative: Bool {
+        switch value {
+        case let .large(val):
+            val < 0
+
+        case let .small(val):
+            val < 0
+        }
+    }
+
+    internal var isOdd: Bool {
+        switch value {
+        case let .large(val):
+            (val & 1) != 0
+
+        case let .small(val):
+            (val & 1) != 0
+        }
+    }
+
+    internal var isPositive: Bool {
+        switch value {
+        case let .large(val):
+            val > 0
+
+        case let .small(val):
+            val > 0
+        }
+    }
+
+    internal var isZero: Bool {
+        switch value {
+        case let .large(val):
+            val == 0
+
+        case let .small(val):
+            val == 0
+        }
+    }
+
+    internal var uint16Value: UInt16 {
+        switch value {
         case let .large(val):
             UInt16(val)
 
@@ -156,8 +209,8 @@ extension ExactInteger {
         }
     }
 
-    public var uint32Value: UInt32 {
-        switch self {
+    internal var uint32Value: UInt32 {
+        switch value {
         case let .large(val):
             UInt32(val)
 
@@ -166,8 +219,8 @@ extension ExactInteger {
         }
     }
 
-    public var uint64Value: UInt64 {
-        switch self {
+    internal var uint64Value: UInt64 {
+        switch value {
         case let .large(val):
             UInt64(val)
 
@@ -176,8 +229,8 @@ extension ExactInteger {
         }
     }
 
-    public var uint8Value: UInt8 {
-        switch self {
+    internal var uint8Value: UInt8 {
+        switch value {
         case let .large(val):
             UInt8(val)
 
@@ -186,8 +239,8 @@ extension ExactInteger {
         }
     }
 
-    public var uintValue: UInt {
-        switch self {
+    internal var uintValue: UInt {
+        switch value {
         case let .large(val):
             UInt(val)
 
@@ -195,115 +248,326 @@ extension ExactInteger {
             UInt(val)
         }
     }
-}
 
-// MARK: -
+    // MARK: Internal Instance Methods
 
-extension ExactInteger {
+    internal func adding(_ other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            return Self(.large(val1 + val2))
 
-    // MARK: Internal Type Methods
+        case let (.large(val1), .small(val2)):
+            return Self(.large(val1 + BigInt(val2)))
 
-    internal static func coerce(_ lhs: Self,
-                                _ rhs: Self) -> (Self, Self) {
-        switch (lhs, rhs) {
-        case (.large, .large),
-            (.small, .small):
-            (lhs, rhs)
+        case let (.small(val1), .large(val2)):
+            return Self(.large(BigInt(val1) + val2))
 
-        case let (.large, .small(rval)):
-            (lhs, .large(BigInt(rval)))
+        case let (.small(val1), .small(val2)):
+            let result = val1.addingReportingOverflow(val2)
 
-        case let (.small(lval), .large):
-            (.large(BigInt(lval)), rhs)
+            if result.overflow {
+                return Self(.large(BigInt(val1) + BigInt(val2)))
+            }
+
+            return Self(.small(result.partialValue))
+        }
+    }
+
+    internal func bitwiseAnd(with other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            Self(.large(val1 & val2))
+
+        case let (.large(val1), .small(val2)):
+            Self(.large(val1 & BigInt(val2)))
+
+        case let (.small(val1), .large(val2)):
+            Self(.large(BigInt(val1) & val2))
+
+        case let (.small(val1), .small(val2)):
+            Self(.small(val1 & val2))
+        }
+    }
+
+    internal func bitwiseNot() -> Self {
+        switch value {
+        case let .large(val):
+            Self(.large(~val))
+
+        case let .small(val):
+            Self(.small(~val))
+        }
+    }
+
+    internal func bitwiseOr(with other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            Self(.large(val1 | val2))
+
+        case let (.large(val1), .small(val2)):
+            Self(.large(val1 | BigInt(val2)))
+
+        case let (.small(val1), .large(val2)):
+            Self(.large(BigInt(val1) | val2))
+
+        case let (.small(val1), .small(val2)):
+            Self(.small(val1 | val2))
+        }
+    }
+
+    internal func bitwiseShiftLeft(bits: Int) -> Self {
+        switch value {
+        case let .large(val):
+            return Self(.large(val << bits))
+
+        case let .small(val):
+            if bits > 0 {
+                return Self(.large(BigInt(val) << bits))
+            }
+
+            return Self(.small(val << bits))  // cannot overflow
+        }
+    }
+
+    internal func bitwiseShiftRight(bits: Int) -> Self {
+        switch value {
+        case let .large(val):
+            return Self(.large(val >> bits))
+
+        case let .small(val):
+            if bits < 0 {
+                return Self(.large(BigInt(val) >> bits))
+            }
+
+            return Self(.small(val >> bits))  // cannot overflow
+        }
+    }
+
+    internal func bitwiseXor(with other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            Self(.large(val1 ^ val2))
+
+        case let (.large(val1), .small(val2)):
+            Self(.large(val1 ^ BigInt(val2)))
+
+        case let (.small(val1), .large(val2)):
+            Self(.large(BigInt(val1) ^ val2))
+
+        case let (.small(val1), .small(val2)):
+            Self(.small(val1 ^ val2))
+        }
+    }
+
+    internal func greatestCommonDivisor(with other: Self) -> Self {
+        let n1 = isNegative ? negated() : self
+        let n2 = other.isNegative ? other.negated() : other
+
+        switch (n1.value, n2.value) {
+        case let (.large(val1), .large(val2)):
+            return Self(.large(val1.greatestCommonDivisor(with: val2)))
+
+        case let (.large(val1), .small(val2)):
+            return Self(.large(val1.greatestCommonDivisor(with: BigInt(val2))))
+
+        case let (.small(val1), .large(val2)):
+            return Self(.large(BigInt(val1).greatestCommonDivisor(with: val2)))
+
+        case let (.small(val1), .small(val2)):
+            return Self(.small(Int(UInt.gcd(UInt(val1), UInt(val2)))))
+        }
+    }
+
+    internal func isEqual(to other: Self) -> Bool {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            val1 == val2
+
+        case let (.large(val1), .small(val2)):
+            val1 == BigInt(val2)
+
+        case let (.small(val1), .large(val2)):
+            BigInt(val1) == val2
+
+        case let (.small(val1), .small(val2)):
+            val1 == val2
+        }
+    }
+
+    internal func isLess(than other: Self) -> Bool {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            val1 < val2
+
+        case let (.large(val1), .small(val2)):
+            val1 < BigInt(val2)
+
+        case let (.small(val1), .large(val2)):
+            BigInt(val1) < val2
+
+        case let (.small(val1), .small(val2)):
+            val1 < val2
+        }
+    }
+
+    internal func isMultiple(of other: Self) -> Bool {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            val1.isMultiple(of: val2)
+
+        case let (.large(val1), .small(val2)):
+            val1.isMultiple(of: BigInt(val2))
+
+        case let (.small(val1), .large(val2)):
+            BigInt(val1).isMultiple(of: val2)
+
+        case let (.small(val1), .small(val2)):
+            val1.isMultiple(of: val2)
+        }
+    }
+
+    internal func leastCommonMultiple(with other: Self) -> Self {
+        let n1 = isNegative ? negated() : self
+        let n2 = other.isNegative ? other.negated() : other
+
+        return n1.quotient(dividingBy: n1.greatestCommonDivisor(with: n2)).multiplied(by: n2)
+    }
+
+    internal func modulo(_ other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            Self(.large(val1.modulus(val2)))
+
+        case let (.large(val1), .small(val2)):
+            Self(.large(val1.modulus(BigInt(val2))))
+
+        case let (.small(val1), .large(val2)):
+            Self(.large(BigInt(val1).modulus(val2)))
+
+        case let (.small(val1), .small(val2)):
+            Self(.small(Int.modulo(val1, val2)))
+        }
+    }
+
+    internal func multiplied(by other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            return Self(.large(val1 * val2))
+
+        case let (.large(val1), .small(val2)):
+            return Self(.large(val1 * BigInt(val2)))
+
+        case let (.small(val1), .large(val2)):
+            return Self(.large(BigInt(val1) * val2))
+
+        case let (.small(val1), .small(val2)):
+            let result = val1.multipliedReportingOverflow(by: val2)
+
+            if result.overflow {
+                return Self(.large(BigInt(val1) * BigInt(val2)))
+            }
+
+            return Self(.small(result.partialValue))
+        }
+    }
+
+    internal func negated() -> Self {
+        switch value {
+        case let .large(val):
+            return Self(.large(-val))
+
+        case let .small(val):
+            let result = 0.subtractingReportingOverflow(val)
+
+            if result.overflow {
+                return Self(.large(-BigInt(val)))
+            }
+
+            return Self(.small(result.partialValue))
+        }
+    }
+
+    internal func quotient(dividingBy other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            return Self(.large(val1 / val2))
+
+        case let (.large(val1), .small(val2)):
+            return Self(.large(val1 / BigInt(val2)))
+
+        case let (.small(val1), .large(val2)):
+            return Self(.large(BigInt(val1) / val2))
+
+        case let (.small(val1), .small(val2)):
+            let result = val1.dividedReportingOverflow(by: val2)
+
+            if result.overflow {
+                return Self(.large(BigInt(val1) / BigInt(val2)))
+            }
+
+            return Self(.small(result.partialValue))
+        }
+    }
+
+    internal func remainder(dividingBy other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            Self(.large(val1 % val2))
+
+        case let (.large(val1), .small(val2)):
+            Self(.large(val1 % BigInt(val2)))
+
+        case let (.small(val1), .large(val2)):
+            Self(.large(BigInt(val1) % val2))
+
+        case let (.small(val1), .small(val2)):
+            Self(.small(val1 % val2))
+        }
+    }
+
+    internal func subtracting(_ other: Self) -> Self {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            return Self(.large(val1 - val2))
+
+        case let (.large(val1), .small(val2)):
+            return Self(.large(val1 - BigInt(val2)))
+
+        case let (.small(val1), .large(val2)):
+            return Self(.large(BigInt(val1) - val2))
+
+        case let (.small(val1), .small(val2)):
+            let result = val1.subtractingReportingOverflow(val2)
+
+            if result.overflow {
+                return Self(.large(BigInt(val1) - BigInt(val2)))
+            }
+
+            return Self(.small(result.partialValue))
         }
     }
 
     // MARK: Private Type Methods
 
-    private static func _parse(_ value: String) -> Self? {
-        guard let biValue = BigInt(value)
+    private static func _matchExactInteger(_ text: String,
+                                           radix: Number.Radix) -> String? {
+        let match = switch radix {
+        case .binary:
+            text.wholeMatch(of: Number.eiBinValue)
+
+        case .decimal:
+            text.wholeMatch(of: Number.eiDecValue)
+
+        case .hexadecimal:
+            text.wholeMatch(of: Number.eiHexValue)
+
+        case .octal:
+            text.wholeMatch(of: Number.eiOctValue)
+        }
+
+        guard let output = match?.output
         else { return nil }
 
-        if biValue.bitWidth > Int.bitWidth {
-            return .large(biValue)
-        } else {
-            return .small(Int(biValue))
-        }
+        return String(output)
     }
-}
-
-// MARK: - Codable
-
-extension ExactInteger: Codable {
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let stringValue = try container.decode(String.self)
-
-        if let tmpValue = Self._parse(stringValue) {
-            self = tmpValue
-        } else {
-            throw DecodingError.dataCorruptedError(in: container,
-                                                   debugDescription: "Invalid exact integer value")
-        }
-    }
-
-    public func encode(to encoder: any Encoder) throws {
-        var container = encoder.singleValueContainer()
-
-        try container.encode(description)
-    }
-}
-
-// MARK: - Comparable
-
-extension ExactInteger: Comparable {
-}
-
-// MARK: - CustomPlaygroundDisplayConvertible
-
-extension ExactInteger: CustomPlaygroundDisplayConvertible {
-    public var playgroundDescription: Any {
-        switch self {
-        case let .large(val):
-            "large<\(val.playgroundDescription)>"
-
-        case let .small(val):
-            "small<\(val.description)>"
-        }
-    }
-}
-
-// MARK: - CustomStringConvertible
-
-extension ExactInteger: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case let .large(val):
-            val.description
-
-        case let .small(val):
-            val.description
-        }
-    }
-}
-
-// MARK: - ExpressibleByIntegerLiteral
-
-extension ExactInteger: ExpressibleByIntegerLiteral {
-    public init(integerLiteral value: Int64) {
-        self.init(value)
-    }
-}
-
-// MARK: - ExpressibleByStringLiteral
-
-extension ExactInteger: ExpressibleByStringLiteral {
-    public init(stringLiteral value: StringLiteralType) {
-        self.init(value)!   // swiftlint:disable:this force_unwrapping
-    }
-}
-
-// MARK: - Hashable
-
-extension ExactInteger: Hashable {
 }

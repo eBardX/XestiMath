@@ -1,16 +1,12 @@
-// swift-tools-version:5.10
+// swift-tools-version: 5.10
+
+// © 2025 John Gary Pusey (see LICENSE.md)
 
 import PackageDescription
 
-let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
-                                     .enableUpcomingFeature("ConciseMagicFile"),
-                                     .enableUpcomingFeature("ExistentialAny"),
-                                     .enableUpcomingFeature("ForwardTrailingClosures"),
-                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
-
 let package = Package(name: "XestiMath",
                       platforms: [.iOS(.v16),
-                                  .macOS(.v13)],
+                                  .macOS(.v14)],
                       products: [.library(name: "XestiMath",
                                           targets: ["XestiMath"])],
                       dependencies: [.package(url: "https://github.com/attaswift/BigInt.git",
@@ -21,9 +17,21 @@ let package = Package(name: "XestiMath",
                                         dependencies: [.product(name: "BigInt",
                                                                 package: "BigInt"),
                                                        .product(name: "Numerics",
-                                                                package: "swift-numerics")],
-                                        swiftSettings: swiftSettings),
+                                                                package: "swift-numerics")]),
                                 .testTarget(name: "XestiMathTests",
-                                            dependencies: [.target(name: "XestiMath")],
-                                            swiftSettings: swiftSettings)],
-                      swiftLanguageVersions: [.version("5")])
+                                            dependencies: [.target(name: "XestiMath")])],
+                      swiftLanguageVersions: [.v5])
+
+let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
+                                     .enableUpcomingFeature("ConciseMagicFile"),
+                                     .enableUpcomingFeature("ExistentialAny"),
+                                     .enableUpcomingFeature("ForwardTrailingClosures"),
+                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
+
+for target in package.targets {
+    var settings = target.swiftSettings ?? []
+
+    settings.append(contentsOf: swiftSettings)
+
+    target.swiftSettings = settings
+}

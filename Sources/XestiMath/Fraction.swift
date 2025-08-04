@@ -1,270 +1,229 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2025 John Gary Pusey (see LICENSE.md)
 
-public struct Fraction {
+internal struct Fraction {
 
-    // MARK: Public Initializers
+    // MARK: Private Initializers
 
-    public init(_ numerator: ExactInteger,
-                _ denominator: ExactInteger = 1) {
-        self.init(numerator,
-                  denominator,
-                  true)
+    private init(_ nvalue: ExactInteger,
+                 _ dvalue: ExactInteger) {
+        self.dvalue = dvalue
+        self.nvalue = nvalue
     }
 
-    public init(_ numerator: Int,
-                _ denominator: Int = 1) {
-        self.init(ExactInteger(numerator),
-                  ExactInteger(denominator),
-                  true)
-    }
+    // MARK: Private Instance Properties
 
-    public init(_ numerator: Int64,
-                _ denominator: Int64 = 1) {
-        self.init(ExactInteger(numerator),
-                  ExactInteger(denominator),
-                  true)
-    }
-
-    public init?(_ value: String) {
-        if let tmpValue = Self._parse(value) {
-            self = tmpValue
-        } else {
-            return nil
-        }
-    }
-
-    // MARK: Public Instance Properties
-
-    public let denominator: ExactInteger
-    public let numerator: ExactInteger
-
-    // MARK: Internal Initializers
-
-    internal init(_ numerator: ExactInteger,
-                  _ denominator: ExactInteger,
-                  _ reduce: Bool) {
-        var num = numerator
-        var den = denominator
-
-        precondition(den != 0,
-                     "denominator must be a nonzero exact integer")
-
-        if reduce && den != 1 {
-            if den < 0 {
-                num = -num
-                den = -den
-            }
-
-            if num != 0 {
-                let tmp = gcd(num, den)
-
-                if tmp != 1 {
-                    num = quotient(num, tmp)
-                    den = quotient(den, tmp)
-                }
-            } else {
-                den = 1
-            }
-        }
-
-        self.denominator = den
-        self.numerator = num
-    }
-
-    // MARK: Internal Instance Properties
-
-    internal var isExactInteger: Bool {
-        denominator == 1
-    }
-
-    // MARK: Internal Instance Methods
-
-    internal func ceiling() -> ExactInteger {
-        if numerator < 0 {
-            quotient(numerator, denominator)
-        } else if !numerator.isMultiple(of: denominator) {
-            quotient(numerator, denominator) + 1
-        } else {
-            quotient(numerator, denominator)
-        }
-    }
-
-    internal func floor() -> ExactInteger {
-        if numerator > 0 || numerator.isMultiple(of: denominator) {
-            quotient(numerator, denominator)
-        } else {
-            quotient(numerator, denominator) - 1
-        }
-    }
-
-    internal func round() -> ExactInteger {
-        var quo = numerator / denominator
-
-        let half = denominator / 2
-
-        if numerator < 0 {
-            let delta = (quo * denominator) - numerator
-            let more = (denominator.isEven && delta == half
-                        ? quo.isOdd
-                        : delta > half)
-
-            if more {
-                quo = quo - 1   // swiftlint:disable:this shorthand_operator
-            }
-        } else {
-            let delta = numerator - (quo * denominator)
-            let more = (denominator.isEven && delta == half
-                        ? quo.isOdd
-                        : delta > half)
-
-            if more {
-                quo = quo + 1   // swiftlint:disable:this shorthand_operator
-            }
-        }
-
-        return quo
-    }
-
-    internal func truncate() -> ExactInteger {
-        quotient(numerator, denominator)
-    }
-
-    // MARK: Private Type Methods
-
-    private static func _parse(_ value: String) -> Self? {
-        let pair = value.split(separator: "/",
-                               maxSplits: 1,
-                               omittingEmptySubsequences: false)
-
-        if pair.count == 2 {
-            guard let num = ExactInteger(String(pair[0])),
-                  let den = ExactInteger(String(pair[1]))
-            else { return nil }
-
-            return .init(num, den, true)
-        }
-
-        guard let num = ExactInteger(value)
-        else { return nil }
-
-        return .init(num, 1, false)
-    }
+    private let dvalue: ExactInteger
+    private let nvalue: ExactInteger
 }
 
 // MARK: -
 
 extension Fraction {
 
-    // MARK: Public Instance Properties
+    // MARK: Internal Type Methods
 
-    public var doubleValue: Double {
-        numerator.doubleValue / denominator.doubleValue
-    }
+    internal static func parse(_ text: String,
+                               radix: Number.Radix) -> Self? {
+        let lcText = text.lowercased()
 
-    public var exactIntegerValue: ExactInteger {
-        precondition(isExactInteger,
-                     "\(self) is not an exact integer")
-
-        return numerator
-    }
-
-    public var floatValue: Float {
-        numerator.floatValue / denominator.floatValue
-    }
-
-    public var int16Value: Int16 {
-        numerator.int16Value / denominator.int16Value
-    }
-
-    public var int32Value: Int32 {
-        numerator.int32Value / denominator.int32Value
-    }
-
-    public var int64Value: Int64 {
-        numerator.int64Value / denominator.int64Value
-    }
-
-    public var int8Value: Int8 {
-        numerator.int8Value / denominator.int8Value
-    }
-
-    public var intValue: Int {
-        numerator.intValue / denominator.intValue
-    }
-
-    public var uint16Value: UInt16 {
-        numerator.uint16Value / denominator.uint16Value
-    }
-
-    public var uint32Value: UInt32 {
-        numerator.uint32Value / denominator.uint32Value
-    }
-
-    public var uint64Value: UInt64 {
-        numerator.uint64Value / denominator.uint64Value
-    }
-
-    public var uint8Value: UInt8 {
-        numerator.uint8Value / denominator.uint8Value
-    }
-
-    public var uintValue: UInt {
-        numerator.uintValue / denominator.uintValue
-    }
-}
-
-// MARK: - Codable
-
-extension Fraction: Codable {
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let stringValue = try container.decode(String.self)
-
-        if let tmpValue = Self._parse(stringValue) {
-            self = tmpValue
-        } else {
-            throw DecodingError.dataCorruptedError(in: container,
-                                                   debugDescription: "Invalid fraction value")
+        if let (ntval, dtval) = _matchFraction(lcText,
+                                               radix: radix),
+           let nval = ExactInteger.parse(ntval,
+                                         radix: radix),
+           let dval = ExactInteger.parse(dtval,
+                                         radix: radix) {
+            return Self(numerator: nval,
+                        denominator: dval)
         }
+
+        return nil
     }
 
-    public func encode(to encoder: any Encoder) throws {
-        var container = encoder.singleValueContainer()
+    // MARK: Internal Initializers
 
-        try container.encode(description)
+    internal init(numerator: ExactInteger,
+                  denominator: ExactInteger,
+                  reduce: Bool = true) {
+        var num = numerator
+        var den = denominator
+
+        guard !den.isZero
+        else { fatalError("Denominator must not be zero!") }
+
+        if den.isNegative {
+            num = num.negated()
+            den = den.negated()
+        }
+
+        if reduce,
+           !den.isEqual(to: .one) {
+            if !num.isZero {
+                let tmp = num.greatestCommonDivisor(with: den)
+
+                if !tmp.isEqual(to: .one) {
+                    num = num.quotient(dividingBy: tmp)
+                    den = den.quotient(dividingBy: tmp)
+                }
+            } else {
+                den = .one
+            }
+        }
+
+        self.init(num, den)
     }
-}
 
-// MARK: - Comparable
+    // MARK: Internal Instance Properties
 
-extension Fraction: Comparable {
-}
-
-// MARK: - CustomStringConvertible
-
-extension Fraction: CustomStringConvertible {
-    public var description: String {
-        "\(numerator)/\(denominator)"
+    internal var debugDescription: String {
+        "fraction<\(nvalue.debugDescription), \(dvalue.debugDescription)>"
     }
-}
 
-// MARK: - ExpressibleByIntegerLiteral
-
-extension Fraction: ExpressibleByIntegerLiteral {
-    public init(integerLiteral value: Int64) {
-        self.init(value)
+    internal var denominator: ExactInteger {
+        dvalue
     }
-}
 
-// MARK: - ExpressibleByStringLiteral
-
-extension Fraction: ExpressibleByStringLiteral {
-    public init(stringLiteral value: StringLiteralType) {
-        self.init(value)!   // swiftlint:disable:this force_unwrapping
+    internal var description: String {
+        "\(nvalue.description)/\(dvalue.description)"
     }
-}
 
-// MARK: - Hashable
+    internal var exactIntegerValue: ExactInteger {
+        nvalue.quotient(dividingBy: dvalue)
+    }
 
-extension Fraction: Hashable {
+    internal var floatingPointValue: FloatingPoint {
+        nvalue.floatingPointValue.divided(by: dvalue.floatingPointValue)
+    }
+
+    internal var isInteger: Bool {
+        dvalue.isEqual(to: .one)
+    }
+
+    internal var isNegative: Bool {
+        nvalue.isNegative
+    }
+
+    internal var isPositive: Bool {
+        nvalue.isPositive
+    }
+
+    internal var isZero: Bool {
+        nvalue.isZero
+    }
+
+    internal var numerator: ExactInteger {
+        nvalue
+    }
+
+    // MARK: Internal Instance Methods
+
+    internal func adding(_ other: Self) -> Self {
+        Self(numerator: nvalue.multiplied(by: other.dvalue).adding(dvalue.multiplied(by: other.nvalue)),
+             denominator: dvalue.multiplied(by: other.dvalue))
+    }
+
+    internal func ceiling() -> ExactInteger {
+        let result = exactIntegerValue
+
+        if nvalue.isNegative || nvalue.isMultiple(of: dvalue) {
+            return result
+        }
+
+        return result.adding(.one)
+    }
+
+    internal func divided(by other: Self) -> Self {
+        Self(numerator: nvalue.multiplied(by: other.dvalue),
+             denominator: dvalue.multiplied(by: other.nvalue))
+    }
+
+    internal func floor() -> ExactInteger {
+        let result = exactIntegerValue
+
+        if nvalue.isPositive || nvalue.isMultiple(of: dvalue) {
+            return result
+        }
+
+        return result.subtracting(.one)
+    }
+
+    internal func isEqual(to other: Self) -> Bool {
+        nvalue.isEqual(to: other.nvalue) && dvalue.isEqual(to: other.dvalue)
+    }
+
+    internal func isLess(than other: Self) -> Bool {
+        nvalue.multiplied(by: other.dvalue).isLess(than: dvalue.multiplied(by: other.nvalue))
+    }
+
+    internal func multiplied(by other: Self) -> Self {
+        Self(numerator: nvalue.multiplied(by: other.nvalue),
+             denominator: dvalue.multiplied(by: other.dvalue))
+    }
+
+    internal func negated() -> Self {
+        Self(numerator: nvalue.negated(),
+             denominator: dvalue,
+             reduce: false)
+    }
+
+    internal func round() -> ExactInteger {
+        let half = dvalue.bitwiseShiftRight(bits: 1)    // == denominator / 2
+
+        var result = exactIntegerValue
+
+        if nvalue.isNegative {
+            let tmp = result.multiplied(by: dvalue).subtracting(nvalue)
+            let more = (dvalue.isEven && tmp.isEqual(to: half)
+                        ? result.isOdd
+                        : half.isLess(than: tmp))
+
+            if more {
+                result = result.subtracting(.one)
+            }
+        } else {
+            let tmp = nvalue.subtracting(result.multiplied(by: dvalue))
+            let more = (dvalue.isEven && tmp.isEqual(to: half)
+                        ? result.isOdd
+                        : half.isLess(than: tmp))
+
+            if more {
+                result = result.adding(.one)
+            }
+        }
+
+        return result
+    }
+
+    internal func subtracting(_ other: Self) -> Self {
+        Self(numerator: nvalue.multiplied(by: other.dvalue).subtracting(dvalue.multiplied(by: other.nvalue)),
+             denominator: dvalue.multiplied(by: other.dvalue))
+    }
+
+    internal func truncate() -> ExactInteger {
+        exactIntegerValue
+    }
+
+    // MARK: Private Type Methods
+
+    private static func _matchFraction(_ text: String,
+                                       radix: Number.Radix) -> (String, String)? {
+        let match = switch radix {
+        case .binary:
+            text.wholeMatch(of: Number.fracBinValue)
+
+        case .decimal:
+            text.wholeMatch(of: Number.fracDecValue)
+
+        case .hexadecimal:
+            text.wholeMatch(of: Number.fracHexValue)
+
+        case .octal:
+            text.wholeMatch(of: Number.fracOctValue)
+        }
+
+        guard let noutput = match?.1,
+              let doutput = match?.2
+        else { return nil }
+
+        return (String(noutput), String(doutput))
+    }
 }

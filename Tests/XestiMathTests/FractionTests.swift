@@ -1,123 +1,158 @@
-import XCTest
+// © 2025 John Gary Pusey (see LICENSE.md)
+
+import Testing
 @testable import XestiMath
 
-internal class FractionTests: XCTestCase {
+struct FractionTests {
+}
+
+// MARK: - Test internal type methods
+
+extension FractionTests {
+    @Test
+    func parse_radix() {}
+}
+
+// MARK: - Test internal initializers
+
+extension FractionTests {
+    @Test
+    func init_numerator_denominator_reduce() {}
+}
+
+// MARK: - Test internal instance properties
+
+extension FractionTests {
+    @Test
+    func debugDescription() {}
+
+    @Test
+    func denominator() {}
+
+    @Test
+    func description() {}
+
+    @Test
+    func exactIntegerValue() {}
+
+    @Test
+    func floatingPointValue() {}
+
+    @Test
+    func isInteger() {}
+
+    @Test
+    func isNegative() {}
+
+    @Test
+    func isPositive() {}
+
+    @Test
+    func isZero() {}
+
+    @Test
+    func numerator() {}
+}
+
+// MARK: - Test internal instance methods
+
+extension FractionTests {
+    @Test
+    func adding() {
+        #expect(_fr(1, 2).adding(_fr(1, 6)).isEqual(to: _fr(2, 3)))
+    }
+
+    @Test
+    func ceiling() {
+        #expect(_fr(-50, 10).ceiling().isEqual(to: _ei(-5)))
+        #expect(_fr(-43, 10).ceiling().isEqual(to: _ei(-4)))
+        #expect(_fr(-35, 10).ceiling().isEqual(to: _ei(-3)))
+        #expect(_fr(-5, 10).ceiling().isEqual(to: _ei(0)))
+        #expect(_fr(0, 10).ceiling().isEqual(to: _ei(0)))
+        #expect(_fr(5, 10).ceiling().isEqual(to: _ei(1)))
+        #expect(_fr(35, 10).ceiling().isEqual(to: _ei(4)))
+        #expect(_fr(43, 10).ceiling().isEqual(to: _ei(5)))
+        #expect(_fr(50, 10).ceiling().isEqual(to: _ei(5)))
+    }
+
+    @Test
+    func divided_by() {
+        #expect(_fr(2, 3).divided(by: _fr(1, 6)).isEqual(to: _fr(4, 1)))
+    }
+
+    @Test
+    func floor() {
+        #expect(_fr(-50, 10).floor().isEqual(to: _ei(-5)))
+        #expect(_fr(-43, 10).floor().isEqual(to: _ei(-5)))
+        #expect(_fr(-35, 10).floor().isEqual(to: _ei(-4)))
+        #expect(_fr(-5, 10).floor().isEqual(to: _ei(-1)))
+        #expect(_fr(0, 10).floor().isEqual(to: _ei(0)))
+        #expect(_fr(5, 10).floor().isEqual(to: _ei(0)))
+        #expect(_fr(35, 10).floor().isEqual(to: _ei(3)))
+        #expect(_fr(43, 10).floor().isEqual(to: _ei(4)))
+        #expect(_fr(50, 10).floor().isEqual(to: _ei(5)))
+    }
+
+    @Test
+    func isEqual_to() {
+    }
+
+    @Test
+    func isLess_than() {
+        #expect(_fr(5, 8).isLess(than: _fr(3, 4)))
+    }
+
+    @Test
+    func multiplied_by () {
+        #expect(_fr(2, 3).multiplied(by: _fr(1, 6)).isEqual(to: _fr(1, 9)))
+    }
+
+    @Test
+    func negated () {
+    }
+
+    @Test
+    func round() {
+        #expect(_fr(-50, 10).round().isEqual(to: _ei(-5)))
+        #expect(_fr(-43, 10).round().isEqual(to: _ei(-4)))
+        #expect(_fr(-35, 10).round().isEqual(to: _ei(-4)))
+        #expect(_fr(-5, 10).round().isEqual(to: _ei(0)))
+        #expect(_fr(0, 10).round().isEqual(to: _ei(0)))
+        #expect(_fr(5, 10).round().isEqual(to: _ei(0)))
+        #expect(_fr(35, 10).round().isEqual(to: _ei(4)))
+        #expect(_fr(43, 10).round().isEqual(to: _ei(4)))
+        #expect(_fr(50, 10).round().isEqual(to: _ei(5)))
+    }
+
+    @Test
+    func subtracting() {
+        #expect(_fr(2, 3).subtracting(_fr(1, 6)).isEqual(to: _fr(1, 2)))
+    }
+
+    @Test
+    func truncate() {
+        #expect(_fr(-50, 10).truncate().isEqual(to: _ei(-5)))
+        #expect(_fr(-43, 10).truncate().isEqual(to: _ei(-4)))
+        #expect(_fr(-35, 10).truncate().isEqual(to: _ei(-3)))
+        #expect(_fr(-5, 10).truncate().isEqual(to: _ei(0)))
+        #expect(_fr(0, 10).truncate().isEqual(to: _ei(0)))
+        #expect(_fr(5, 10).truncate().isEqual(to: _ei(0)))
+        #expect(_fr(35, 10).truncate().isEqual(to: _ei(3)))
+        #expect(_fr(43, 10).truncate().isEqual(to: _ei(4)))
+        #expect(_fr(50, 10).truncate().isEqual(to: _ei(5)))
+    }
 }
 
 // MARK: -
 
 extension FractionTests {
-    func test_ceiling() {
-        XCTAssertEqual(Fraction(-50, 10).ceiling(), ExactInteger(integerLiteral: -5))
-        XCTAssertEqual(Fraction(-43, 10).ceiling(), ExactInteger(integerLiteral: -4))
-        XCTAssertEqual(Fraction(-35, 10).ceiling(), ExactInteger(integerLiteral: -3))
-        XCTAssertEqual(Fraction(-5, 10).ceiling(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(0, 10).ceiling(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(5, 10).ceiling(), ExactInteger(integerLiteral: 1))
-        XCTAssertEqual(Fraction(35, 10).ceiling(), ExactInteger(integerLiteral: 4))
-        XCTAssertEqual(Fraction(43, 10).ceiling(), ExactInteger(integerLiteral: 5))
-        XCTAssertEqual(Fraction(50, 10).ceiling(), ExactInteger(integerLiteral: 5))
+    private func _ei<T: BinaryInteger>(_ val: T) -> ExactInteger {
+        ExactInteger(val)
     }
 
-    func test_denominator() {
-    }
-
-    func test_description() {
-    }
-
-    func test_doubleValue() {
-    }
-
-    func test_encode() {
-    }
-
-    func test_exactIntegerValue() {
-    }
-
-    func test_floor() {
-        XCTAssertEqual(Fraction(-50, 10).floor(), ExactInteger(integerLiteral: -5))
-        XCTAssertEqual(Fraction(-43, 10).floor(), ExactInteger(integerLiteral: -5))
-        XCTAssertEqual(Fraction(-35, 10).floor(), ExactInteger(integerLiteral: -4))
-        XCTAssertEqual(Fraction(-5, 10).floor(), ExactInteger(integerLiteral: -1))
-        XCTAssertEqual(Fraction(0, 10).floor(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(5, 10).floor(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(35, 10).floor(), ExactInteger(integerLiteral: 3))
-        XCTAssertEqual(Fraction(43, 10).floor(), ExactInteger(integerLiteral: 4))
-        XCTAssertEqual(Fraction(50, 10).floor(), ExactInteger(integerLiteral: 5))
-    }
-
-    func test_init() {
-        _testInit(0, 1, false, 0, 1)
-        _testInit(1, 1, false, 1, 1)
-        _testInit(2, 1, false, 2, 1)
-        _testInit(0, 2, false, 0, 2)
-        _testInit(1, 2, false, 1, 2)
-        _testInit(2, 2, false, 2, 2)
-
-        _testInit(0, 1, true, 0, 1)
-        _testInit(1, 1, true, 1, 1)
-        _testInit(2, 1, true, 2, 1)
-        _testInit(0, 2, true, 0, 1)
-        _testInit(1, 2, true, 1, 2)
-        _testInit(2, 2, true, 1, 1)
-    }
-
-    func test_init_decoder() {
-    }
-
-    func test_init_hash() {
-    }
-
-    func test_init_integerLiteral() {
-    }
-
-    func test_init_stringLiteral() {
-    }
-
-    func test_isExactInteger() {
-    }
-
-    func test_numerator() {
-    }
-
-    func test_round() {
-        XCTAssertEqual(Fraction(-50, 10).round(), ExactInteger(integerLiteral: -5))
-        XCTAssertEqual(Fraction(-43, 10).round(), ExactInteger(integerLiteral: -4))
-        XCTAssertEqual(Fraction(-35, 10).round(), ExactInteger(integerLiteral: -4))
-        XCTAssertEqual(Fraction(-5, 10).round(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(0, 10).round(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(5, 10).round(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(35, 10).round(), ExactInteger(integerLiteral: 4))
-        XCTAssertEqual(Fraction(43, 10).round(), ExactInteger(integerLiteral: 4))
-        XCTAssertEqual(Fraction(50, 10).round(), ExactInteger(integerLiteral: 5))
-    }
-
-    func test_truncate() {
-        XCTAssertEqual(Fraction(-50, 10).truncate(), ExactInteger(integerLiteral: -5))
-        XCTAssertEqual(Fraction(-43, 10).truncate(), ExactInteger(integerLiteral: -4))
-        XCTAssertEqual(Fraction(-35, 10).truncate(), ExactInteger(integerLiteral: -3))
-        XCTAssertEqual(Fraction(-5, 10).truncate(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(0, 10).truncate(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(5, 10).truncate(), ExactInteger(integerLiteral: 0))
-        XCTAssertEqual(Fraction(35, 10).truncate(), ExactInteger(integerLiteral: 3))
-        XCTAssertEqual(Fraction(43, 10).truncate(), ExactInteger(integerLiteral: 4))
-        XCTAssertEqual(Fraction(50, 10).truncate(), ExactInteger(integerLiteral: 5))
-    }
-}
-
-// MARK: -
-
-extension FractionTests {
-    private func _testInit(_ inNum: ExactInteger,
-                           _ inDen: ExactInteger,
-                           _ normalize: Bool,
-                           _ outNum: ExactInteger,
-                           _ outDen: ExactInteger,
-                           file: StaticString = #filePath,
-                           line: UInt = #line) {
-        let frac = Fraction(inNum, inDen, normalize)
-
-        XCTAssertEqual(frac.numerator, outNum, file: file, line: line)
-        XCTAssertEqual(frac.denominator, outDen, file: file, line: line)
+    private func _fr<T: BinaryInteger>(_ num: T,
+                                       _ den: T) -> Fraction {
+        Fraction(numerator: _ei(num),
+                 denominator: _ei(den))
     }
 }
