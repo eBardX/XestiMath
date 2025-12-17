@@ -99,6 +99,18 @@ extension ExactInteger {
         }
     }
 
+    @available(iOS 18.0, *)
+    @available(macOS 15.0, *)
+    internal var int128Value: Int128 {
+        switch value {
+        case let .large(val):
+            Int128(val)
+
+        case let .small(val):
+            Int128(val)
+        }
+    }
+
     internal var int16Value: Int16 {
         switch value {
         case let .large(val):
@@ -196,6 +208,18 @@ extension ExactInteger {
 
         case let .small(val):
             val == 0
+        }
+    }
+
+    @available(iOS 18.0, *)
+    @available(macOS 15.0, *)
+    internal var uint128Value: UInt128 {
+        switch value {
+        case let .large(val):
+            UInt128(val)
+
+        case let .small(val):
+            UInt128(val)
         }
     }
 

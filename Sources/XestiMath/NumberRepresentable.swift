@@ -24,6 +24,10 @@ public protocol NumberRepresentable: Codable,
 
     var floatValue: Float { get }
 
+    @available(iOS 18.0, *)
+    @available(macOS 15.0, *)
+    var int128Value: Int128 { get }
+
     var int16Value: Int16 { get }
 
     var int32Value: Int32 { get }
@@ -35,6 +39,10 @@ public protocol NumberRepresentable: Codable,
     var intValue: Int { get }
 
     var numberValue: Number { get }
+
+    @available(iOS 18.0, *)
+    @available(macOS 15.0, *)
+    var uint128Value: UInt128 { get }
 
     var uint16Value: UInt16 { get }
 
@@ -93,6 +101,12 @@ extension NumberRepresentable {
         numberValue.floatValue
     }
 
+    @available(iOS 18.0, *)
+    @available(macOS 15.0, *)
+    public var int128Value: Int128 {
+        numberValue.int128Value
+    }
+
     public var int16Value: Int16 {
         numberValue.int16Value
     }
@@ -111,6 +125,12 @@ extension NumberRepresentable {
 
     public var intValue: Int {
         numberValue.intValue
+    }
+
+    @available(iOS 18.0, *)
+    @available(macOS 15.0, *)
+    public var uint128Value: UInt128 {
+        numberValue.uint128Value
     }
 
     public var uint16Value: UInt16 {

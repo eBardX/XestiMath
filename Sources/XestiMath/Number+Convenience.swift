@@ -87,6 +87,12 @@ extension Number {
         toReal().floatingPointValue.floatValue
     }
 
+    @available(iOS 18.0, *)
+    @available(macOS 15.0, *)
+    public var int128Value: Int128 {
+        toReal().exactIntegerValue.int128Value
+    }
+
     public var int16Value: Int16 {
         toReal().exactIntegerValue.int16Value
     }
@@ -105,6 +111,12 @@ extension Number {
 
     public var intValue: Int {
         toReal().exactIntegerValue.intValue
+    }
+
+    @available(iOS 18.0, *)
+    @available(macOS 15.0, *)
+    public var uint128Value: UInt128 {
+        toReal().exactIntegerValue.uint128Value
     }
 
     public var uint16Value: UInt16 {
