@@ -99,8 +99,7 @@ extension ExactInteger {
         }
     }
 
-    @available(iOS 18.0, *)
-    @available(macOS 15.0, *)
+    @available(iOS 18.0, macOS 15.0, *)
     internal var int128Value: Int128 {
         switch value {
         case let .large(val):
@@ -211,8 +210,7 @@ extension ExactInteger {
         }
     }
 
-    @available(iOS 18.0, *)
-    @available(macOS 15.0, *)
+    @available(iOS 18.0, macOS 15.0, *)
     internal var uint128Value: UInt128 {
         switch value {
         case let .large(val):
