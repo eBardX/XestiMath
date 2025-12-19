@@ -1,13 +1,13 @@
 {
-  "originHash" : "ed706e4a3e6b772b3601d497834bdf05c59f43b771758898fe5d81b89d1450c7",
+  "originHash" : "afbbb0b395953dff7ede9b366e1bd8f2db13299b5b8d9fe9ebdc053a943382b4",
   "pins" : [
     {
       "identity" : "bigint",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/attaswift/BigInt.git",
       "state" : {
-        "revision" : "d013a2b66ee468aade6da1f26c6d55cb6cd2e9ad",
-        "version" : "5.5.2"
+        "revision" : "e07e00fa1fd435143a2dcf8b7eec9a7710b2fdfe",
+        "version" : "5.7.0"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-numerics",
       "state" : {
-        "revision" : "e0ec0f5f3af6f3e4d5e7a19d2af26b481acb6ba8",
-        "version" : "1.0.3"
+        "revision" : "0c0290ff6b24942dadb83a929ffaaa1481df04a2",
+        "version" : "1.1.1"
       }
     }
   ],
