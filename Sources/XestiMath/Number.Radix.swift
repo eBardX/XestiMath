@@ -11,3 +11,8 @@ extension Number {
         case octal       = 8
     }
 }
+
+// MARK: - Sendable
+
+extension Number.Radix: Sendable {
+}

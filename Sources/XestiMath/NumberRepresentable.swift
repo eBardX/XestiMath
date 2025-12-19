@@ -7,7 +7,8 @@ public protocol NumberRepresentable: Codable,
                                      ExpressibleByFloatLiteral,
                                      ExpressibleByIntegerLiteral,
                                      ExpressibleByStringLiteral,
-                                     Hashable {
+                                     Hashable,
+                                     Sendable {
     static var invalidMessage: String { get }
 
     static func isValid(_ numberValue: Number) -> Bool

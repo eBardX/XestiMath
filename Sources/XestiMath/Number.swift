@@ -73,14 +73,6 @@ extension Number: CustomStringConvertible {
 extension Number: Equatable {
 }
 
-// MARK: - Hashable
-
-extension Number: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(description)
-    }
-}
-
 // MARK: - ExpressibleByFloatLiteral
 
 extension Number: ExpressibleByFloatLiteral {
@@ -103,4 +95,17 @@ extension Number: ExpressibleByStringLiteral {
     public init(stringLiteral value: StringLiteralType) {
         self.init(value)!   // swiftlint:disable:this force_unwrapping
     }
+}
+
+// MARK: - Hashable
+
+extension Number: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(description)
+    }
+}
+
+// MARK: - Sendable
+
+extension Number: Sendable {
 }

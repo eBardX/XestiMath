@@ -290,3 +290,8 @@ extension FloatingPoint {
         return String(output)
     }
 }
+
+// MARK: - Sendable
+
+extension FloatingPoint: Sendable {
+}

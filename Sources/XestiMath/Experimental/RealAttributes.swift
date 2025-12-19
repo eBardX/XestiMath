@@ -56,6 +56,11 @@ extension AttributeScopes.XestiMathAttributes.RealFormatAttributes.RealPartAttri
     public typealias Value = RealPart
 }
 
+// MARK: - AttributeScopes.XestiMathAttributes.RealFormatAttributes.RealPartAttribute.RealPart (Sendable)
+
+extension AttributeScopes.XestiMathAttributes.RealFormatAttributes.RealPartAttribute.RealPart: Sendable {
+}
+
 // MARK: -
 
 extension AttributeScopes.XestiMathAttributes.RealFormatAttributes.RealSymbolAttribute {
@@ -67,4 +72,9 @@ extension AttributeScopes.XestiMathAttributes.RealFormatAttributes.RealSymbolAtt
     }
 
     public typealias Value = RealSymbol
+}
+
+// MARK: - AttributeScopes.XestiMathAttributes.RealFormatAttributes.RealSymbolAttribute.RealSymbol (Sendable)
+
+extension AttributeScopes.XestiMathAttributes.RealFormatAttributes.RealSymbolAttribute.RealSymbol: Sendable {
 }

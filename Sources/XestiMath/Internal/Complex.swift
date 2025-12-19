@@ -368,6 +368,11 @@ extension Complex {
     }
 }
 
+// MARK: - Sendable
+
+extension Complex: Sendable {
+}
+
 // MARK: - ComplexModule.Complex Extensions
 
 extension ComplexModule.Complex<Double> {

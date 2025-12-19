@@ -11,3 +11,8 @@ extension Number {
         case real(Real)
     }
 }
+
+// MARK: - Sendable
+
+extension Number.Value: Sendable {
+}

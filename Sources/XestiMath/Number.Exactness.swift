@@ -10,3 +10,8 @@ extension Number {
         case unspecified
     }
 }
+
+// MARK: - Sendable
+
+extension Number.Exactness: Sendable {
+}

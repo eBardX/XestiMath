@@ -227,3 +227,8 @@ extension Fraction {
         return (String(noutput), String(doutput))
     }
 }
+
+// MARK: - Sendable
+
+extension Fraction: Sendable {
+}

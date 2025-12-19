@@ -593,3 +593,8 @@ extension ExactInteger {
         return String(output)
     }
 }
+
+// MARK: - Sendable
+
+extension ExactInteger: Sendable {
+}

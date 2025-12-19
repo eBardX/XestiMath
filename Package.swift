@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.2
 
 // © 2025 John Gary Pusey (see LICENSE.md)
 
@@ -20,13 +20,10 @@ let package = Package(name: "XestiMath",
                                                                 package: "swift-numerics")]),
                                 .testTarget(name: "XestiMathTests",
                                             dependencies: [.target(name: "XestiMath")])],
-                      swiftLanguageVersions: [.v5])
+                      swiftLanguageModes: [.v6])
 
-let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
-                                     .enableUpcomingFeature("ConciseMagicFile"),
-                                     .enableUpcomingFeature("ExistentialAny"),
-                                     .enableUpcomingFeature("ForwardTrailingClosures"),
-                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
+let swiftSettings: [SwiftSetting] = [.defaultIsolation(nil),
+                                     .enableUpcomingFeature("ExistentialAny")]
 
 for target in package.targets {
     var settings = target.swiftSettings ?? []

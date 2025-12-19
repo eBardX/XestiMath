@@ -862,3 +862,8 @@ extension Real {
         }
     }
 }
+
+// MARK: - Sendable
+
+extension Real: Sendable {
+}
