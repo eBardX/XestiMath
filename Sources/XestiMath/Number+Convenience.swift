@@ -59,22 +59,22 @@ extension Number {
                              denominator: ExactInteger(denominator))))
     }
 
-    public init(real: Self,
-                imaginary: Self) {
-        self.init(.complex(Complex(real: real.toReal(),
-                                   imaginary: imaginary.toReal())))
+    public init(realPart: Self,
+                imaginaryPart: Self) {
+        self.init(.complex(Complex(realPart: realPart.toReal(),
+                                   imaginaryPart: imaginaryPart.toReal())))
     }
 
-    public init<T: BinaryFloatingPoint>(real: T,
-                                        imaginary: T) {
-        self.init(.complex(Complex(real: Real(real),
-                                   imaginary: Real(imaginary))))
+    public init<T: BinaryFloatingPoint>(realPart: T,
+                                        imaginaryPart: T) {
+        self.init(.complex(Complex(realPart: Real(realPart),
+                                   imaginaryPart: Real(imaginaryPart))))
     }
 
-    public init<T: BinaryInteger>(real: T,
-                                  imaginary: T) {
-        self.init(.complex(Complex(real: Real(real),
-                                   imaginary: Real(imaginary))))
+    public init<T: BinaryInteger>(realPart: T,
+                                  imaginaryPart: T) {
+        self.init(.complex(Complex(realPart: Real(realPart),
+                                   imaginaryPart: Real(imaginaryPart))))
     }
 
     // MARK: Public Instance Properties

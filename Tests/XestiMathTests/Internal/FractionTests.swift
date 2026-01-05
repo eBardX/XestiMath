@@ -10,60 +10,60 @@ struct FractionTests {
 
 extension FractionTests {
     @Test
-    func parse_radix() {}
+    func test_parse_radix() {}
 }
 
 // MARK: - Test internal initializers
 
 extension FractionTests {
     @Test
-    func init_numerator_denominator_reduce() {}
+    func test_init_numerator_denominator_reduce() {}
 }
 
 // MARK: - Test internal instance properties
 
 extension FractionTests {
     @Test
-    func debugDescription() {}
+    func test_debugDescription() {}
 
     @Test
-    func denominator() {}
+    func test_denominator() {}
 
     @Test
-    func description() {}
+    func test_description() {}
 
     @Test
-    func exactIntegerValue() {}
+    func test_exactIntegerValue() {}
 
     @Test
-    func floatingPointValue() {}
+    func test_floatingPointValue() {}
 
     @Test
-    func isInteger() {}
+    func test_isInteger() {}
 
     @Test
-    func isNegative() {}
+    func test_isNegative() {}
 
     @Test
-    func isPositive() {}
+    func test_isPositive() {}
 
     @Test
-    func isZero() {}
+    func test_isZero() {}
 
     @Test
-    func numerator() {}
+    func test_numerator() {}
 }
 
 // MARK: - Test internal instance methods
 
 extension FractionTests {
     @Test
-    func adding() {
+    func test_adding() {
         #expect(_fr(1, 2).adding(_fr(1, 6)).isEqual(to: _fr(2, 3)))
     }
 
     @Test
-    func ceiling() {
+    func test_ceiling() {
         #expect(_fr(-50, 10).ceiling().isEqual(to: _ei(-5)))
         #expect(_fr(-43, 10).ceiling().isEqual(to: _ei(-4)))
         #expect(_fr(-35, 10).ceiling().isEqual(to: _ei(-3)))
@@ -76,12 +76,12 @@ extension FractionTests {
     }
 
     @Test
-    func divided_by() {
+    func test_divided_by() {
         #expect(_fr(2, 3).divided(by: _fr(1, 6)).isEqual(to: _fr(4, 1)))
     }
 
     @Test
-    func floor() {
+    func test_floor() {
         #expect(_fr(-50, 10).floor().isEqual(to: _ei(-5)))
         #expect(_fr(-43, 10).floor().isEqual(to: _ei(-5)))
         #expect(_fr(-35, 10).floor().isEqual(to: _ei(-4)))
@@ -94,25 +94,25 @@ extension FractionTests {
     }
 
     @Test
-    func isEqual_to() {
+    func test_isEqual_to() {
     }
 
     @Test
-    func isLess_than() {
+    func test_isLess_than() {
         #expect(_fr(5, 8).isLess(than: _fr(3, 4)))
     }
 
     @Test
-    func multiplied_by () {
+    func test_multiplied_by () {
         #expect(_fr(2, 3).multiplied(by: _fr(1, 6)).isEqual(to: _fr(1, 9)))
     }
 
     @Test
-    func negated () {
+    func test_negated () {
     }
 
     @Test
-    func round() {
+    func test_round() {
         #expect(_fr(-50, 10).round().isEqual(to: _ei(-5)))
         #expect(_fr(-43, 10).round().isEqual(to: _ei(-4)))
         #expect(_fr(-35, 10).round().isEqual(to: _ei(-4)))
@@ -125,12 +125,12 @@ extension FractionTests {
     }
 
     @Test
-    func subtracting() {
+    func test_subtracting() {
         #expect(_fr(2, 3).subtracting(_fr(1, 6)).isEqual(to: _fr(1, 2)))
     }
 
     @Test
-    func truncate() {
+    func test_truncate() {
         #expect(_fr(-50, 10).truncate().isEqual(to: _ei(-5)))
         #expect(_fr(-43, 10).truncate().isEqual(to: _ei(-4)))
         #expect(_fr(-35, 10).truncate().isEqual(to: _ei(-3)))

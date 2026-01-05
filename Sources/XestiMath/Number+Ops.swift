@@ -201,10 +201,10 @@ extension Number {
         }
     }
 
-    public var imaginary: Self {    // z
+    public var imaginaryPart: Self {    // z
         switch value {
         case let .complex(val):
-            Self(.real(val.imaginary))
+            Self(.real(val.imaginaryPart))
 
         case let .real(val):
             Self(.real(val.isExact ? .exactZero : .inexactZero))
@@ -345,10 +345,10 @@ extension Number {
         Self(.real(toRational().numerator))
     }
 
-    public var real: Self {         // z
+    public var realPart: Self {         // z
         switch value {
         case let .complex(val):
-            Self(.real(val.real))
+            Self(.real(val.realPart))
 
         case .real:
             self
@@ -359,10 +359,10 @@ extension Number {
         switch value {
         case let .complex(val):
             if val.isReal {
-                Self(.real(val.real.simplified))
+                Self(.real(val.realPart.simplified))
             } else {
-                Self(.complex(Complex(real: val.real.simplified,
-                                      imaginary: val.imaginary.simplified)))
+                Self(.complex(Complex(realPart: val.realPart.simplified,
+                                      imaginaryPart: val.imaginaryPart.simplified)))
             }
 
         case let .real(val):
@@ -378,15 +378,15 @@ extension Number {
             val
 
         case let .real(val):
-            Complex(real: val,
-                    imaginary: val.isExact ? .exactZero : .inexactZero)
+            Complex(realPart: val,
+                    imaginaryPart: val.isExact ? .exactZero : .inexactZero)
         }
     }
 
     internal func toExactInteger() -> ExactInteger {
         switch value {
         case let .complex(val) where val.isExact && val.isInteger:
-            val.real.exactIntegerValue
+            val.realPart.exactIntegerValue
 
         case let .real(val) where val.isExact && val.isInteger:
             val.exactIntegerValue
@@ -399,7 +399,7 @@ extension Number {
     internal func toInteger() -> Real {
         switch value {
         case let .complex(val) where val.isInteger:
-            val.real
+            val.realPart
 
         case let .real(val) where val.isInteger:
             val
@@ -412,7 +412,7 @@ extension Number {
     internal func toRational() -> Real {
         switch value {
         case let .complex(val) where val.isRational:
-            val.real
+            val.realPart
 
         case let .real(val) where val.isRational:
             val
@@ -425,7 +425,7 @@ extension Number {
     internal func toReal() -> Real {
         switch value {
         case let .complex(val) where val.isReal:
-            val.real
+            val.realPart
 
         case let .real(val):
             val

@@ -10,24 +10,24 @@ struct FloatingPointTests {
 
 extension FloatingPointTests {
     @Test
-    func parse() {}
+    func test_parse() {}
 }
 
 // MARK: - Test internal initializers
 
 extension FloatingPointTests {
     @Test
-    func init_binaryFloatingPoint() {}
+    func test_init_binaryFloatingPoint() {}
 
     @Test
-    func init_binaryInteger() {}
+    func test_init_binaryInteger() {}
 }
 
 // MARK: - Test internal instance properties
 
 extension FloatingPointTests {
     @Test
-    func debugDescription() {
+    func test_debugDescription() {
         #expect(FloatingPoint.nan.debugDescription == "floatingPoint<+nan.0>")
         #expect(FloatingPoint.negativeInfinity.debugDescription == "floatingPoint<-inf.0>")
         #expect(FloatingPoint.one.debugDescription == "floatingPoint<1.0>")
@@ -40,7 +40,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func description() {
+    func test_description() {
         #expect(FloatingPoint.nan.description == "+nan.0")
         #expect(FloatingPoint.negativeInfinity.description == "-inf.0")
         #expect(FloatingPoint.one.description == "1.0")
@@ -53,11 +53,11 @@ extension FloatingPointTests {
     }
 
     @Test
-    func doubleValue() {
+    func test_doubleValue() {
     }
 
     @Test
-    func exactIntegerValue() {
+    func test_exactIntegerValue() {
         #expect(FloatingPoint.nan.exactIntegerValue == nil)
         #expect(FloatingPoint.negativeInfinity.exactIntegerValue == nil)
         #expect(FloatingPoint.one.exactIntegerValue!.isEqual(to: _ei(1)))   // swiftlint:disable:this force_unwrapping
@@ -70,11 +70,11 @@ extension FloatingPointTests {
     }
 
     @Test
-    func floatValue() {
+    func test_floatValue() {
     }
 
     @Test
-    func isFinite() {
+    func test_isFinite() {
         #expect(!FloatingPoint.nan.isFinite)
         #expect(!FloatingPoint.negativeInfinity.isFinite)
         #expect(FloatingPoint.one.isFinite)
@@ -84,7 +84,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isInfinite() {
+    func test_isInfinite() {
         #expect(!FloatingPoint.nan.isInfinite)
         #expect(FloatingPoint.negativeInfinity.isInfinite)
         #expect(!FloatingPoint.one.isInfinite)
@@ -94,7 +94,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isInteger() {
+    func test_isInteger() {
         #expect(!FloatingPoint.nan.isInteger)
         #expect(!FloatingPoint.negativeInfinity.isInteger)
         #expect(FloatingPoint.one.isInteger)
@@ -104,7 +104,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isNaN() {
+    func test_isNaN() {
         #expect(FloatingPoint.nan.isNaN)
         #expect(!FloatingPoint.negativeInfinity.isNaN)
         #expect(!FloatingPoint.one.isNaN)
@@ -114,7 +114,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isNegative() {
+    func test_isNegative() {
         #expect(!FloatingPoint.nan.isNegative)
         #expect(FloatingPoint.negativeInfinity.isNegative)
         #expect(!FloatingPoint.one.isNegative)
@@ -127,7 +127,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isPositive() {
+    func test_isPositive() {
         #expect(!FloatingPoint.nan.isPositive)
         #expect(!FloatingPoint.negativeInfinity.isPositive)
         #expect(FloatingPoint.one.isPositive)
@@ -140,7 +140,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isZero() {
+    func test_isZero() {
         #expect(!FloatingPoint.nan.isZero)
         #expect(!FloatingPoint.negativeInfinity.isZero)
         #expect(!FloatingPoint.one.isZero)
@@ -157,46 +157,46 @@ extension FloatingPointTests {
 
 extension FloatingPointTests {
     @Test
-    func adding() {}
+    func test_adding() {}
 
     @Test
-    func ceiling() {}
+    func test_ceiling() {}
 
     @Test
-    func cosine() {}
+    func test_cosine() {}
 
     @Test
-    func divided_by() {}
+    func test_divided_by() {}
 
     @Test
-    func exponential() {}
+    func test_exponential() {}
 
     @Test
-    func exponential_base() {}
+    func test_exponential_base() {}
 
     @Test
-    func exponentialBase2() {}
+    func test_exponentialBase2() {}
 
     @Test
-    func exponentialBase10() {}
+    func test_exponentialBase10() {}
 
     @Test
-    func floor() {}
+    func test_floor() {}
 
     @Test
-    func hyperbolicCosine() {}
+    func test_hyperbolicCosine() {}
 
     @Test
-    func hyperbolicSine() {}
+    func test_hyperbolicSine() {}
 
     @Test
-    func hyperbolicTangent() {}
+    func test_hyperbolicTangent() {}
 
     @Test
-    func hypotenuse_with() {}
+    func test_hypotenuse_with() {}
 
     @Test
-    func inverseCosine() {
+    func test_inverseCosine() {
         #expect(_fp(-0.5).inverseCosine().testEqual(to: _fp(Double.acos(-0.5))))
         #expect(_fp(-0.7071).inverseCosine().testEqual(to: _fp(Double.acos(-0.7071))))
         #expect(_fp(-0.99).inverseCosine().testEqual(to: _fp(Double.acos(-0.99))))
@@ -210,16 +210,16 @@ extension FloatingPointTests {
     }
 
     @Test
-    func inverseHyperbolicCosine() {}
+    func test_inverseHyperbolicCosine() {}
 
     @Test
-    func inverseHyperbolicSine() {}
+    func test_inverseHyperbolicSine() {}
 
     @Test
-    func inverseHyberbolicTangent() {}
+    func test_inverseHyberbolicTangent() {}
 
     @Test
-    func inverseSine() {
+    func test_inverseSine() {
         #expect(_fp(-0.5).inverseSine().testEqual(to: _fp(Double.asin(-0.5))))
         #expect(_fp(-0.7071).inverseSine().testEqual(to: _fp(Double.asin(-0.7071))))
         #expect(_fp(-0.99).inverseSine().testEqual(to: _fp(Double.asin(-0.99))))
@@ -233,7 +233,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func inverseTangent() {
+    func test_inverseTangent() {
         #expect(_fp(-0.5).inverseTangent().testEqual(to: _fp(Double.atan(-0.5))))
         #expect(_fp(-1).inverseTangent().testEqual(to: _fp(Double.atan(-1))))
         #expect(_fp(-10).inverseTangent().testEqual(to: _fp(Double.atan(-10))))
@@ -247,52 +247,52 @@ extension FloatingPointTests {
     }
 
     @Test
-    func inverseTangent2() {}
+    func test_inverseTangent2() {}
 
     @Test
-    func isEqual_to() {}
+    func test_isEqual_to() {}
 
     @Test
-    func isLess_than() {}
+    func test_isLess_than() {}
 
     @Test
-    func logarithm() {}
+    func test_logarithm() {}
 
     @Test
-    func logarithm_base() {}
+    func test_logarithm_base() {}
 
     @Test
-    func logarithmBase2() {}
+    func test_logarithmBase2() {}
 
     @Test
-    func logarithmBase10() {}
+    func test_logarithmBase10() {}
 
     @Test
-    func multiplied_by() {}
+    func test_multiplied_by() {}
 
     @Test
-    func negated() {}
+    func test_negated() {}
 
     @Test
-    func power() {}
+    func test_power() {}
 
     @Test
-    func round() {}
+    func test_round() {}
 
     @Test
-    func sine() {}
+    func test_sine() {}
 
     @Test
-    func squareRoot() {}
+    func test_squareRoot() {}
 
     @Test
-    func subtracting() {}
+    func test_subtracting() {}
 
     @Test
-    func tangent() {}
+    func test_tangent() {}
 
     @Test
-    func truncate() {}
+    func test_truncate() {}
 }
 
 // MARK: -

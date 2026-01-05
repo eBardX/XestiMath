@@ -10,79 +10,79 @@ struct ComplexTests {
 
 extension ComplexTests {
     @Test
-    func fromPolar_magnitude_angle() {}
+    func test_fromPolar_magnitude_angle() {}
 
     @Test
-    func parse_radix_exactness() {}
+    func test_parse_radix_exactness() {}
 }
 
 // MARK: - Test internal initializers
 
 extension ComplexTests {
     @Test
-    func init_real_imaginary() {}
+    func test_init_real_imaginary() {}
 }
 
 // MARK: - Test internal instance properties
 
 extension ComplexTests {
     @Test
-    func angle() {}
+    func test_angle() {}
 
     @Test
-    func conjugate() {}
+    func test_conjugate() {}
 
     @Test
-    func debugDescription() {}
+    func test_debugDescription() {}
 
     @Test
-    func description() {}
+    func test_description() {}
 
     @Test
-    func exact() {}
+    func test_exact() {}
 
     @Test
-    func imaginary() {}
+    func test_imaginary() {}
 
     @Test
-    func isExact() {}
+    func test_isExact() {}
 
     @Test
-    func isFinite() {}
+    func test_isFinite() {}
 
     @Test
-    func isInexact() {}
+    func test_isInexact() {}
 
     @Test
-    func isInfinite() {}
+    func test_isInfinite() {}
 
     @Test
-    func isInteger() {}
+    func test_isInteger() {}
 
     @Test
-    func isNaN() {}
+    func test_isNaN() {}
 
     @Test
-    func isRational() {}
+    func test_isRational() {}
 
     @Test
-    func isReal() {}
+    func test_isReal() {}
 
     @Test
-    func isZero() {}
+    func test_isZero() {}
 
     @Test
-    func magnitude() {}
+    func test_magnitude() {}
 
     @Test
-    func real() {}
+    func test_real() {}
 }
 
 // MARK: - Test internal instance methods
 
 extension ComplexTests {
     @Test
-    func adding() {
+    func test_adding() {
         #expect(_cx(-1, -2).adding(_cx(-3, 4)).testEqual(to: _cx(-4, 2)))
         #expect(_cx(0, 5).adding(_cx(0, 3)).testEqual(to: _cx(0, 8)))
         #expect(_cx(1_000, 2_000).adding(_cx(5_000, -1_000)).testEqual(to: _cx(6_000, 1_000)))
@@ -96,10 +96,10 @@ extension ComplexTests {
     }
 
     @Test
-    func cosine() {}
+    func test_cosine() {}
 
     @Test
-    func divided_by() {
+    func test_divided_by() {
         #expect(_cx(-2, 5).divided(by: _cx(1, 3)).testEqual(to: _cx(_fr(13, 10), _fr(11, 10))))
         #expect(_cx(0, 1).divided(by: _cx(1, 0)).testEqual(to: _cx(0, 1)))
         #expect(_cx(0, 4).divided(by: _cx(2, 0)).testEqual(to: _cx(0, 2)))
@@ -113,43 +113,43 @@ extension ComplexTests {
     }
 
     @Test
-    func exponential() {}
+    func test_exponential() {}
 
     @Test
-    func hyperbolicCosine() {}
+    func test_hyperbolicCosine() {}
 
     @Test
-    func hyperbolicSine() {}
+    func test_hyperbolicSine() {}
 
     @Test
-    func hyperbolicTangent() {}
+    func test_hyperbolicTangent() {}
 
     @Test
-    func inverseCosine() {}
+    func test_inverseCosine() {}
 
     @Test
-    func inverseHyperbolicCosine() {}
+    func test_inverseHyperbolicCosine() {}
 
     @Test
-    func inverseHyperbolicSine() {}
+    func test_inverseHyperbolicSine() {}
 
     @Test
-    func inverseHyberbolicTangent() {}
+    func test_inverseHyberbolicTangent() {}
 
     @Test
-    func inverseSine() {}
+    func test_inverseSine() {}
 
     @Test
-    func inverseTangent() {}
+    func test_inverseTangent() {}
 
     @Test
-    func isEqual_to() {}
+    func test_isEqual_to() {}
 
     @Test
-    func logarithm() {}
+    func test_logarithm() {}
 
     @Test
-    func multiplied_by() {
+    func test_multiplied_by() {
         #expect(_cx(-1, 2).multiplied(by: _cx(2, -3)).testEqual(to: _cx(4, 7)))
         #expect(_cx(-3, 2).multiplied(by: _cx(-3, -4)).testEqual(to: _cx(17, 6)))
         #expect(_cx(0, 1).multiplied(by: _cx(0, 1)).testEqual(to: _cx(-1, 0)))
@@ -163,27 +163,27 @@ extension ComplexTests {
     }
 
     @Test
-    func negated() {}
+    func test_negated() {}
 
     @Test
-    func power() {}
+    func test_power() {}
 
-//    @Test
-//    func sine() {
-//        #expect(_cx(-2, 3).sine().testEqual(to: _cx(-9.1544991469114301, -3.8537380379193769)))
-//        #expect(_cx(-3, -4).sine().testEqual(to: _cx(1.2246467991473532e-16, 0.0)))
-//        #expect(_cx(Double.pi, 0).sine().testEqual(to: _cx(0, 0)))
-//        #expect(_cx(0, Double.pi).sine().testEqual(to: _cx(0, 0)))
-//        #expect(_cx(0, 0).sine().testEqual(to: _cx(0, 0)))
-//        #expect(_cx(0.5, 0.5).sine().testEqual(to: _cx(0, 0)))
-//        #expect(_cx(1, 2).sine().testEqual(to: _cx(0, 0)))
-//        #expect(_cx(1, 1).sine().testEqual(to: _cx(0, 0)))
-//        #expect(_cx(0, 2).sine().testEqual(to: _cx(0, 0)))
-//        #expect(_cx(4, 5).sine().testEqual(to: _cx(0, 0)))
-//    }
+    //    @Test
+    //    func test_sine() {
+    //        #expect(_cx(-2, 3).sine().testEqual(to: _cx(-9.1544991469114301, -3.8537380379193769)))
+    //        #expect(_cx(-3, -4).sine().testEqual(to: _cx(1.2246467991473532e-16, 0.0)))
+    //        #expect(_cx(Double.pi, 0).sine().testEqual(to: _cx(0, 0)))
+    //        #expect(_cx(0, Double.pi).sine().testEqual(to: _cx(0, 0)))
+    //        #expect(_cx(0, 0).sine().testEqual(to: _cx(0, 0)))
+    //        #expect(_cx(0.5, 0.5).sine().testEqual(to: _cx(0, 0)))
+    //        #expect(_cx(1, 2).sine().testEqual(to: _cx(0, 0)))
+    //        #expect(_cx(1, 1).sine().testEqual(to: _cx(0, 0)))
+    //        #expect(_cx(0, 2).sine().testEqual(to: _cx(0, 0)))
+    //        #expect(_cx(4, 5).sine().testEqual(to: _cx(0, 0)))
+    //    }
 
     @Test
-    func squareRoot() {
+    func test_squareRoot() {
         #expect(_cx(-3, -4).squareRoot().testEqual(to: _cx(1, -2)))
         #expect(_cx(-9, 0).squareRoot().testEqual(to: _cx(0, 3)))
         #expect(_cx(0, -4).squareRoot().testEqual(to: _cx(1.4142135623730951, -1.4142135623730949)))
@@ -197,7 +197,7 @@ extension ComplexTests {
     }
 
     @Test
-    func subtracting() {
+    func test_subtracting() {
         #expect(_cx(-4, 2).subtracting(_cx(-3, 4)).testEqual(to: _cx(-1, -2)))
         #expect(_cx(0, 0).subtracting(_cx(-6, -2)).testEqual(to: _cx(6, 2)))
         #expect(_cx(0, 8).subtracting(_cx(0, 3)).testEqual(to: _cx(0, 5)))
@@ -211,32 +211,30 @@ extension ComplexTests {
     }
 
     @Test
-    func tangent() {}
+    func test_tangent() {}
 }
-
-// MARK: -
 
 // MARK: -
 
 extension ComplexTests {
     private func _cx<T: BinaryInteger>(_ rval: T,
                                        _ ival: T) -> Complex {
-        Complex(real: Real(rval),
-                imaginary: Real(ival))
+        Complex(realPart: Real(rval),
+                imaginaryPart: Real(ival))
     }
 
     private func _cx<T: BinaryFloatingPoint>(_ rval: T,
                                              _ ival: T) -> Complex {
-        Complex(real: Real(rval),
-                imaginary: Real(ival))
+        Complex(realPart: Real(rval),
+                imaginaryPart: Real(ival))
     }
 
     private func _cx(_ rval: Fraction,
                      _ ival: Fraction) -> Complex {
-        Complex(real: Real(numerator: rval.numerator,
-                           denominator: rval.denominator),
-                imaginary: Real(numerator: ival.numerator,
-                                denominator: ival.denominator))
+        Complex(realPart: Real(numerator: rval.numerator,
+                               denominator: rval.denominator),
+                imaginaryPart: Real(numerator: ival.numerator,
+                                    denominator: ival.denominator))
     }
 
     private func _ei<T: BinaryInteger>(_ val: T) -> ExactInteger {
@@ -255,17 +253,17 @@ extension ComplexTests {
 extension Complex {
     internal func testEqual(to other: Self) -> Bool {
         if isInexact || other.isInexact {
-            let rval1 = real.floatingPointValue.doubleValue
-            let rval2 = other.real.floatingPointValue.doubleValue
-            let ival1 = imaginary.floatingPointValue.doubleValue
-            let ival2 = other.imaginary.floatingPointValue.doubleValue
+            let rval1 = realPart.floatingPointValue.doubleValue
+            let rval2 = other.realPart.floatingPointValue.doubleValue
+            let ival1 = imaginaryPart.floatingPointValue.doubleValue
+            let ival2 = other.imaginaryPart.floatingPointValue.doubleValue
 
             return rval1.isApproximatelyEqual(to: rval2) && ival1.isApproximatelyEqual(to: ival2)
         } else {
-            let rval1 = real
-            let rval2 = other.real
-            let ival1 = imaginary
-            let ival2 = other.imaginary
+            let rval1 = realPart
+            let rval2 = other.realPart
+            let ival1 = imaginaryPart
+            let ival2 = other.imaginaryPart
 
             return rval1.isEqual(to: rval2) && ival1.isEqual(to: ival2)
         }

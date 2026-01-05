@@ -4,22 +4,22 @@ import BigInt
 
 internal struct ExactInteger {
 
-    // MARK: Private Nested Types
+    // MARK: Internal Nested Types
 
-    private enum Value {
+    internal enum Value {
         case large(BigInt)
         case small(Int)
     }
 
-    // MARK: Private Initializers
+    // MARK: Internal Initializers
 
-    private init(_ value: Value) {
+    internal init(_ value: Value) {
         self.value = value
     }
 
-    // MARK: Private Instance Properties
+    // MARK: Internal Instance Properties
 
-    private let value: Value
+    internal let value: Value
 }
 
 // MARK: -

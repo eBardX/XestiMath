@@ -10,7 +10,7 @@ struct IntExtensionsTests {
 
 extension IntExtensionsTests {
     @Test
-    func modulo() {
+    func test_modulo() {
     }
 }
 

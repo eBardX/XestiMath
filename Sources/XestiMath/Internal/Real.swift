@@ -4,6 +4,14 @@
 
 internal struct Real {
 
+    // MARK: Internal Nested Types
+
+    internal enum Value {
+        case exactInteger(ExactInteger)
+        case floatingPoint(FloatingPoint)
+        case fraction(Fraction)
+    }
+
     // MARK: Internal Type Properties
 
     internal static let exactOne         = Self(.exactInteger(.one))
@@ -15,23 +23,15 @@ internal struct Real {
     internal static let pi               = Self(.floatingPoint(.pi))
     internal static let positiveInfinity = Self(.floatingPoint(.positiveInfinity))
 
-    // MARK: Private Nested Types
+    // MARK: Internal Initializers
 
-    private enum Value {
-        case exactInteger(ExactInteger)
-        case floatingPoint(FloatingPoint)
-        case fraction(Fraction)
-    }
-
-    // MARK: Private Initializers
-
-    private init(_ value: Value) {
+    internal init(_ value: Value) {
         self.value = value
     }
 
-    // MARK: Private Instance Properties
+    // MARK: Internal Instance Properties
 
-    private let value: Value
+    internal let value: Value
 }
 
 extension Real {
@@ -363,8 +363,15 @@ extension Real {
 
     internal var simplified: Self {
         switch value {
-        case .exactInteger, .floatingPoint:
+        case .exactInteger:
             self
+
+        case let .floatingPoint(val):
+            if let eiValue = val.exactIntegerValue {
+                Self(.exactInteger(eiValue))
+            } else {
+                self
+            }
 
         case let .fraction(val):
             if val.denominator.isEqual(to: .one) {

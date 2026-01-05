@@ -10,122 +10,122 @@ struct ExactIntegerTests {
 
 extension ExactIntegerTests {
     @Test
-    func parse_radix() {}
+    func test_parse_radix() {}
 }
 
 // MARK: - Test internal initializers
 
 extension ExactIntegerTests {
     @Test
-    func init_binaryFloatingPoint() {}
+    func test_init_binaryFloatingPoint() {}
 
     @Test
-    func init_binaryInteger() {}
+    func test_init_binaryInteger() {}
 }
 
 // MARK: - Test internal instance properties
 
 extension ExactIntegerTests {
     @Test
-    func debugDescription() {}
+    func test_debugDescription() {}
 
     @Test
-    func description() {}
+    func test_description() {}
 
     @Test
-    func floatingPointValue() {}
+    func test_floatingPointValue() {}
 
     @Test
-    func int16Value() {}
+    func test_int16Value() {}
 
     @Test
-    func int32Value() {}
+    func test_int32Value() {}
 
     @Test
-    func int64Value() {}
+    func test_int64Value() {}
 
     @Test
-    func int8Value() {}
+    func test_int8Value() {}
 
     @Test
-    func intValue() {}
+    func test_intValue() {}
 
     @Test
-    func isEven() {}
+    func test_isEven() {}
 
     @Test
-    func isNegative() {}
+    func test_isNegative() {}
 
     @Test
-    func isOdd() {}
+    func test_isOdd() {}
 
     @Test
-    func isPositive() {}
+    func test_isPositive() {}
 
     @Test
-    func isZero() {}
+    func test_isZero() {}
 
     @Test
-    func uint16Value() {}
+    func test_uint16Value() {}
 
     @Test
-    func uint32Value() {}
+    func test_uint32Value() {}
 
     @Test
-    func uint64Value() {}
+    func test_uint64Value() {}
 
     @Test
-    func uint8Value() {}
+    func test_uint8Value() {}
 
     @Test
-    func uintValue() {}
+    func test_uintValue() {}
 }
 
 // MARK: - Test internal instance methods
 
 extension ExactIntegerTests {
     @Test
-    func adding() {}
+    func test_adding() {}
 
     @Test
-    func bitwiseAnd_with() {}
+    func test_bitwiseAnd_with() {}
 
     @Test
-    func bitwiseNot() {}
+    func test_bitwiseNot() {}
 
     @Test
-    func bitwiseOr_with() {}
+    func test_bitwiseOr_with() {}
 
     @Test
-    func bitwiseShiftLeft_bits() {}
+    func test_bitwiseShiftLeft_bits() {}
 
     @Test
-    func bitwiseShiftRight_bits() {}
+    func test_bitwiseShiftRight_bits() {}
 
     @Test
-    func bitwiseXor_with() {}
+    func test_bitwiseXor_with() {}
 
     @Test
-    func greatestCommonDivisor_with() {
+    func test_greatestCommonDivisor_with() {
         #expect(_ei(32).greatestCommonDivisor(with: _ei(-36)).isEqual(to: _ei(4)))
     }
 
     @Test
-    func isEqual_to() {}
+    func test_isEqual_to() {}
 
     @Test
-    func isLess_than() {}
+    func test_isLess_than() {}
 
     @Test
-    func isMultiple_of() {}
+    func test_isMultiple_of() {}
 
     @Test
-    func leastCommonMultiple_with() {
+    func test_leastCommonMultiple_with() {
         #expect(_ei(32).leastCommonMultiple(with: _ei(-36)).isEqual(to: _ei(288)))
     }
 
     @Test
-    func modulo() {
+    func test_modulo() {
         #expect(_ei(13).modulo(_ei(4)).isEqual(to: _ei(1)))
         #expect(_ei(-13).modulo(_ei(4)).isEqual(to: _ei(3)))
         #expect(_ei(13).modulo(_ei(-4)).isEqual(to: _ei(-3)))
@@ -133,16 +133,16 @@ extension ExactIntegerTests {
     }
 
     @Test
-    func multiplied_by() {}
+    func test_multiplied_by() {}
 
     @Test
-    func negated() {}
+    func test_negated() {}
 
     @Test
-    func quotient_dividingBy() {}
+    func test_quotient_dividingBy() {}
 
     @Test
-    func remainder_dividingBy() {
+    func test_remainder_dividingBy() {
         #expect(_ei(13).remainder(dividingBy: _ei(4)).isEqual(to: _ei(1)))
         #expect(_ei(-13).remainder(dividingBy: _ei(4)).isEqual(to: _ei(-1)))
         #expect(_ei(13).remainder(dividingBy: _ei(-4)).isEqual(to: _ei(1)))
@@ -150,7 +150,7 @@ extension ExactIntegerTests {
     }
 
     @Test
-    func subtracting() {}
+    func test_subtracting() {}
 }
 
 // MARK: -

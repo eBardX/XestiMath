@@ -10,7 +10,7 @@ struct UIntExtensions {
 
 extension UIntExtensions {
     @Test
-    func gcd() {
+    func test_gcd() {
     }
 }
 

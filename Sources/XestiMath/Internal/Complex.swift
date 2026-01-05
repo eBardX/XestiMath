@@ -60,8 +60,8 @@ extension Complex {
            let ival = Real.parse(itval,
                                  radix: radix,
                                  exactness: exactness) {
-            return Self(real: rval,
-                        imaginary: ival)
+            return Self(realPart: rval,
+                        imaginaryPart: ival)
         }
 
         return nil
@@ -69,12 +69,12 @@ extension Complex {
 
     // MARK: Internal Initializers
 
-    internal init(real: Real,
-                  imaginary: Real) {
-        if real.isExact != imaginary.isExact {
-            self.init(real.inexact, imaginary.inexact)
+    internal init(realPart: Real,
+                  imaginaryPart: Real) {
+        if realPart.isExact != imaginaryPart.isExact {
+            self.init(realPart.inexact, imaginaryPart.inexact)
         } else {
-            self.init(real, imaginary)
+            self.init(realPart, imaginaryPart)
         }
     }
 
@@ -90,8 +90,8 @@ extension Complex {
     }
 
     internal var conjugate: Self {
-        Self(real: rvalue,
-             imaginary: ivalue.negated())
+        Self(realPart: rvalue,
+             imaginaryPart: ivalue.negated())
     }
 
     internal var debugDescription: String {
@@ -100,22 +100,22 @@ extension Complex {
 
     internal var description: String {
         if ivalue.isNegative {
-            "\(rvalue.description)\(ivalue.description)"
+            "\(rvalue.description)\(ivalue.description)i"
         } else {
-            "\(rvalue.description)+\(ivalue.description)"
+            "\(rvalue.description)+\(ivalue.description)i"
         }
     }
 
     internal var exact: Self {
         if rvalue.isInexact || ivalue.isInexact {
-            Self(real: rvalue.exact,
-                 imaginary: ivalue.exact)
+            Self(realPart: rvalue.exact,
+                 imaginaryPart: ivalue.exact)
         } else {
             self
         }
     }
 
-    internal var imaginary: Real {
+    internal var imaginaryPart: Real {
         guard rvalue.isFinite,
               ivalue.isFinite
         else { return .nan }
@@ -125,8 +125,8 @@ extension Complex {
 
     internal var inexact: Self {
         if rvalue.isExact || ivalue.isExact {
-            Self(real: rvalue.inexact,
-                 imaginary: ivalue.inexact)
+            Self(realPart: rvalue.inexact,
+                 imaginaryPart: ivalue.inexact)
         } else {
             self
         }
@@ -176,7 +176,7 @@ extension Complex {
         return rvalue.hypotenuse(with: ivalue)
     }
 
-    internal var real: Real {
+    internal var realPart: Real {
         guard rvalue.isFinite,
               ivalue.isFinite
         else { return .nan }
@@ -187,8 +187,8 @@ extension Complex {
     // MARK: Internal Instance Methods
 
     internal func adding(_ other: Self) -> Self {
-        Self(real: rvalue.adding(other.rvalue),
-             imaginary: ivalue.adding(other.ivalue))
+        Self(realPart: rvalue.adding(other.rvalue),
+             imaginaryPart: ivalue.adding(other.ivalue))
     }
 
     internal func cosine() -> Self {
@@ -272,13 +272,13 @@ extension Complex {
     }
 
     internal func multiplied(by other: Self) -> Self {
-        Self(real: rvalue.multiplied(by: other.rvalue).subtracting(ivalue.multiplied(by: other.ivalue)),
-             imaginary: rvalue.multiplied(by: other.ivalue).adding(ivalue.multiplied(by: other.rvalue)))
+        Self(realPart: rvalue.multiplied(by: other.rvalue).subtracting(ivalue.multiplied(by: other.ivalue)),
+             imaginaryPart: rvalue.multiplied(by: other.ivalue).adding(ivalue.multiplied(by: other.rvalue)))
     }
 
     internal func negated() -> Self {
-        Self(real: rvalue.negated(),
-             imaginary: ivalue.negated())
+        Self(realPart: rvalue.negated(),
+             imaginaryPart: ivalue.negated())
     }
 
     internal func power(_ other: Self) -> Self {
@@ -294,8 +294,8 @@ extension Complex {
     }
 
     internal func subtracting(_ other: Self) -> Self {
-        Self(real: rvalue.subtracting(other.rvalue),
-             imaginary: ivalue.subtracting(other.ivalue))
+        Self(realPart: rvalue.subtracting(other.rvalue),
+             imaginaryPart: ivalue.subtracting(other.ivalue))
     }
 
     internal func tangent() -> Self {
@@ -363,8 +363,8 @@ extension Complex {
     // MARK: Private Instance Methods
 
     private func _toExternalFormat() -> ExternalFormat {
-        ExternalFormat(real.floatingPointValue.doubleValue,
-                       imaginary.floatingPointValue.doubleValue)
+        ExternalFormat(realPart.floatingPointValue.doubleValue,
+                       imaginaryPart.floatingPointValue.doubleValue)
     }
 }
 
@@ -377,7 +377,7 @@ extension Complex: Sendable {
 
 extension ComplexModule.Complex<Double> {
     fileprivate func _toInternalFormat() -> XestiMath.Complex {
-        XestiMath.Complex(real: XestiMath.Real(real),
-                          imaginary: XestiMath.Real(imaginary))
+        XestiMath.Complex(realPart: XestiMath.Real(real),
+                          imaginaryPart: XestiMath.Real(imaginary))
     }
 }
