@@ -1,22 +1,24 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 extension Number {
 
     // MARK: Public Type Methods
 
-    public static func parse<S: StringProtocol>(_ text: S) -> Self? {
-        guard let (text, radix, exactness) = _matchPrefixes(String(text))
+    public static func parse<S: StringProtocol>(input: S) -> Self? {
+        guard let (text, radix, exactness) = _matchPrefixes(input: String(input))
         else { return nil }
 
-        return parse(text,
+        return parse(input: text,
                      radix: radix,
                      exactness: exactness)
     }
 
-    public static func parse<S: StringProtocol>(_ text: S,
-                                                radix: Radix,
-                                                exactness: Exactness) -> Self? {
-        guard let value = _parseNumber(String(text),
+    // MARK: Internal Type Methods
+
+    internal static func parse<S: StringProtocol>(input: S,
+                                                  radix: Radix,
+                                                  exactness: Exactness) -> Self? {
+        guard let value = _parseNumber(input: String(input),
                                        radix: radix,
                                        exactness: exactness)
         else { return nil }
@@ -36,10 +38,10 @@ extension Number {
 
     // MARK: Private Type Methods
 
-    private static func _matchPrefixes(_ text: String) -> (String, Radix, Exactness)? {
+    private static func _matchPrefixes(input: String) -> (String, Radix, Exactness)? {
         var exactness: Exactness?
         var radix: Radix?
-        var text = text
+        var text = input
 
         while !text.isEmpty, radix == nil || exactness == nil {
             if let prefix = text.prefixMatch(of: Self.pfxRadix)?.output,
@@ -70,16 +72,16 @@ extension Number {
         return (text, radix ?? .decimal, exactness ?? .unspecified)
     }
 
-    private static func _parseNumber(_ text: String,
+    private static func _parseNumber(input: String,
                                      radix: Radix,
                                      exactness: Exactness) -> Self? {
-        if let rval = Complex.parse(text,
+        if let rval = Complex.parse(input: input,
                                     radix: radix,
                                     exactness: exactness) {
             return Self(.complex(rval))
         }
 
-        if let rval = Real.parse(text,
+        if let rval = Real.parse(input: input,
                                  radix: radix,
                                  exactness: exactness) {
             return Self(.real(rval))

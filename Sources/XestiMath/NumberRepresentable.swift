@@ -1,7 +1,8 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 public protocol NumberRepresentable: Codable,
                                      Comparable,
+                                     CustomDebugStringConvertible,
                                      CustomStringConvertible,
                                      Equatable,
                                      ExpressibleByFloatLiteral,
@@ -17,9 +18,9 @@ public protocol NumberRepresentable: Codable,
                              file: StaticString,
                              line: UInt) -> Number
 
-    init?(numberValue: Number)
-
     init(_ numberValue: Number)
+
+    init?(numberValue: Number)
 
     var doubleValue: Double { get }
 
@@ -177,11 +178,19 @@ extension NumberRepresentable where Self: Comparable {
     }
 }
 
+// MARK: - CustomDebugStringConvertible
+
+extension NumberRepresentable where Self: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        String(reflecting: numberValue)
+    }
+}
+
 // MARK: - CustomStringConvertible
 
 extension NumberRepresentable where Self: CustomStringConvertible {
     public var description: String {
-        numberValue.description
+        String(describing: numberValue)
     }
 }
 

@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 public struct Number {
 
@@ -20,24 +20,27 @@ extension Number: Codable {
         let container = try decoder.singleValueContainer()
         let stringValue = try container.decode(String.self)
 
-        if let tmpValue = Self.parse(stringValue) {
-            self = tmpValue
-        } else {
-            throw DecodingError.dataCorruptedError(in: container,
-                                                   debugDescription: "Invalid number value")
-        }
+        guard let numberValue = Self.parse(input: stringValue)
+        else { throw DecodingError.dataCorruptedError(in: container,
+                                                      debugDescription: "Invalid number value") }
+
+        self = numberValue
     }
 
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
 
-        try container.encode(description)
+        try container.encode(String(describing: self))
     }
 }
 
 // MARK: - Comparable
 
 extension Number: Comparable {
+    public static func < (lhs: Self,
+                          rhs: Self) -> Bool {
+        lhs.checkReal().isLess(than: rhs.checkReal())
+    }
 }
 
 // MARK: - CustomDebugStringConvertible
@@ -46,10 +49,10 @@ extension Number: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch value {
         case let .complex(val):
-            val.debugDescription
+            String(reflecting: val)
 
         case let .real(val):
-            val.debugDescription
+            String(reflecting: val)
         }
     }
 }
@@ -60,10 +63,10 @@ extension Number: CustomStringConvertible {
     public var description: String {
         switch value {
         case let .complex(val):
-            val.description
+            String(describing: val)
 
         case let .real(val):
-            val.description
+            String(describing: val)
         }
     }
 }
@@ -71,6 +74,19 @@ extension Number: CustomStringConvertible {
 // MARK: - Equatable
 
 extension Number: Equatable {
+    public static func == (lhs: Self,
+                           rhs: Self) -> Bool {
+        switch (lhs.value, rhs.value) {
+        case let (.complex(val1), .complex(val2)):
+            val1.isEqual(to: val2)
+
+        case let (.real(val1), .real(val2)):
+            val1.isEqual(to: val2)
+
+        default:
+            lhs.toComplex().isEqual(to: rhs.toComplex())
+        }
+    }
 }
 
 // MARK: - ExpressibleByFloatLiteral
@@ -101,7 +117,7 @@ extension Number: ExpressibleByStringLiteral {
 
 extension Number: Hashable {
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(description)
+        hasher.combine(String(describing: self))
     }
 }
 

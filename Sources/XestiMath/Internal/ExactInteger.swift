@@ -1,25 +1,25 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 import BigInt
 
 internal struct ExactInteger {
 
-    // MARK: Private Nested Types
+    // MARK: Internal Nested Types
 
-    private enum Value {
+    internal enum Value {
         case large(BigInt)
         case small(Int)
     }
 
-    // MARK: Private Initializers
+    // MARK: Internal Initializers
 
-    private init(_ value: Value) {
+    internal init(_ value: Value) {
         self.value = value
     }
 
-    // MARK: Private Instance Properties
+    // MARK: Internal Instance Properties
 
-    private let value: Value
+    internal let value: Value
 }
 
 // MARK: -
@@ -33,11 +33,11 @@ extension ExactInteger {
 
     // MARK: Internal Type Methods
 
-    internal static func parse(_ text: String,
+    internal static func parse(input: String,
                                radix: Number.Radix) -> Self? {
-        let lcText = text.lowercased()
+        let lcText = input.lowercased()
 
-        if let tval = _matchExactInteger(lcText,
+        if let tval = _matchExactInteger(input: lcText,
                                          radix: radix),
            let rval = BigInt(tval,
                              radix: radix.rawValue) {
@@ -49,13 +49,13 @@ extension ExactInteger {
 
     // MARK: Internal Initializers
 
-    internal init?<T: BinaryFloatingPoint>(_ value: T) {
+    internal init<T: BinaryFloatingPoint>(_ value: T) {
         if let intValue = Int(exactly: value) {
             self.init(.small(intValue))
         } else if let bigIntValue = BigInt(exactly: value) {
             self.init(.large(bigIntValue))
         } else {
-            return nil
+            fatalError("\(value) must be an integer")
         }
     }
 
@@ -68,26 +68,6 @@ extension ExactInteger {
     }
 
     // MARK: Internal Instance Properties
-
-    internal var debugDescription: String {
-        switch value {
-        case let .large(val):
-            "large<\(val.description)>"
-
-        case let .small(val):
-            "small<\(val.description)>"
-        }
-    }
-
-    internal var description: String {
-        switch value {
-        case let .large(val):
-            val.description
-
-        case let .small(val):
-            val.description
-        }
-    }
 
     internal var floatingPointValue: FloatingPoint {
         switch value {
@@ -531,6 +511,30 @@ extension ExactInteger {
         }
     }
 
+    internal func quotientAndRemainder(dividingBy other: Self) -> (quotient: Self, remainder: Self) {
+        switch (value, other.value) {
+        case let (.large(val1), .large(val2)):
+            let (qval, rval) = val1.quotientAndRemainder(dividingBy: val2)
+
+            return (Self(.large(qval)), Self(.large(rval)))
+
+        case let (.large(val1), .small(val2)):
+            let (qval, rval) = val1.quotientAndRemainder(dividingBy: BigInt(val2))
+
+            return (Self(.large(qval)), Self(.large(rval)))
+
+        case let (.small(val1), .large(val2)):
+            let (qval, rval) = BigInt(val1).quotientAndRemainder(dividingBy: val2)
+
+            return (Self(.large(qval)), Self(.large(rval)))
+
+        case let (.small(val1), .small(val2)):
+            let (qval, rval) = val1.quotientAndRemainder(dividingBy: val2)
+
+            return (Self(.small(qval)), Self(.small(rval)))
+        }
+    }
+
     internal func remainder(dividingBy other: Self) -> Self {
         switch (value, other.value) {
         case let (.large(val1), .large(val2)):
@@ -571,26 +575,54 @@ extension ExactInteger {
 
     // MARK: Private Type Methods
 
-    private static func _matchExactInteger(_ text: String,
+    private static func _matchExactInteger(input: String,
                                            radix: Number.Radix) -> String? {
         let match = switch radix {
         case .binary:
-            text.wholeMatch(of: Number.eiBinValue)
+            input.wholeMatch(of: Number.eiBinValue)
 
         case .decimal:
-            text.wholeMatch(of: Number.eiDecValue)
+            input.wholeMatch(of: Number.eiDecValue)
 
         case .hexadecimal:
-            text.wholeMatch(of: Number.eiHexValue)
+            input.wholeMatch(of: Number.eiHexValue)
 
         case .octal:
-            text.wholeMatch(of: Number.eiOctValue)
+            input.wholeMatch(of: Number.eiOctValue)
         }
 
         guard let output = match?.output
         else { return nil }
 
         return String(output)
+    }
+}
+
+// MARK: - CustomDebugStringConvertible
+
+extension ExactInteger: CustomDebugStringConvertible {
+    internal var debugDescription: String {
+        switch value {
+        case let .large(val):
+            "large<\(String(reflecting: val))>"
+
+        case let .small(val):
+            "small<\(String(reflecting: val))>"
+        }
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension ExactInteger: CustomStringConvertible {
+    internal var description: String {
+        switch value {
+        case let .large(val):
+            String(describing: val)
+
+        case let .small(val):
+            String(describing: val)
+        }
     }
 }
 

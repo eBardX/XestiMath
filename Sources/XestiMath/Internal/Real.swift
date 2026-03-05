@@ -1,8 +1,16 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 // swiftlint:disable file_length
 
 internal struct Real {
+
+    // MARK: Internal Nested Types
+
+    internal enum Value {
+        case exactInteger(ExactInteger)
+        case floatingPoint(FloatingPoint)
+        case fraction(Fraction)
+    }
 
     // MARK: Internal Type Properties
 
@@ -15,33 +23,25 @@ internal struct Real {
     internal static let pi               = Self(.floatingPoint(.pi))
     internal static let positiveInfinity = Self(.floatingPoint(.positiveInfinity))
 
-    // MARK: Private Nested Types
+    // MARK: Internal Initializers
 
-    private enum Value {
-        case exactInteger(ExactInteger)
-        case floatingPoint(FloatingPoint)
-        case fraction(Fraction)
-    }
-
-    // MARK: Private Initializers
-
-    private init(_ value: Value) {
+    internal init(_ value: Value) {
         self.value = value
     }
 
-    // MARK: Private Instance Properties
+    // MARK: Internal Instance Properties
 
-    private let value: Value
+    internal let value: Value
 }
 
 extension Real {
 
     // MARK: Internal Type Methods
 
-    internal static func parse(_ text: String,
+    internal static func parse(input: String,
                                radix: Number.Radix,
                                exactness: Number.Exactness) -> Self? {
-        if let rval = ExactInteger.parse(text,
+        if let rval = ExactInteger.parse(input: input,
                                          radix: radix) {
             if exactness == .inexact {
                 return Self(.floatingPoint(rval.floatingPointValue))
@@ -50,7 +50,7 @@ extension Real {
             return Self(.exactInteger(rval))
         }
 
-        if let rval = Fraction.parse(text,
+        if let rval = Fraction.parse(input: input,
                                      radix: radix) {
             if exactness == .inexact {
                 let nval = rval.numerator.floatingPointValue
@@ -64,7 +64,7 @@ extension Real {
 
         if radix == .decimal,
            exactness != .exact,
-           let rval = FloatingPoint.parse(text) {
+           let rval = FloatingPoint.parse(input: input) {
             return Self(.floatingPoint(rval))
         }
 
@@ -120,46 +120,20 @@ extension Real {
         }
     }
 
-    internal var debugDescription: String {
-        switch value {
-        case let .exactInteger(val):
-            val.debugDescription
-
-        case let .floatingPoint(val):
-            val.debugDescription
-
-        case let .fraction(val):
-            val.debugDescription
-        }
-    }
-
     internal var denominator: Self {
         switch value {
         case .exactInteger:
-            return .exactOne
+                .exactOne
 
         case let .floatingPoint(val):
             if val.isInteger {
-                return .inexactOne
+                .inexactOne
             } else {
-                fatalError("\(self) is not an integer")
+                Self(.floatingPoint(_toFraction().denominator.floatingPointValue))
             }
 
         case let .fraction(val):
-            return Self(.exactInteger(val.denominator))
-        }
-    }
-
-    internal var description: String {
-        switch value {
-        case let .exactInteger(val):
-            val.description
-
-        case let .floatingPoint(val):
-            val.description
-
-        case let .fraction(val):
-            val.description
+            Self(.exactInteger(val.denominator))
         }
     }
 
@@ -169,10 +143,10 @@ extension Real {
             self
 
         case let .floatingPoint(val):
-            if let eiValue = val.exactIntegerValue {
-                Self(.exactInteger(eiValue))
+            if val.isInteger {
+                Self(.exactInteger(val.exactIntegerValue))
             } else {
-                fatalError("\(self) is not an integer")
+                Self(.fraction(val.fractionValue))
             }
         }
     }
@@ -183,11 +157,7 @@ extension Real {
             val
 
         case let .floatingPoint(val):
-            if let eiValue = val.exactIntegerValue {
-                eiValue
-            } else {
-                fatalError("Conversion not supported!")
-            }
+            val.exactIntegerValue
 
         case let .fraction(val):
             val.exactIntegerValue
@@ -221,9 +191,7 @@ extension Real {
     }
 
     internal var isEven: Bool {
-        let (val, _) = _toInteger()
-
-        return val.isEven
+        _toInteger().value.isEven
     }
 
     internal var isExact: Bool {
@@ -303,9 +271,7 @@ extension Real {
     }
 
     internal var isOdd: Bool {
-        let (val, _) = _toInteger()
-
-        return val.isOdd
+        _toInteger().value.isOdd
     }
 
     internal var isPositive: Bool {
@@ -353,7 +319,7 @@ extension Real {
             if val.isInteger {
                 self
             } else {
-                fatalError("\(self) is not an integer")
+                Self(.floatingPoint(_toFraction().numerator.floatingPointValue))
             }
 
         case let .fraction(val):
@@ -508,26 +474,29 @@ extension Real {
     }
 
     internal func divided(by other: Self) -> Self {
+        guard !other.isZero
+        else { fatalError("zero divisor") }
+
         switch (value, other.value) {
         case let (.exactInteger(val1), .exactInteger(val2)):
             if val1.isMultiple(of: val2) {
-                Self(.exactInteger(val1.quotient(dividingBy: val2)))
+                return Self(.exactInteger(val1.quotient(dividingBy: val2)))
             } else {
-                Self(.fraction(Fraction(numerator: val1,
-                                        denominator: val2)))
+                return Self(.fraction(Fraction(numerator: val1,
+                                               denominator: val2)))
             }
 
         case let (.floatingPoint(val1), .floatingPoint(val2)):
-            Self(.floatingPoint(val1.divided(by: val2)))
+            return Self(.floatingPoint(val1.divided(by: val2)))
 
         case let (.fraction(val1), .fraction(val2)):
-            Self(.fraction(val1.divided(by: val2)))
+            return Self(.fraction(val1.divided(by: val2)))
 
         case (.floatingPoint, _), (_, .floatingPoint):
-            Self(.floatingPoint(_toFloatingPoint().divided(by: other._toFloatingPoint())))
+            return Self(.floatingPoint(_toFloatingPoint().divided(by: other._toFloatingPoint())))
 
         case (.fraction, _), (_, .fraction):
-            Self(.fraction(_toFraction().divided(by: other._toFraction())))
+            return Self(.fraction(_toFraction().divided(by: other._toFraction())))
         }
     }
 
@@ -738,8 +707,59 @@ extension Real {
         return Self(.exactInteger(rval))
     }
 
-    internal func power(_ other: Self) -> Self {
-        Self(.floatingPoint(_toFloatingPoint().power(other._toFloatingPoint())))
+    internal func rationalize(within other: Self) -> Self? {
+        guard !isNaN, !other.isNaN
+        else { return .nan }
+
+        func findBetween(_ lo: Self,
+                         _ hi: Self) -> Self? {
+            if lo.isInteger {
+                return lo
+            } else {
+                let loInt = lo.floor()
+                let hiInt = hi.floor()
+
+                if loInt.isLess(than: hiInt) {
+                    return loInt.adding(.exactOne)
+                } else {
+                    let loNew = Self.exactOne.divided(by: hi.subtracting(loInt))
+                    let hiNew = Self.exactOne.divided(by: lo.subtracting(loInt))
+
+                    guard let tmp = findBetween(loNew, hiNew)
+                    else { return nil }
+
+                    return loInt.adding(Self.exactOne.divided(by: tmp))
+                }
+            }
+        }
+
+        func doFindBetween(_ lo: Self,
+                           _ hi: Self) -> Self? {
+            if lo.isNegative {
+                findBetween(hi.negated(), lo.negated())?.negated()
+            } else {
+                findBetween(lo, hi)
+            }
+        }
+
+        let delta = other.absoluteValue()
+        let lo = subtracting(delta)
+        let hi = adding(delta)
+
+        guard !isInfinite
+        else { return delta.isInfinite ? .nan : self }
+
+        guard !delta.isInfinite
+        else { return .inexactZero }
+
+        guard lo.isPositive || hi.isNegative
+        else { return isExact ? .exactZero : .inexactZero }
+
+        if lo.isInexact || hi.isInexact {
+            return doFindBetween(lo.exact, hi.exact)?.inexact
+        }
+
+        return doFindBetween(lo, hi)
     }
 
     internal func remainder(dividingBy other: Self) -> Self {
@@ -813,24 +833,19 @@ extension Real {
 
     // MARK: Private Instance Methods
 
-    private func _toInteger() -> (ExactInteger, Bool) {
+    private func _toInteger() -> (value: ExactInteger, inexact: Bool) {
         switch value {
         case let .exactInteger(val):
             (val, false)
 
-        case let .floatingPoint(val):
-            if let eiValue = val.exactIntegerValue {
-                (eiValue, true)
-            } else {
-                fatalError("\(self) is not an integer")
-            }
+        case let .floatingPoint(val) where val.isInteger:
+            (val.exactIntegerValue, true)
 
-        case let .fraction(val):
-            if val.isInteger {
-                (val.numerator, false)
-            } else {
-                fatalError("\(self) is not an integer")
-            }
+        case let .fraction(val) where val.isInteger:
+            (val.numerator, false)
+
+        default:
+            fatalError("\(value) must be an integer")
         }
     }
 
@@ -850,15 +865,49 @@ extension Real {
     private func _toFraction() -> Fraction {
         switch value {
         case let .exactInteger(val):
-            Fraction(numerator: val,
-                     denominator: .one,
-                     reduce: false)
+            return Fraction(numerator: val,
+                            denominator: .one,
+                            reduce: false)
 
         case .floatingPoint:
-            fatalError("Conversion not supported!")
+            fatalError("impossible case")
 
         case let .fraction(val):
-            val
+            return val
+        }
+    }
+}
+
+// MARK: - CustomDebugStringConvertible
+
+extension Real: CustomDebugStringConvertible {
+    internal var debugDescription: String {
+        switch value {
+        case let .exactInteger(val):
+            String(reflecting: val)
+
+        case let .floatingPoint(val):
+            String(reflecting: val)
+
+        case let .fraction(val):
+            String(reflecting: val)
+        }
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension Real: CustomStringConvertible {
+    internal var description: String {
+        switch value {
+        case let .exactInteger(val):
+            String(describing: val)
+
+        case let .floatingPoint(val):
+            String(describing: val)
+
+        case let .fraction(val):
+            String(describing: val)
         }
     }
 }

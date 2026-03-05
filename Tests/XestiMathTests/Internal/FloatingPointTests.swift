@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 import Testing
 @testable import XestiMath
@@ -10,71 +10,75 @@ struct FloatingPointTests {
 
 extension FloatingPointTests {
     @Test
-    func parse() {}
+    func test_parse() {}
 }
 
 // MARK: - Test internal initializers
 
 extension FloatingPointTests {
     @Test
-    func init_binaryFloatingPoint() {}
+    func test_init_binaryFloatingPoint() {}
 
     @Test
-    func init_binaryInteger() {}
+    func test_init_binaryInteger() {}
 }
 
 // MARK: - Test internal instance properties
 
 extension FloatingPointTests {
     @Test
-    func debugDescription() {
-        #expect(FloatingPoint.nan.debugDescription == "floatingPoint<+nan.0>")
-        #expect(FloatingPoint.negativeInfinity.debugDescription == "floatingPoint<-inf.0>")
-        #expect(FloatingPoint.one.debugDescription == "floatingPoint<1.0>")
-        #expect(FloatingPoint.pi.debugDescription == "floatingPoint<3.141592653589793>")
-        #expect(FloatingPoint.positiveInfinity.debugDescription == "floatingPoint<+inf.0>")
-        #expect(FloatingPoint.zero.debugDescription == "floatingPoint<0.0>")
-        #expect(_fp(-0.0).debugDescription == "floatingPoint<0.0>")
-        #expect(_fp(-Double.pi).debugDescription == "floatingPoint<-3.141592653589793>")
-        #expect(_fp(-1).debugDescription == "floatingPoint<-1.0>")
+    func test_debugDescription() {
+        #expect(String(reflecting: FloatingPoint.nan) == "floatingPoint<+nan.0>")
+        #expect(String(reflecting: FloatingPoint.negativeInfinity) == "floatingPoint<-inf.0>")
+        #expect(String(reflecting: FloatingPoint.one) == "floatingPoint<1.0>")
+        #expect(String(reflecting: FloatingPoint.pi) == "floatingPoint<3.141592653589793>")
+        #expect(String(reflecting: FloatingPoint.positiveInfinity) == "floatingPoint<+inf.0>")
+        #expect(String(reflecting: FloatingPoint.zero) == "floatingPoint<0.0>")
+        #expect(String(reflecting: _fp(-0.0)) == "floatingPoint<0.0>")
+        #expect(String(reflecting: _fp(-Double.pi)) == "floatingPoint<-3.141592653589793>")
+        #expect(String(reflecting: _fp(-1)) == "floatingPoint<-1.0>")
     }
 
     @Test
-    func description() {
-        #expect(FloatingPoint.nan.description == "+nan.0")
-        #expect(FloatingPoint.negativeInfinity.description == "-inf.0")
-        #expect(FloatingPoint.one.description == "1.0")
-        #expect(FloatingPoint.pi.description == "3.141592653589793")
-        #expect(FloatingPoint.positiveInfinity.description == "+inf.0")
-        #expect(FloatingPoint.zero.description == "0.0")
-        #expect(_fp(-0.0).description == "0.0")
-        #expect(_fp(-Double.pi).description == "-3.141592653589793")
-        #expect(_fp(-1).description == "-1.0")
+    func test_description() {
+        #expect(String(describing: FloatingPoint.nan) == "+nan.0")
+        #expect(String(describing: FloatingPoint.negativeInfinity) == "-inf.0")
+        #expect(String(describing: FloatingPoint.one) == "1.0")
+        #expect(String(describing: FloatingPoint.pi) == "3.141592653589793")
+        #expect(String(describing: FloatingPoint.positiveInfinity) == "+inf.0")
+        #expect(String(describing: FloatingPoint.zero) == "0.0")
+        #expect(String(describing: _fp(-0.0)) == "0.0")
+        #expect(String(describing: _fp(-Double.pi)) == "-3.141592653589793")
+        #expect(String(describing: _fp(-1)) == "-1.0")
     }
 
     @Test
-    func doubleValue() {
+    func test_doubleValue() {
     }
 
     @Test
-    func exactIntegerValue() {
-        #expect(FloatingPoint.nan.exactIntegerValue == nil)
-        #expect(FloatingPoint.negativeInfinity.exactIntegerValue == nil)
-        #expect(FloatingPoint.one.exactIntegerValue!.isEqual(to: _ei(1)))   // swiftlint:disable:this force_unwrapping
-        #expect(FloatingPoint.pi.exactIntegerValue == nil)
-        #expect(FloatingPoint.positiveInfinity.exactIntegerValue == nil)
-        #expect(FloatingPoint.zero.exactIntegerValue!.isEqual(to: _ei(0)))  // swiftlint:disable:this force_unwrapping
-        #expect(_fp(-0.0).exactIntegerValue!.isEqual(to: _ei(0)))           // swiftlint:disable:this force_unwrapping
-        #expect(_fp(-Double.pi).exactIntegerValue == nil)
-        #expect(_fp(-1).exactIntegerValue!.isEqual(to: _ei(-1)))            // swiftlint:disable:this force_unwrapping
+    func test_exactIntegerValue() {
+        #expect(_fp(-0.0).exactIntegerValue.isEqual(to: _ei(0)))
+        #expect(_fp(-1).exactIntegerValue.isEqual(to: _ei(-1)))
+        #expect(FloatingPoint.one.exactIntegerValue.isEqual(to: _ei(1)))
+        #expect(FloatingPoint.zero.exactIntegerValue.isEqual(to: _ei(0)))
     }
 
     @Test
-    func floatValue() {
+    func test_floatValue() {
     }
 
     @Test
-    func isFinite() {
+    func test_fractionValue() {
+        #expect(_fp(-1.75).fractionValue.isEqual(to: _fr(-7, 4)))
+        #expect(_fp(1.03125).fractionValue.isEqual(to: _fr(33, 32)))
+        #expect(_fp(5.0 / 17.0).fractionValue.isEqual(to: _fr(5, 17)))
+        #expect(FloatingPoint.pi.fractionValue.isEqual(to: _fr(355, 113)))
+        #expect(FloatingPoint.zero.fractionValue.isEqual(to: _fr(0, 1)))
+    }
+
+    @Test
+    func test_isFinite() {
         #expect(!FloatingPoint.nan.isFinite)
         #expect(!FloatingPoint.negativeInfinity.isFinite)
         #expect(FloatingPoint.one.isFinite)
@@ -84,7 +88,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isInfinite() {
+    func test_isInfinite() {
         #expect(!FloatingPoint.nan.isInfinite)
         #expect(FloatingPoint.negativeInfinity.isInfinite)
         #expect(!FloatingPoint.one.isInfinite)
@@ -94,7 +98,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isInteger() {
+    func test_isInteger() {
         #expect(!FloatingPoint.nan.isInteger)
         #expect(!FloatingPoint.negativeInfinity.isInteger)
         #expect(FloatingPoint.one.isInteger)
@@ -104,7 +108,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isNaN() {
+    func test_isNaN() {
         #expect(FloatingPoint.nan.isNaN)
         #expect(!FloatingPoint.negativeInfinity.isNaN)
         #expect(!FloatingPoint.one.isNaN)
@@ -114,7 +118,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isNegative() {
+    func test_isNegative() {
         #expect(!FloatingPoint.nan.isNegative)
         #expect(FloatingPoint.negativeInfinity.isNegative)
         #expect(!FloatingPoint.one.isNegative)
@@ -127,7 +131,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isPositive() {
+    func test_isPositive() {
         #expect(!FloatingPoint.nan.isPositive)
         #expect(!FloatingPoint.negativeInfinity.isPositive)
         #expect(FloatingPoint.one.isPositive)
@@ -140,7 +144,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func isZero() {
+    func test_isZero() {
         #expect(!FloatingPoint.nan.isZero)
         #expect(!FloatingPoint.negativeInfinity.isZero)
         #expect(!FloatingPoint.one.isZero)
@@ -157,46 +161,49 @@ extension FloatingPointTests {
 
 extension FloatingPointTests {
     @Test
-    func adding() {}
+    func test_adding() {}
 
     @Test
-    func ceiling() {}
+    func test_ceiling() {}
 
     @Test
-    func cosine() {}
+    func test_compare_to() {}
 
     @Test
-    func divided_by() {}
+    func test_cosine() {}
 
     @Test
-    func exponential() {}
+    func test_divided_by() {}
 
     @Test
-    func exponential_base() {}
+    func test_exponential() {}
 
     @Test
-    func exponentialBase2() {}
+    func test_exponential_base() {}
 
     @Test
-    func exponentialBase10() {}
+    func test_exponentialBase2() {}
 
     @Test
-    func floor() {}
+    func test_exponentialBase10() {}
 
     @Test
-    func hyperbolicCosine() {}
+    func test_floor() {}
 
     @Test
-    func hyperbolicSine() {}
+    func test_hyperbolicCosine() {}
 
     @Test
-    func hyperbolicTangent() {}
+    func test_hyperbolicSine() {}
 
     @Test
-    func hypotenuse_with() {}
+    func test_hyperbolicTangent() {}
 
     @Test
-    func inverseCosine() {
+    func test_hypotenuse_with() {}
+
+    @Test
+    func test_inverseCosine() {
         #expect(_fp(-0.5).inverseCosine().testEqual(to: _fp(Double.acos(-0.5))))
         #expect(_fp(-0.7071).inverseCosine().testEqual(to: _fp(Double.acos(-0.7071))))
         #expect(_fp(-0.99).inverseCosine().testEqual(to: _fp(Double.acos(-0.99))))
@@ -210,16 +217,16 @@ extension FloatingPointTests {
     }
 
     @Test
-    func inverseHyperbolicCosine() {}
+    func test_inverseHyperbolicCosine() {}
 
     @Test
-    func inverseHyperbolicSine() {}
+    func test_inverseHyperbolicSine() {}
 
     @Test
-    func inverseHyberbolicTangent() {}
+    func test_inverseHyberbolicTangent() {}
 
     @Test
-    func inverseSine() {
+    func test_inverseSine() {
         #expect(_fp(-0.5).inverseSine().testEqual(to: _fp(Double.asin(-0.5))))
         #expect(_fp(-0.7071).inverseSine().testEqual(to: _fp(Double.asin(-0.7071))))
         #expect(_fp(-0.99).inverseSine().testEqual(to: _fp(Double.asin(-0.99))))
@@ -233,7 +240,7 @@ extension FloatingPointTests {
     }
 
     @Test
-    func inverseTangent() {
+    func test_inverseTangent() {
         #expect(_fp(-0.5).inverseTangent().testEqual(to: _fp(Double.atan(-0.5))))
         #expect(_fp(-1).inverseTangent().testEqual(to: _fp(Double.atan(-1))))
         #expect(_fp(-10).inverseTangent().testEqual(to: _fp(Double.atan(-10))))
@@ -247,52 +254,49 @@ extension FloatingPointTests {
     }
 
     @Test
-    func inverseTangent2() {}
+    func test_inverseTangent2() {}
 
     @Test
-    func isEqual_to() {}
+    func test_isEqual_to() {}
 
     @Test
-    func isLess_than() {}
+    func test_logarithm() {}
 
     @Test
-    func logarithm() {}
+    func test_logarithm_base() {}
 
     @Test
-    func logarithm_base() {}
+    func test_logarithmBase2() {}
 
     @Test
-    func logarithmBase2() {}
+    func test_logarithmBase10() {}
 
     @Test
-    func logarithmBase10() {}
+    func test_multiplied_by() {}
 
     @Test
-    func multiplied_by() {}
+    func test_negated() {}
 
     @Test
-    func negated() {}
+    func test_power() {}
 
     @Test
-    func power() {}
+    func test_round() {}
 
     @Test
-    func round() {}
+    func test_sine() {}
 
     @Test
-    func sine() {}
+    func test_squareRoot() {}
 
     @Test
-    func squareRoot() {}
+    func test_subtracting() {}
 
     @Test
-    func subtracting() {}
+    func test_tangent() {}
 
     @Test
-    func tangent() {}
-
-    @Test
-    func truncate() {}
+    func test_truncate() {}
 }
 
 // MARK: -
@@ -304,6 +308,12 @@ extension FloatingPointTests {
 
     private func _fp<T: BinaryFloatingPoint>(_ val: T) -> FloatingPoint {
         FloatingPoint(val)
+    }
+
+    private func _fr<T: BinaryInteger>(_ num: T,
+                                       _ den: T) -> Fraction {
+        Fraction(numerator: _ei(num),
+                 denominator: _ei(den))
     }
 }
 

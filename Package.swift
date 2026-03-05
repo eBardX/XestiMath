@@ -1,6 +1,6 @@
 // swift-tools-version: 6.2
 
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025–2026 John Gary Pusey (see LICENSE.md)
 
 import PackageDescription
 
@@ -12,12 +12,16 @@ let package = Package(name: "XestiMath",
                       dependencies: [.package(url: "https://github.com/attaswift/BigInt.git",
                                               .upToNextMajor(from: "5.7.0")),
                                      .package(url: "https://github.com/apple/swift-numerics",
-                                              .upToNextMajor(from: "1.1.0"))],
+                                              .upToNextMajor(from: "1.1.0")),
+                                     .package(url: "https://github.com/eBardX/XestiTools.git",
+                                              .upToNextMajor(from: "6.0.0"))],
                       targets: [.target(name: "XestiMath",
                                         dependencies: [.product(name: "BigInt",
                                                                 package: "BigInt"),
                                                        .product(name: "Numerics",
-                                                                package: "swift-numerics")]),
+                                                                package: "swift-numerics"),
+                                                       .product(name: "XestiTools",
+                                                                package: "XestiTools")]),
                                 .testTarget(name: "XestiMathTests",
                                             dependencies: [.target(name: "XestiMath")])],
                       swiftLanguageModes: [.v6])

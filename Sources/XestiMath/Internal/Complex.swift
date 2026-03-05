@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 import ComplexModule
 import RealModule
@@ -35,33 +35,33 @@ extension Complex {
                        phase: angle.floatingPointValue.doubleValue)._toInternalFormat()
     }
 
-    internal static func parse(_ text: String,
+    internal static func parse(input: String,
                                radix: Number.Radix,
                                exactness: Number.Exactness) -> Self? {
-        let lcText = text.lowercased()
+        let lcText = input.lowercased()
 
-        if let (mtval, atval) = _matchComplexP(lcText,
+        if let (mtval, atval) = _matchComplexP(input: lcText,
                                                radix: radix),
-           let mval = Real.parse(mtval,
+           let mval = Real.parse(input: mtval,
                                  radix: radix,
                                  exactness: exactness),
-           let aval = Real.parse(atval,
+           let aval = Real.parse(input: atval,
                                  radix: radix,
                                  exactness: exactness) {
             return Self.fromPolar(magnitude: mval,
                                   angle: aval)
         }
 
-        if let (rtval, itval) = _matchComplexR(lcText,
+        if let (rtval, itval) = _matchComplexR(input: lcText,
                                                radix: radix),
-           let rval = Real.parse(rtval,
+           let rval = Real.parse(input: rtval,
                                  radix: radix,
                                  exactness: exactness),
-           let ival = Real.parse(itval,
+           let ival = Real.parse(input: itval,
                                  radix: radix,
                                  exactness: exactness) {
-            return Self(real: rval,
-                        imaginary: ival)
+            return Self(realPart: rval,
+                        imaginaryPart: ival)
         }
 
         return nil
@@ -69,12 +69,12 @@ extension Complex {
 
     // MARK: Internal Initializers
 
-    internal init(real: Real,
-                  imaginary: Real) {
-        if real.isExact != imaginary.isExact {
-            self.init(real.inexact, imaginary.inexact)
+    internal init(realPart: Real,
+                  imaginaryPart: Real) {
+        if realPart.isExact != imaginaryPart.isExact {
+            self.init(realPart.inexact, imaginaryPart.inexact)
         } else {
-            self.init(real, imaginary)
+            self.init(realPart, imaginaryPart)
         }
     }
 
@@ -90,32 +90,20 @@ extension Complex {
     }
 
     internal var conjugate: Self {
-        Self(real: rvalue,
-             imaginary: ivalue.negated())
-    }
-
-    internal var debugDescription: String {
-        "complex<\(rvalue.debugDescription), \(ivalue.debugDescription)>"
-    }
-
-    internal var description: String {
-        if ivalue.isNegative {
-            "\(rvalue.description)\(ivalue.description)"
-        } else {
-            "\(rvalue.description)+\(ivalue.description)"
-        }
+        Self(realPart: rvalue,
+             imaginaryPart: ivalue.negated())
     }
 
     internal var exact: Self {
         if rvalue.isInexact || ivalue.isInexact {
-            Self(real: rvalue.exact,
-                 imaginary: ivalue.exact)
+            Self(realPart: rvalue.exact,
+                 imaginaryPart: ivalue.exact)
         } else {
             self
         }
     }
 
-    internal var imaginary: Real {
+    internal var imaginaryPart: Real {
         guard rvalue.isFinite,
               ivalue.isFinite
         else { return .nan }
@@ -125,8 +113,8 @@ extension Complex {
 
     internal var inexact: Self {
         if rvalue.isExact || ivalue.isExact {
-            Self(real: rvalue.inexact,
-                 imaginary: ivalue.inexact)
+            Self(realPart: rvalue.inexact,
+                 imaginaryPart: ivalue.inexact)
         } else {
             self
         }
@@ -176,7 +164,7 @@ extension Complex {
         return rvalue.hypotenuse(with: ivalue)
     }
 
-    internal var real: Real {
+    internal var realPart: Real {
         guard rvalue.isFinite,
               ivalue.isFinite
         else { return .nan }
@@ -187,8 +175,8 @@ extension Complex {
     // MARK: Internal Instance Methods
 
     internal func adding(_ other: Self) -> Self {
-        Self(real: rvalue.adding(other.rvalue),
-             imaginary: ivalue.adding(other.ivalue))
+        Self(realPart: rvalue.adding(other.rvalue),
+             imaginaryPart: ivalue.adding(other.ivalue))
     }
 
     internal func cosine() -> Self {
@@ -272,17 +260,13 @@ extension Complex {
     }
 
     internal func multiplied(by other: Self) -> Self {
-        Self(real: rvalue.multiplied(by: other.rvalue).subtracting(ivalue.multiplied(by: other.ivalue)),
-             imaginary: rvalue.multiplied(by: other.ivalue).adding(ivalue.multiplied(by: other.rvalue)))
+        Self(realPart: rvalue.multiplied(by: other.rvalue).subtracting(ivalue.multiplied(by: other.ivalue)),
+             imaginaryPart: rvalue.multiplied(by: other.ivalue).adding(ivalue.multiplied(by: other.rvalue)))
     }
 
     internal func negated() -> Self {
-        Self(real: rvalue.negated(),
-             imaginary: ivalue.negated())
-    }
-
-    internal func power(_ other: Self) -> Self {
-        ExternalFormat.pow(_toExternalFormat(), other._toExternalFormat())._toInternalFormat()
+        Self(realPart: rvalue.negated(),
+             imaginaryPart: ivalue.negated())
     }
 
     internal func sine() -> Self {
@@ -294,8 +278,8 @@ extension Complex {
     }
 
     internal func subtracting(_ other: Self) -> Self {
-        Self(real: rvalue.subtracting(other.rvalue),
-             imaginary: ivalue.subtracting(other.ivalue))
+        Self(realPart: rvalue.subtracting(other.rvalue),
+             imaginaryPart: ivalue.subtracting(other.ivalue))
     }
 
     internal func tangent() -> Self {
@@ -309,25 +293,25 @@ extension Complex {
 
     // MARK: Private Type Properties
 
-    private static let efLn10: ExternalFormat = .init(.log(10), 0)
-    private static let efLn2: ExternalFormat  = .init(.log(2), 0)
+    private static let efLn10 = ExternalFormat(.log(10), 0)
+    private static let efLn2  = ExternalFormat(.log(2), 0)
 
     // MARK: Private Type Methods
 
-    private static func _matchComplexP(_ text: String,
+    private static func _matchComplexP(input: String,
                                        radix: Number.Radix) -> (String, String)? {
         let match = switch radix {
         case .binary:
-            text.wholeMatch(of: Number.cxBinValueP)
+            input.wholeMatch(of: Number.cxBinValueP)
 
         case .decimal:
-            text.wholeMatch(of: Number.cxDecValueP)
+            input.wholeMatch(of: Number.cxDecValueP)
 
         case .hexadecimal:
-            text.wholeMatch(of: Number.cxHexValueP)
+            input.wholeMatch(of: Number.cxHexValueP)
 
         case .octal:
-            text.wholeMatch(of: Number.cxOctValueP)
+            input.wholeMatch(of: Number.cxOctValueP)
         }
 
         guard let moutput = match?.1,
@@ -337,20 +321,20 @@ extension Complex {
         return (String(moutput), String(aoutput))
     }
 
-    private static func _matchComplexR(_ text: String,
+    private static func _matchComplexR(input: String,
                                        radix: Number.Radix) -> (String, String)? {
         let match = switch radix {
         case .binary:
-            text.wholeMatch(of: Number.cxBinValueR)
+            input.wholeMatch(of: Number.cxBinValueR)
 
         case .decimal:
-            text.wholeMatch(of: Number.cxDecValueR)
+            input.wholeMatch(of: Number.cxDecValueR)
 
         case .hexadecimal:
-            text.wholeMatch(of: Number.cxHexValueR)
+            input.wholeMatch(of: Number.cxHexValueR)
 
         case .octal:
-            text.wholeMatch(of: Number.cxOctValueR)
+            input.wholeMatch(of: Number.cxOctValueR)
         }
 
         guard let routput = match?.1,
@@ -363,8 +347,28 @@ extension Complex {
     // MARK: Private Instance Methods
 
     private func _toExternalFormat() -> ExternalFormat {
-        ExternalFormat(real.floatingPointValue.doubleValue,
-                       imaginary.floatingPointValue.doubleValue)
+        ExternalFormat(realPart.floatingPointValue.doubleValue,
+                       imaginaryPart.floatingPointValue.doubleValue)
+    }
+}
+
+// MARK: - CustomDebugStringConvertible
+
+extension Complex: CustomDebugStringConvertible {
+    internal var debugDescription: String {
+        "complex<\(String(reflecting: rvalue)), \(String(reflecting: ivalue))>"
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension Complex: CustomStringConvertible {
+    internal var description: String {
+        if ivalue.isNegative {
+            String(describing: rvalue) + String(describing: ivalue) + "i"
+        } else {
+            String(describing: rvalue) + "+" + String(describing: ivalue) + "i"
+        }
     }
 }
 
@@ -377,7 +381,7 @@ extension Complex: Sendable {
 
 extension ComplexModule.Complex<Double> {
     fileprivate func _toInternalFormat() -> XestiMath.Complex {
-        XestiMath.Complex(real: XestiMath.Real(real),
-                          imaginary: XestiMath.Real(imaginary))
+        XestiMath.Complex(realPart: XestiMath.Real(real),
+                          imaginaryPart: XestiMath.Real(imaginary))
     }
 }

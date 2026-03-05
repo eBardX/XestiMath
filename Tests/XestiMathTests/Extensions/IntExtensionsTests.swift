@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 import Testing
 @testable import XestiMath
@@ -10,7 +10,7 @@ struct IntExtensionsTests {
 
 extension IntExtensionsTests {
     @Test
-    func modulo() {
+    func test_modulo() {
     }
 }
 

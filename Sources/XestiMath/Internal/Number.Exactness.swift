@@ -1,10 +1,10 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 extension Number {
 
-    // MARK: Public Nested Types
+    // MARK: Internal Nested Types
 
-    public enum Exactness {
+    internal enum Exactness {
         case exact
         case inexact
         case unspecified

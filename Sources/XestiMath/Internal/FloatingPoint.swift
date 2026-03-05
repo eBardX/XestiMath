@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 import Darwin
 import RealModule
@@ -31,10 +31,10 @@ extension FloatingPoint {
 
     // MARK: Internal Type Methods
 
-    internal static func parse(_ text: String) -> Self? {
-        let lcText = text.lowercased()
+    internal static func parse(input: String) -> Self? {
+        let lcText = input.lowercased()
 
-        if let tval = _matchFloatingPoint(lcText) {
+        if let tval = _matchFloatingPoint(input: lcText) {
             if let fpval = specials[tval] {
                 return Self(fpval)
             }
@@ -71,32 +71,23 @@ extension FloatingPoint {
 
     // MARK: Internal Instance Properties
 
-    internal var debugDescription: String {
-        "floatingPoint<\(description)>"
-    }
-
-    internal var description: String {
-        if value.isNaN {
-            "+nan.0"
-        } else if value.isInfinite {
-            "\(value < 0 ? "-" : "+")inf.0"
-        } else if value.isZero {
-            "0.0"   // just in case -0.0 creeped in
-        } else {
-            value.description
-        }
-    }
-
     internal var doubleValue: Double {
         value
     }
 
-    internal var exactIntegerValue: ExactInteger? {
+    internal var exactIntegerValue: ExactInteger {
         ExactInteger(value)
     }
 
     internal var floatValue: Float {
         Float(value)
+    }
+
+    internal var fractionValue: Fraction {
+        let frac = Double.convertToFraction(value)
+
+        return Fraction(numerator: ExactInteger(frac.numerator),
+                        denominator: ExactInteger(frac.denominator))
     }
 
     internal var isFinite: Bool {
@@ -246,10 +237,6 @@ extension FloatingPoint {
         Self(-value)
     }
 
-    internal func power(_ other: Self) -> Self {
-        Self(Double.pow(value, other.value))
-    }
-
     internal func round() -> Self {
         Self(Darwin.round(value))
     }
@@ -283,11 +270,43 @@ extension FloatingPoint {
 
     // MARK: Private Type Methods
 
-    private static func _matchFloatingPoint(_ text: String) -> String? {
-        guard let output = text.wholeMatch(of: Number.fpDecValue)?.output
+    private static func _matchFloatingPoint(input: String) -> String? {
+        guard let output = input.wholeMatch(of: Number.fpDecValue)?.output
         else { return nil }
 
         return String(output)
+    }
+}
+
+// MARK: - CustomDebugStringConvertible
+
+extension FloatingPoint: CustomDebugStringConvertible {
+    internal var debugDescription: String {
+        if value.isNaN {
+            "floatingPoint<+nan.0>"
+        } else if value.isInfinite {
+            "floatingPoint<\(value < 0 ? "-" : "+")inf.0>"
+        } else if value.isZero {
+            "floatingPoint<0.0>"    // just in case -0.0 creeped in
+        } else {
+            "floatingPoint<\(String(reflecting: value))>"
+        }
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension FloatingPoint: CustomStringConvertible {
+    internal var description: String {
+        if value.isNaN {
+            "+nan.0"
+        } else if value.isInfinite {
+            "\(value < 0 ? "-" : "+")inf.0"
+        } else if value.isZero {
+            "0.0"                   // just in case -0.0 creeped in
+        } else {
+            String(describing: value)
+        }
     }
 }
 

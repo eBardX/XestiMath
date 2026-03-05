@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 import BigInt
 
@@ -14,7 +14,7 @@ extension Number {
     // MARK: Public Initializers
 
     public init?<S: StringProtocol>(_ value: S) {
-        if let tmpValue = Self.parse(value) {
+        if let tmpValue = Self.parse(input: value) {
             self = tmpValue
         } else {
             return nil
@@ -31,8 +31,8 @@ extension Number {
 
     public init(magnitude: Self,
                 angle: Self) {
-        self.init(.complex(Complex.fromPolar(magnitude: magnitude.toReal(),
-                                             angle: angle.toReal())))
+        self.init(.complex(Complex.fromPolar(magnitude: magnitude.checkReal(),
+                                             angle: angle.checkReal())))
     }
 
     public init<T: BinaryFloatingPoint>(magnitude: T,
@@ -49,8 +49,8 @@ extension Number {
 
     public init(numerator: Self,
                 denominator: Self) {
-        self.init(.real(Real(numerator: numerator.toExactInteger(),
-                             denominator: denominator.toExactInteger())))
+        self.init(.real(Real(numerator: numerator.checkExactInteger(),
+                             denominator: denominator.checkExactInteger())))
     }
 
     public init<T: BinaryInteger>(numerator: T,
@@ -59,81 +59,81 @@ extension Number {
                              denominator: ExactInteger(denominator))))
     }
 
-    public init(real: Self,
-                imaginary: Self) {
-        self.init(.complex(Complex(real: real.toReal(),
-                                   imaginary: imaginary.toReal())))
+    public init(realPart: Self,
+                imaginaryPart: Self) {
+        self.init(.complex(Complex(realPart: realPart.checkReal(),
+                                   imaginaryPart: imaginaryPart.checkReal())))
     }
 
-    public init<T: BinaryFloatingPoint>(real: T,
-                                        imaginary: T) {
-        self.init(.complex(Complex(real: Real(real),
-                                   imaginary: Real(imaginary))))
+    public init<T: BinaryFloatingPoint>(realPart: T,
+                                        imaginaryPart: T) {
+        self.init(.complex(Complex(realPart: Real(realPart),
+                                   imaginaryPart: Real(imaginaryPart))))
     }
 
-    public init<T: BinaryInteger>(real: T,
-                                  imaginary: T) {
-        self.init(.complex(Complex(real: Real(real),
-                                   imaginary: Real(imaginary))))
+    public init<T: BinaryInteger>(realPart: T,
+                                  imaginaryPart: T) {
+        self.init(.complex(Complex(realPart: Real(realPart),
+                                   imaginaryPart: Real(imaginaryPart))))
     }
 
     // MARK: Public Instance Properties
 
     public var doubleValue: Double {
-        toReal().floatingPointValue.doubleValue
+        checkReal().floatingPointValue.doubleValue
     }
 
     public var floatValue: Float {
-        toReal().floatingPointValue.floatValue
+        checkReal().floatingPointValue.floatValue
     }
 
     @available(iOS 18.0, macOS 15.0, *)
     public var int128Value: Int128 {
-        toReal().exactIntegerValue.int128Value
+        checkExactInteger().int128Value
     }
 
     public var int16Value: Int16 {
-        toReal().exactIntegerValue.int16Value
+        checkExactInteger().int16Value
     }
 
     public var int32Value: Int32 {
-        toReal().exactIntegerValue.int32Value
+        checkExactInteger().int32Value
     }
 
     public var int64Value: Int64 {
-        toReal().exactIntegerValue.int64Value
+        checkExactInteger().int64Value
     }
 
     public var int8Value: Int8 {
-        toReal().exactIntegerValue.int8Value
+        checkExactInteger().int8Value
     }
 
     public var intValue: Int {
-        toReal().exactIntegerValue.intValue
+        checkExactInteger().intValue
     }
 
     @available(iOS 18.0, macOS 15.0, *)
     public var uint128Value: UInt128 {
-        toReal().exactIntegerValue.uint128Value
+        checkExactInteger().uint128Value
     }
 
     public var uint16Value: UInt16 {
-        toReal().exactIntegerValue.uint16Value
+        checkExactInteger().uint16Value
     }
 
     public var uint32Value: UInt32 {
-        toReal().exactIntegerValue.uint32Value
+        checkExactInteger().uint32Value
     }
 
     public var uint64Value: UInt64 {
-        toReal().exactIntegerValue.uint64Value
+        checkExactInteger().uint64Value
     }
 
     public var uint8Value: UInt8 {
-        toReal().exactIntegerValue.uint8Value
+        checkExactInteger().uint8Value
     }
 
     public var uintValue: UInt {
-        toReal().exactIntegerValue.uintValue
+        checkExactInteger().uintValue
     }
 }

@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025—2026 John Gary Pusey (see LICENSE.md)
 
 internal struct Fraction {
 
@@ -22,15 +22,15 @@ extension Fraction {
 
     // MARK: Internal Type Methods
 
-    internal static func parse(_ text: String,
+    internal static func parse(input: String,
                                radix: Number.Radix) -> Self? {
-        let lcText = text.lowercased()
+        let lcText = input.lowercased()
 
-        if let (ntval, dtval) = _matchFraction(lcText,
+        if let (ntval, dtval) = _matchFraction(input: lcText,
                                                radix: radix),
-           let nval = ExactInteger.parse(ntval,
+           let nval = ExactInteger.parse(input: ntval,
                                          radix: radix),
-           let dval = ExactInteger.parse(dtval,
+           let dval = ExactInteger.parse(input: dtval,
                                          radix: radix) {
             return Self(numerator: nval,
                         denominator: dval)
@@ -44,11 +44,11 @@ extension Fraction {
     internal init(numerator: ExactInteger,
                   denominator: ExactInteger,
                   reduce: Bool = true) {
+        precondition(!denominator.isZero,
+                     "denominator must not be zero")
+
         var num = numerator
         var den = denominator
-
-        guard !den.isZero
-        else { fatalError("Denominator must not be zero!") }
 
         if den.isNegative {
             num = num.negated()
@@ -74,16 +74,8 @@ extension Fraction {
 
     // MARK: Internal Instance Properties
 
-    internal var debugDescription: String {
-        "fraction<\(nvalue.debugDescription), \(dvalue.debugDescription)>"
-    }
-
     internal var denominator: ExactInteger {
         dvalue
-    }
-
-    internal var description: String {
-        "\(nvalue.description)/\(dvalue.description)"
     }
 
     internal var exactIntegerValue: ExactInteger {
@@ -204,20 +196,20 @@ extension Fraction {
 
     // MARK: Private Type Methods
 
-    private static func _matchFraction(_ text: String,
+    private static func _matchFraction(input: String,
                                        radix: Number.Radix) -> (String, String)? {
         let match = switch radix {
         case .binary:
-            text.wholeMatch(of: Number.fracBinValue)
+            input.wholeMatch(of: Number.fracBinValue)
 
         case .decimal:
-            text.wholeMatch(of: Number.fracDecValue)
+            input.wholeMatch(of: Number.fracDecValue)
 
         case .hexadecimal:
-            text.wholeMatch(of: Number.fracHexValue)
+            input.wholeMatch(of: Number.fracHexValue)
 
         case .octal:
-            text.wholeMatch(of: Number.fracOctValue)
+            input.wholeMatch(of: Number.fracOctValue)
         }
 
         guard let noutput = match?.1,
@@ -225,6 +217,20 @@ extension Fraction {
         else { return nil }
 
         return (String(noutput), String(doutput))
+    }
+}
+
+extension Fraction: CustomDebugStringConvertible {
+    internal var debugDescription: String {
+        "fraction<\(String(reflecting: nvalue)), \(String(reflecting: dvalue))>"
+    }
+}
+
+// MARK: - CustomStringConvertible
+
+extension Fraction: CustomStringConvertible {
+    internal var description: String {
+        String(describing: nvalue) + "/" + String(describing: dvalue)
     }
 }
 
