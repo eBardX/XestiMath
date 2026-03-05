@@ -7,6 +7,10 @@ extension Number.FormatStyle {
 
     // MARK: Public Nested Types
 
+    /// A format style that converts a number value to an attributed string.
+    ///
+    /// Use the ``attributed`` modifier on a ``Number/FormatStyle`` instance to
+    /// create a format style of this type.
     public struct Attributed {
 
         // MARK: Internal Initializers
@@ -27,6 +31,16 @@ extension Number.FormatStyle.Attributed: FormatStyle {
 
     // MARK: Public Instance Methods
 
+    /// Formats the provided number, using this style.
+    ///
+    /// - Parameter value:  The number to format.
+    ///
+    /// - Returns:  An attributed string representation of the number, formatted
+    ///             according to this style. The returned string contains
+    ///             attributes from the
+    ///             `AttributeScopes.XestiMathAttributes.FormattedNumberAttributes`
+    ///             attribute scope to indicate runs formatted by this format
+    ///             style.
     public func format(_ value: Number) -> AttributedString {
         switch value.value {
         case let .complex(cxValue):

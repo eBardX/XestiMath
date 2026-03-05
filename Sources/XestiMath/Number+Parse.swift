@@ -4,6 +4,15 @@ extension Number {
 
     // MARK: Public Type Methods
 
+    /// Parses the provided input string into a number.
+    ///
+    /// The input string is parsed in accordance with the number syntax defined
+    /// in § 7.1.1 of the [Revised⁷ Report on the Algorithmic Language
+    /// Scheme](https://small.r7rs.org/attachment/r7rs.pdf).
+    ///
+    /// - Parameter input:  The input string to parse.
+    ///
+    /// - Returns:  The parsed number on success, or `nil` on failure.
     public static func parse<S: StringProtocol>(input: S) -> Self? {
         guard let (text, radix, exactness) = _matchPrefixes(input: String(input))
         else { return nil }

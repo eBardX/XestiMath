@@ -1,5 +1,15 @@
 // © 2025—2026 John Gary Pusey (see LICENSE.md)
 
+/// A type that can be represented by a number value.
+///
+/// With a `NumberRepresentable` type, you can losslessly convert back and forth
+/// between a custom type and a number value.
+///
+/// In addition, you can restrict the number values that are considered valid
+/// representations of your custom type.
+///
+/// Using the number value of a conforming type simplifies conformance to other
+/// protocols, such as `Codable`, `Comparable`, and `Hashable`.
 public protocol NumberRepresentable: Codable,
                                      Comparable,
                                      CustomDebugStringConvertible,
@@ -10,48 +20,113 @@ public protocol NumberRepresentable: Codable,
                                      ExpressibleByStringLiteral,
                                      Hashable,
                                      Sendable {
+    /// The string to print if `requireValid(_:file:line:)` determines the
+    /// provided number value is not valid.
     static var invalidMessage: String { get }
 
+    /// Determines if the provided number value is a valid representation of
+    /// this type.
+    ///
+    /// By default, _any_ number value is valid.
+    ///
+    /// - Parameter numberValue:    The number value to check for validity.
+    ///
+    /// - Returns:  `true` when the provided number value is a valid
+    ///             representation for this type; `false` otherwise.
     static func isValid(_ numberValue: Number) -> Bool
 
+    /// Checks that the provided number value is a valid representation for this
+    /// type.
+    ///
+    /// By default, `precondition(_:_:file:line:)` is used, along with
+    /// `isValid(_:)` and `invalidMessage`, to enforce the validity check.
+    ///
+    /// - Parameter numberValue:    The number value to check for validity.
+    /// - Parameter file:           The file name to print with `invalidMessage`
+    ///                             if the validity check fails. The default is
+    ///                             the file where `requireValid(_:file:line:)`
+    ///                             is called.
+    /// - Parameter line:           The line number to print with
+    ///                             `invalidMessage` if the validity check
+    ///                             fails. The default is the line number where
+    ///                             `requireValid(_:file:line:)` is called.
+    ///
+    /// - Returns:  The provided number value as a convenience to the caller.
     static func requireValid(_ numberValue: Number,
                              file: StaticString,
                              line: UInt) -> Number
 
+    /// Creates a new instance with the provided number value.
+    ///
+    /// If the provided number value is determined to be invalid, this
+    /// initializer stops program execution.
+    ///
+    /// Typically, this initializer should be implemented as follows:
+    ///
+    /// ```swift
+    /// public init(_ numberValue: String) {
+    ///     self.numberValue = Self.requireValid(intValue)
+    /// }
+    /// ```
+    ///
+    /// - Parameter numberValue:    The number value to use for the new
+    ///                             instance.
     init(_ numberValue: Number)
 
+    /// Creates a new instance with the provided number value.
+    ///
+    /// If the provided number value is determined to be invalid, this
+    /// initializer returns `nil`.
+    ///
+    /// - Parameter numberValue:    The number value to use for the new
+    ///                             instance.
     init?(numberValue: Number)
 
+    /// The number value converted to a `Double` value.
     var doubleValue: Double { get }
 
+    /// The number value converted to a `Float` value.
     var floatValue: Float { get }
 
+    /// The number value converted to an `Int128` value.
     @available(iOS 18.0, macOS 15.0, *)
     var int128Value: Int128 { get }
 
+    /// The number value converted to an `Int16` value.
     var int16Value: Int16 { get }
 
+    /// The number value converted to an `Int32` value.
     var int32Value: Int32 { get }
 
+    /// The number value converted to an `Int64` value.
     var int64Value: Int64 { get }
 
+    /// The number value converted to an `Int8` value.
     var int8Value: Int8 { get }
 
+    /// The number value converted to an `Int` value.
     var intValue: Int { get }
 
+    /// The number value that represents this type.
     var numberValue: Number { get }
 
+    /// The number value converted to a `UInt128` value.
     @available(iOS 18.0, macOS 15.0, *)
     var uint128Value: UInt128 { get }
 
+    /// The number value converted to a `UInt16` value.
     var uint16Value: UInt16 { get }
 
+    /// The number value converted to a `UInt32` value.
     var uint32Value: UInt32 { get }
 
+    /// The number value converted to a `UInt64` value.
     var uint64Value: UInt64 { get }
 
+    /// The number value converted to a `UInt8` value.
     var uint8Value: UInt8 { get }
 
+    /// The number value converted to a `UInt` value.
     var uintValue: UInt { get }
 }
 

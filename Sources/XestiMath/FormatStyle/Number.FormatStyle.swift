@@ -8,10 +8,18 @@ extension Number {
 
     // MARK: Public Nested Types
 
+    /// A format style that converts a number value to its textual representation.
+    ///
+    /// Instances of ``FormatStyle`` create localized, human-readable text from
+    /// ``Number`` values.
     public struct FormatStyle {
 
         // MARK: Public Initializers
 
+        /// Creates a number format style that uses the provided locale.
+        ///
+        /// - Parameter locale: The locale to use when formatting numbers.
+        ///                     Defaults to `.autoupdatingCurrent`.
         public init(locale: Locale = .autoupdatingCurrent) {
             let range = 1...6
 
@@ -30,8 +38,13 @@ extension Number {
 
         // MARK: Public Instance Properties
 
+        /// The locale of the format style.
+        ///
+        /// Use the ``locale(_:)`` modifier to create a copy of this format
+        /// style with a different locale.
         public var locale: Locale
 
+        /// An attributed format style based on this number format style.
         public var attributed: Attributed {
             Attributed(baseStyle: self)
         }
@@ -51,6 +64,17 @@ extension Number.FormatStyle: FormatStyle {
 
     // MARK: Public Instance Methods
 
+    /// Modifies this format style to use the provided decimal precision.
+    ///
+    /// Use this format style to change the decimal precision used by an
+    /// existing number format style.
+    ///
+    /// - Parameter limits: A range from the minimum to the maximum number of
+    ///                     digits to use when formatting the part of a number
+    ///                     following the decimal separator.
+    ///
+    /// - Returns:  A number format style modified to use the provided decimal
+    ///             precision.
     public func decimalPrecision(_ limits: ClosedRange<Int>) -> Self {
         let loLimit = clamp(0, limits.lowerBound, 10)
         let hiLimit = clamp(loLimit, limits.upperBound, 10)
@@ -64,10 +88,26 @@ extension Number.FormatStyle: FormatStyle {
         return new
     }
 
+    /// Modifies this format style to use the provided decimal precision.
+    ///
+    /// Use this format style to change the decimal precision used by an
+    /// existing number format style.
+    ///
+    /// - Parameter limit:  The number of digits to use when formatting the part
+    ///                     of a number following the decimal separator.
+    ///
+    /// - Returns:  A number format style modified to use the provided decimal
+    ///             precision.
     public func decimalPrecision(_ limit: Int) -> Self {
         decimalPrecision(limit...limit)
     }
 
+    /// Formats the provided number, using this style.
+    ///
+    /// - Parameter value:  The number to format.
+    ///
+    /// - Returns:  A string representation of the number, formatted according
+    ///             to this style.
     public func format(_ value: Number) -> String {
         switch value.value {
         case let .complex(cxValue):
@@ -78,6 +118,16 @@ extension Number.FormatStyle: FormatStyle {
         }
     }
 
+    /// Modifies this format style to use the provided fraction display strategy.
+    ///
+    /// Use this format style to change the fraction display strategy used by an
+    /// existing number format style.
+    ///
+    /// - Parameter strategy:   The fraction display strategy to apply to the
+    ///                         format style.
+    ///
+    /// - Returns:  A number format style modified to use the provided fraction
+    ///             display strategy.
     public func fractionDisplay(strategy: Number.FractionDisplayStrategy) -> Self {
         var new = self
 
@@ -86,6 +136,14 @@ extension Number.FormatStyle: FormatStyle {
         return new
     }
 
+    /// Modifies this format style to use the provided locale.
+    ///
+    /// Use this format style to change the locale used by an existing number
+    /// format style.
+    ///
+    /// - Parameter locale: The locale to apply to the format style.
+    ///
+    /// - Returns:  A number format style modified to use the provided locale.
     public func locale(_ locale: Locale) -> Self {
         var new = self
 
@@ -255,6 +313,7 @@ extension Number.FormatStyle: FormatStyle {
 // MARK: -
 
 extension FormatStyle where Self == Number.FormatStyle {
+    /// A style for formatting a number.
     public static var number: Self { Self() }
 }
 
@@ -264,10 +323,20 @@ extension Number {
 
     // MARK: Public Instance Methods
 
+    /// Formats the number using the default localized format style.
+    ///
+    /// - Returns:  A string representation of the number, formatted according
+    ///             to the default format style.
     public func formatted() -> String {
         FormatStyle().format(self)
     }
 
+    /// Formats the number using the provided format style.
+    ///
+    /// - Parameter format: The format style to apply when formatting the
+    ///                     number.
+    ///
+    /// - Returns:  A localized, formatted string representation of the number.
     public func formatted<S: Foundation.FormatStyle>(_ format: S) -> S.FormatOutput where Self == S.FormatInput {
         format.format(self)
     }

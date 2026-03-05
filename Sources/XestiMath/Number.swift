@@ -1,5 +1,17 @@
 // © 2025—2026 John Gary Pusey (see LICENSE.md)
 
+/// A generalized numeric value that supports a “number tower” patterned after
+/// that in the Scheme programming language.
+///
+/// As in Scheme, this type supports the following number tower:
+///
+/// - number
+/// - complex
+/// - real
+/// - rational
+/// - integer
+///
+/// It also supports the Scheme notion of “exactness”.
 public struct Number {
 
     // MARK: Internal Initializers
