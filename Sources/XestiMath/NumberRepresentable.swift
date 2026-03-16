@@ -20,14 +20,10 @@ public protocol NumberRepresentable: Codable,
                                      ExpressibleByStringLiteral,
                                      Hashable,
                                      Sendable {
-    /// The string to print if `requireValid(_:file:line:)` determines the
-    /// provided number value is not valid.
-    static var invalidMessage: String { get }
-
-    /// Determines if the provided number value is a valid representation of
+    /// Determines if the provided number value is a valid representation for
     /// this type.
     ///
-    /// By default, _any_ number value is valid.
+    /// The default implementation considers _any_ number value to be valid.
     ///
     /// - Parameter numberValue:    The number value to check for validity.
     ///
@@ -35,39 +31,12 @@ public protocol NumberRepresentable: Codable,
     ///             representation for this type; `false` otherwise.
     static func isValid(_ numberValue: Number) -> Bool
 
-    /// Checks that the provided number value is a valid representation for this
-    /// type.
-    ///
-    /// By default, `precondition(_:_:file:line:)` is used, along with
-    /// `isValid(_:)` and `invalidMessage`, to enforce the validity check.
-    ///
-    /// - Parameter numberValue:    The number value to check for validity.
-    /// - Parameter file:           The file name to print with `invalidMessage`
-    ///                             if the validity check fails. The default is
-    ///                             the file where `requireValid(_:file:line:)`
-    ///                             is called.
-    /// - Parameter line:           The line number to print with
-    ///                             `invalidMessage` if the validity check
-    ///                             fails. The default is the line number where
-    ///                             `requireValid(_:file:line:)` is called.
-    ///
-    /// - Returns:  The provided number value as a convenience to the caller.
-    static func requireValid(_ numberValue: Number,
-                             file: StaticString,
-                             line: UInt) -> Number
-
     /// Creates a new instance with the provided number value.
     ///
     /// If the provided number value is determined to be invalid, this
-    /// initializer stops program execution.
+    /// initializer stops execution.
     ///
-    /// Typically, this initializer should be implemented as follows:
-    ///
-    /// ```swift
-    /// public init(_ numberValue: String) {
-    ///     self.numberValue = Self.requireValid(intValue)
-    /// }
-    /// ```
+    /// The default implementation is sufficient in most cases.
     ///
     /// - Parameter numberValue:    The number value to use for the new
     ///                             instance.
@@ -77,6 +46,17 @@ public protocol NumberRepresentable: Codable,
     ///
     /// If the provided number value is determined to be invalid, this
     /// initializer returns `nil`.
+    ///
+    /// Typically, this initializer can be implemented as follows:
+    ///
+    /// ```swift
+    /// public init?(numberValue: Number) {
+    ///     guard Self.isValid(numberValue)
+    ///     else { return nil }
+    ///
+    ///     self.numberValue = numberValue
+    /// }
+    /// ```
     ///
     /// - Parameter numberValue:    The number value to use for the new
     ///                             instance.
@@ -134,36 +114,16 @@ public protocol NumberRepresentable: Codable,
 
 extension NumberRepresentable {
 
-    // MARK: Public Type Properties
-
-    public static var invalidMessage: String {
-        "number value must be valid"
-    }
-
     // MARK: Public Type Methods
 
     public static func isValid(_ numberValue: Number) -> Bool {
         true
     }
 
-    public static func requireValid(_ numberValue: Number,
-                                    file: StaticString = #file,
-                                    line: UInt = #line) -> Number {
-        precondition(isValid(numberValue),
-                     invalidMessage,
-                     file: file,
-                     line: line)
-
-        return numberValue
-    }
-
     // MARK: Public Initializers
 
-    public init?(numberValue: Number) {
-        guard Self.isValid(numberValue)
-        else { return nil }
-
-        self.init(numberValue)
+    public init(_ numberValue: Number) {
+        self.init(numberValue: numberValue)!    // swiftlint:disable:this force_unwrapping
     }
 
     // MARK: Public Instance Properties
@@ -234,7 +194,7 @@ extension NumberRepresentable where Self: Codable {
         let container = try decoder.singleValueContainer()
         let numberValue = try container.decode(Number.self)
 
-        self.init(numberValue)
+        self.init(numberValue: numberValue)!    // swiftlint:disable:this force_unwrapping
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -282,7 +242,7 @@ extension NumberRepresentable where Self: Equatable {
 
 extension NumberRepresentable where Self: ExpressibleByFloatLiteral {
     public init(floatLiteral value: Double) {
-        self.init(Number(floatLiteral: value))
+        self.init(numberValue: Number(floatLiteral: value))!    // swiftlint:disable:this force_unwrapping
     }
 }
 
@@ -290,7 +250,7 @@ extension NumberRepresentable where Self: ExpressibleByFloatLiteral {
 
 extension NumberRepresentable where Self: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int64) {
-        self.init(Number(integerLiteral: value))
+        self.init(numberValue: Number(integerLiteral: value))!  // swiftlint:disable:this force_unwrapping
     }
 }
 
@@ -298,6 +258,6 @@ extension NumberRepresentable where Self: ExpressibleByIntegerLiteral {
 
 extension NumberRepresentable where Self: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self.init(Number(stringLiteral: value))
+        self.init(numberValue: Number(stringLiteral: value))!   // swiftlint:disable:this force_unwrapping
     }
 }
