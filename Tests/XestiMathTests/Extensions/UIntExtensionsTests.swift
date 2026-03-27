@@ -3,12 +3,12 @@
 import Testing
 @testable import XestiMath
 
-struct UIntExtensions {
+struct UIntExtensionsTests {
 }
 
 // MARK: -
 
-extension UIntExtensions {
+extension UIntExtensionsTests {
     @Test
     func test_gcd() {
         #expect(UInt.gcd(12, 8) == 4)
@@ -20,9 +20,4 @@ extension UIntExtensions {
         #expect(UInt.gcd(100, 75) == 25)
         #expect(UInt.gcd(17, 13) == 1)
     }
-}
-
-// MARK: -
-
-extension UIntExtensions {
 }

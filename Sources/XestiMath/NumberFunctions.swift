@@ -144,10 +144,10 @@ public func atan(_ y: Number,
 public func atanh(_ z: Number) -> Number {
     switch z.value {
     case let .complex(val):
-        Number(.complex(val.inverseHyberbolicTangent()))
+        Number(.complex(val.inverseHyperbolicTangent()))
 
     case let .real(val):
-        Number(.real(val.inverseHyberbolicTangent()))
+        Number(.real(val.inverseHyperbolicTangent()))
     }
 }
 
@@ -155,7 +155,7 @@ public func atanh(_ z: Number) -> Number {
 /// returns the result.
 ///
 /// If the provided number is inexact, then the result will also be inexact. If
-/// the the provided number is infinite or a NaN, then it is returned as is.
+/// the provided number is infinite or a NaN, then it is returned as is.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -292,7 +292,7 @@ public func exp2(_ z: Number) -> Number {
 /// returns the result.
 ///
 /// If the provided number is inexact, then the result will also be inexact. If
-/// the the provided number is infinite or a NaN, then it is returned as is.
+/// the provided number is infinite or a NaN, then it is returned as is.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -467,13 +467,17 @@ public func min(_ x1: Number,
 /// Calculates the modulo of the first provided number divided by the second and
 /// returns the result.
 ///
+/// - Warning:  In the Scheme number tower, this operation is only defined for
+///             integers. Both operands must be integers; applying this to
+///             non-integers will result in a fatal error.
+///
 /// The equivalent Scheme procedure is:
 ///
 /// ```
 /// (modulo n1 n2) ; R5RS and R7RS
 /// ```
 ///
-/// - Parameter n1: Then number to divide by the other.
+/// - Parameter n1: The number to divide by the other.
 /// - Parameter n2: The number by which to divide the other.
 ///
 /// - Returns:  The result of the modulo calculation.
@@ -485,13 +489,17 @@ public func modulo(_ n1: Number,
 /// Calculates the quotient of the first provided number divided by the second
 /// and returns the result.
 ///
+/// - Warning:  In the Scheme number tower, this operation is only defined for
+///             integers. Both operands must be integers; applying this to
+///             non-integers will result in a fatal error.
+///
 /// The equivalent Scheme procedure is:
 ///
 /// ```
 /// (quotient n1 n2) ; R5RS and R7RS
 /// ```
 ///
-/// - Parameter n1: Then number to divide by the other.
+/// - Parameter n1: The number to divide by the other.
 /// - Parameter n2: The number by which to divide the other.
 ///
 /// - Returns:  The result of the quotient calculation.
@@ -524,13 +532,17 @@ public func rationalize(_ x: Number,
 /// Calculates the remainder of the first provided number divided by the second
 /// and returns the result.
 ///
+/// - Warning:  In the Scheme number tower, this operation is only defined for
+///             integers. Both operands must be integers; applying this to
+///             non-integers will result in a fatal error.
+///
 /// The equivalent Scheme procedure is:
 ///
 /// ```
 /// (remainder n1 n2) ; R5RS and R7RS
 /// ```
 ///
-/// - Parameter n1: Then number to divide by the other.
+/// - Parameter n1: The number to divide by the other.
 /// - Parameter n2: The number by which to divide the other.
 ///
 /// - Returns:  The result of the remainder calculation.
@@ -546,7 +558,7 @@ public func remainder(_ n1: Number,
 /// specified by the IEEE 754 IEEE floating-point standard.
 ///
 /// If the provided number is inexact, then the result will also be inexact. If
-/// the the provided number is infinite or a NaN, then it is returned.
+/// the provided number is infinite or a NaN, then it is returned.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -665,7 +677,7 @@ public func tanh(_ z: Number) -> Number {
 /// result.
 ///
 /// If the provided number is inexact, then the result will also be inexact. If
-/// the the provided number is infinite or a NaN, then it is returned.
+/// the provided number is infinite or a NaN, then it is returned.
 ///
 /// The equivalent Scheme procedure is:
 ///

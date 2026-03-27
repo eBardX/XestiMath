@@ -186,12 +186,12 @@ extension FractionTests {
     }
 
     @Test
-    func test_multiplied_by () {
+    func test_multiplied_by() {
         #expect(_fr(2, 3).multiplied(by: _fr(1, 6)).isEqual(to: _fr(1, 9)))
     }
 
     @Test
-    func test_negated () {
+    func test_negated() {
         #expect(_fr(3, 4).negated().isEqual(to: _fr(-3, 4)))
         #expect(_fr(-3, 4).negated().isEqual(to: _fr(3, 4)))
         #expect(_fr(0, 1).negated().isEqual(to: _fr(0, 1)))

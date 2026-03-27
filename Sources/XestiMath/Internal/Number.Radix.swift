@@ -8,7 +8,7 @@ extension Number {
         case binary      = 2
         case decimal     = 10
         case hexadecimal = 16
-        case octal 		 = 8
+        case octal       = 8
     }
 }
 

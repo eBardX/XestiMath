@@ -171,7 +171,7 @@ extension Number {
         checkExactInteger().int32Value
     }
 
-    /// The number value converted to an `Int64` value.
+    /// The number converted to an `Int64` value.
     public var int64Value: Int64 {
         checkExactInteger().int64Value
     }

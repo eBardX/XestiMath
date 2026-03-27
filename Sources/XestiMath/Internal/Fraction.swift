@@ -220,6 +220,8 @@ extension Fraction {
     }
 }
 
+// MARK: - CustomDebugStringConvertible
+
 extension Fraction: CustomDebugStringConvertible {
     internal var debugDescription: String {
         "fraction<\(String(reflecting: nvalue)), \(String(reflecting: dvalue))>"

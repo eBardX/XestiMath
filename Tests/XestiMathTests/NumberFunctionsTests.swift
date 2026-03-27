@@ -185,12 +185,3 @@ extension NumberFunctionsTests {
         #expect(XestiMath.truncate(negative) == Number(-3))
     }
 }
-
-// MARK: -
-
-private extension Double {
-    func isApproximatelyEqual(to other: Double,
-                              tolerance: Double = 1e-10) -> Bool {
-        Swift.abs(self - other) < tolerance
-    }
-}

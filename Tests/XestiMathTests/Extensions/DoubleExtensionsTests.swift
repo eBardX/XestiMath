@@ -18,8 +18,3 @@ extension DoubleExtensionsTests {
         #expect(Double.convertToFraction(5.0 / 17.0) == (5, 17))
     }
 }
-
-// MARK: -
-
-// extension IntExtensionsTests {
-// }

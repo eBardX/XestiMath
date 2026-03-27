@@ -1,3 +1,5 @@
+// © 2026 John Gary Pusey (see LICENSE.md)
+
 extension Number {
 
     // MARK: Public Nested Types
@@ -171,13 +173,13 @@ extension Number.FractionDisplayStrategy: CustomStringConvertible {
             "decimal"
 
         case .mixed:
-            "mixed(alwaysShowInteger: \(useAlternate ? "true" : "false")"
+            "mixed(alwaysShowInteger: \(useAlternate ? "true" : "false"))"
 
         case .ratio:
             "ratio"
 
         case .simple:
-            "simple(alwaysShowDenominator: \(useAlternate ? "false" : "true")"
+            "simple(alwaysShowDenominator: \(useAlternate ? "false" : "true"))"
         }
     }
 }

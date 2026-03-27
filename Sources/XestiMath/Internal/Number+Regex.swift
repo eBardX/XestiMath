@@ -394,6 +394,6 @@ extension Number {
     private static let exactness: CharacterClass = .anyOf("ei")
     private static let hexDigit: CharacterClass  = .anyOf("0123456789abcdef")
     private static let octDigit: CharacterClass  = .anyOf("01234567")
-    private static let radix: CharacterClass     = .anyOf("bdho")
+    private static let radix: CharacterClass     = .anyOf("bdox")
     private static let sign: CharacterClass      = .anyOf("+-")
 }

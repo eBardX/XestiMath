@@ -300,9 +300,9 @@ extension ComplexTests {
     }
 
     @Test
-    func test_inverseHyberbolicTangent() {
-        #expect(_cx(0.0, 0.0).inverseHyberbolicTangent().testEqual(to: _cx(0.0, 0.0)))
-        #expect(_cx(0.5, 0.0).inverseHyberbolicTangent().testEqual(to: _cx(0.5493061443340549, 0.0)))
+    func test_inverseHyperbolicTangent() {
+        #expect(_cx(0.0, 0.0).inverseHyperbolicTangent().testEqual(to: _cx(0.0, 0.0)))
+        #expect(_cx(0.5, 0.0).inverseHyperbolicTangent().testEqual(to: _cx(0.5493061443340549, 0.0)))
     }
 
     @Test
@@ -361,19 +361,12 @@ extension ComplexTests {
         #expect(_cx(1.0, 0.0).exponential(base: _cx(7.0, 0.0)).testEqual(to: _cx(7.0, 0.0)))
     }
 
-    //    @Test
-    //    func test_sine() {
-    //        #expect(_cx(-2, 3).sine().testEqual(to: _cx(-9.1544991469114301, -3.8537380379193769)))
-    //        #expect(_cx(-3, -4).sine().testEqual(to: _cx(1.2246467991473532e-16, 0.0)))
-    //        #expect(_cx(Double.pi, 0).sine().testEqual(to: _cx(0, 0)))
-    //        #expect(_cx(0, Double.pi).sine().testEqual(to: _cx(0, 0)))
-    //        #expect(_cx(0, 0).sine().testEqual(to: _cx(0, 0)))
-    //        #expect(_cx(0.5, 0.5).sine().testEqual(to: _cx(0, 0)))
-    //        #expect(_cx(1, 2).sine().testEqual(to: _cx(0, 0)))
-    //        #expect(_cx(1, 1).sine().testEqual(to: _cx(0, 0)))
-    //        #expect(_cx(0, 2).sine().testEqual(to: _cx(0, 0)))
-    //        #expect(_cx(4, 5).sine().testEqual(to: _cx(0, 0)))
-    //    }
+    @Test
+    func test_sine() {
+        #expect(_cx(0.0, 0.0).sine().testEqual(to: _cx(0.0, 0.0)))
+        #expect(_cx(Double.pi, 0.0).sine().testEqual(to: _cx(1.2246467991473532e-16, 0.0)))
+        #expect(_cx(1.0, 1.0).sine().testEqual(to: _cx(1.2984575814159773, 0.6349639147847361)))
+    }
 
     @Test
     func test_squareRoot() {

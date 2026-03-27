@@ -110,6 +110,10 @@ extension Number {
 
     /// A Boolean value indicating whether this number is even.
     ///
+    /// - Warning:  In the Scheme number tower, this predicate is only defined
+    ///             for integers. The number must be an integer; applying this
+    ///             to a non-integer will result in a fatal error.
+    ///
     /// The equivalent Scheme predicate is:
     ///
     /// ```
@@ -233,6 +237,11 @@ extension Number {
 
     /// A Boolean value indicating whether this number is less than zero.
     ///
+    /// - Warning:  In the Scheme number tower, this predicate is only defined
+    ///             for real numbers. The number must be real; applying this to
+    ///             a complex number with a non-zero imaginary part will result
+    ///             in a fatal error.
+    ///
     /// The equivalent Scheme predicate is:
     ///
     /// ```
@@ -244,6 +253,10 @@ extension Number {
 
     /// A Boolean value indicating whether this number is odd.
     ///
+    /// - Warning:  In the Scheme number tower, this predicate is only defined
+    ///             for integers. The number must be an integer; applying this
+    ///             to a non-integer will result in a fatal error.
+    ///
     /// The equivalent Scheme predicate is:
     ///
     /// ```
@@ -254,6 +267,11 @@ extension Number {
     }
 
     /// A Boolean value indicating whether this number is greater than zero.
+    ///
+    /// - Warning:  In the Scheme number tower, this predicate is only defined
+    ///             for real numbers. The number must be real; applying this to
+    ///             a complex number with a non-zero imaginary part will result
+    ///             in a fatal error.
     ///
     /// The equivalent Scheme predicate is:
     ///

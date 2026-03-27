@@ -7,6 +7,10 @@ extension Number {
     /// Performs a bitwise AND operation on the two provided numbers and returns
     /// the result.
     ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. Both operands must be integers;
+    ///             applying this to non-integers will result in a fatal error.
+    ///
     /// - Parameter n1: The first number on which to perform the bitwise AND
     ///                 operation.
     /// - Parameter n2: The second number on which to perform the bitwise AND
@@ -20,6 +24,10 @@ extension Number {
 
     /// Performs a bitwise AND operation on the two provided numbers and stores
     /// the result in the left-hand-side variable.
+    ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. Both operands must be integers;
+    ///             applying this to non-integers will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise AND
     ///                 operation.
@@ -138,6 +146,9 @@ extension Number {
 
     /// Divides the first provided number by the second and returns the result.
     ///
+    /// - Warning:  The divisor must not be zero; dividing by zero will result
+    ///             in a fatal error.
+    ///
     /// - Parameter z1: The number to divide by the other.
     /// - Parameter z2: The number by which to divide the other.
     ///
@@ -165,6 +176,9 @@ extension Number {
     /// Divides the first provided number by the second and stores the result in
     /// the left-hand-side variable.
     ///
+    /// - Warning:  The divisor must not be zero; dividing by zero will result
+    ///             in a fatal error.
+    ///
     /// - Parameter z1: The number to divide by the other.
     /// - Parameter z2: The number by which to divide the other.
     public static func /= (z1: inout Self,
@@ -174,6 +188,10 @@ extension Number {
 
     /// Performs a bitwise OR operation on the two provided numbers and returns
     /// the result.
+    ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. Both operands must be integers;
+    ///             applying this to non-integers will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise OR
     ///                 operation.
@@ -189,6 +207,10 @@ extension Number {
     /// Performs a bitwise OR operation on the two provided numbers and stores
     /// the result in the left-hand-side variable.
     ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. Both operands must be integers;
+    ///             applying this to non-integers will result in a fatal error.
+    ///
     /// - Parameter n1: The first number on which to perform the bitwise OR
     ///                 operation.
     /// - Parameter n2: The second number on which to perform the bitwise OR
@@ -200,6 +222,10 @@ extension Number {
 
     /// Performs a bitwise XOR operation on the two provided numbers and returns
     /// the result.
+    ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. Both operands must be integers;
+    ///             applying this to non-integers will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise XOR
     ///                 operation.
@@ -215,6 +241,10 @@ extension Number {
     /// Performs a bitwise XOR operation on the two provided numbers and stores
     /// the result in the left-hand-side variable.
     ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. Both operands must be integers;
+    ///             applying this to non-integers will result in a fatal error.
+    ///
     /// - Parameter n1: The first number on which to perform the bitwise XOR
     ///                 operation.
     /// - Parameter n2: The second number on which to perform the bitwise XOR
@@ -226,6 +256,11 @@ extension Number {
 
     /// Shifts the provided number to the left by the specified bit count and
     /// returns the result.
+    ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. The number must be an integer;
+    ///             applying this to a non-integer will result in a fatal
+    ///             error.
     ///
     /// - Parameter n:  The number to shift left.
     /// - Parameter k:  The bit count by which to shift left.
@@ -239,6 +274,11 @@ extension Number {
     /// Shifts the provided number to the left by the specified bit count and
     /// stores the result in the left-hand-side variable.
     ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. The number must be an integer;
+    ///             applying this to a non-integer will result in a fatal
+    ///             error.
+    ///
     /// - Parameter n:  The number to shift left.
     /// - Parameter k:  The bit count by which to shift left.
     public static func <<= (n: inout Self,
@@ -248,6 +288,11 @@ extension Number {
 
     /// Shifts the provided number to the right by the specified bit count and
     /// returns the result.
+    ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. The number must be an integer;
+    ///             applying this to a non-integer will result in a fatal
+    ///             error.
     ///
     /// - Parameter n:  The number to shift right.
     /// - Parameter k:  The bit count by which to shift right.
@@ -261,6 +306,11 @@ extension Number {
     /// Shifts the provided number to the right by the specified bit count and
     /// stores the result in the left-hand-side variable.
     ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. The number must be an integer;
+    ///             applying this to a non-integer will result in a fatal
+    ///             error.
+    ///
     /// - Parameter n:  The number to shift right.
     /// - Parameter k:  The bit count by which to shift right.
     public static func >>= (n: inout Self,
@@ -270,6 +320,11 @@ extension Number {
 
     /// Performs a bitwise NOT operation on the provided number and returns the
     /// result.
+    ///
+    /// - Warning:  In the Scheme number tower, bitwise operations are only
+    ///             defined for integers. The number must be an integer;
+    ///             applying this to a non-integer will result in a fatal
+    ///             error.
     ///
     /// - Parameter n:  The number on which to perform the bitwise NOT
     ///                 operation.

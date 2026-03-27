@@ -49,6 +49,13 @@ extension Number: Codable {
 // MARK: - Comparable
 
 extension Number: Comparable {
+    /// Returns a Boolean value indicating whether the first number is less than
+    /// the second.
+    ///
+    /// - Warning:  In the Scheme number tower, ordering is only defined for
+    ///             real numbers. Both operands must be real; comparing complex
+    ///             numbers with a non-zero imaginary part will result in a
+    ///             fatal error.
     public static func < (lhs: Self,
                           rhs: Self) -> Bool {
         lhs.checkReal().isLess(than: rhs.checkReal())
@@ -128,6 +135,13 @@ extension Number: ExpressibleByStringLiteral {
 // MARK: - Hashable
 
 extension Number: Hashable {
+    /// - Note: Because `Number` emulates a Scheme number tower, the
+    ///         `Equatable` conformance compares across internal
+    ///         representations (for example, exact integer `1` equals inexact
+    ///         `1.0`). This can cause equal values to produce different hash
+    ///         values, violating the `Hashable` contract. Use caution when
+    ///         using `Number` values as dictionary keys or set members if
+    ///         mixing exact and inexact representations.
     public func hash(into hasher: inout Hasher) {
         hasher.combine(String(describing: self))
     }

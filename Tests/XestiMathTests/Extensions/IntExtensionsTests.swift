@@ -22,8 +22,3 @@ extension IntExtensionsTests {
         #expect(Int.modulo(-10, 7) == 4)
     }
 }
-
-// MARK: -
-
-// extension IntExtensionsTests {
-// }

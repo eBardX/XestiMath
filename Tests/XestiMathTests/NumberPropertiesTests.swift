@@ -211,12 +211,3 @@ extension NumberPropertiesTests {
         #expect(simplified == Number(1))
     }
 }
-
-// MARK: -
-
-private extension Double {
-    func isApproximatelyEqual(to other: Double,
-                              tolerance: Double = 1e-10) -> Bool {
-        Swift.abs(self - other) < tolerance
-    }
-}

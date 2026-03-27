@@ -100,7 +100,7 @@ extension FloatingPoint {
 
     internal var isInteger: Bool {
         if value.isFinite {
-            Double(Int(value)) == value
+            value == value.rounded(.towardZero)
         } else {
             false
         }
@@ -122,7 +122,7 @@ extension FloatingPoint {
         value.isZero
     }
 
-    // MARK: Internal Type Methods
+    // MARK: Internal Instance Methods
 
     internal func adding(_ other: Self) -> Self {
         Self(value + other.value)
@@ -188,7 +188,7 @@ extension FloatingPoint {
         Self(Double.asinh(value))
     }
 
-    internal func inverseHyberbolicTangent() -> Self {
+    internal func inverseHyperbolicTangent() -> Self {
         Self(Double.atanh(value))
     }
 
@@ -238,7 +238,7 @@ extension FloatingPoint {
     }
 
     internal func round() -> Self {
-        Self(Darwin.round(value))
+        Self(value.rounded(.toNearestOrEven))
     }
 
     internal func sine() -> Self {

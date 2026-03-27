@@ -1,7 +1,5 @@
 // © 2025–2026 John Gary Pusey (see LICENSE.md)
 
-private import BigInt
-
 extension Number {
 
     // MARK: Internal Nested Types

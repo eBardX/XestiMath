@@ -5,10 +5,6 @@ private import RealModule
 
 internal struct Complex {
 
-    // MARK: Private Type Properties
-
-    private static let undefined = Self(.nan, .nan)
-
     // MARK: Private Initializers
 
     private init(_ rvalue: Real,
@@ -157,6 +153,10 @@ extension Complex {
     }
 
     internal var magnitude: Real {
+        guard !rvalue.isNaN,
+              !ivalue.isNaN
+        else { return .nan }
+
         guard rvalue.isFinite,
               ivalue.isFinite
         else { return .positiveInfinity }
@@ -227,7 +227,7 @@ extension Complex {
         ExternalFormat.asinh(_toExternalFormat())._toInternalFormat()
     }
 
-    internal func inverseHyberbolicTangent() -> Self {
+    internal func inverseHyperbolicTangent() -> Self {
         ExternalFormat.atanh(_toExternalFormat())._toInternalFormat()
     }
 
@@ -347,8 +347,8 @@ extension Complex {
     // MARK: Private Instance Methods
 
     private func _toExternalFormat() -> ExternalFormat {
-        ExternalFormat(realPart.floatingPointValue.doubleValue,
-                       imaginaryPart.floatingPointValue.doubleValue)
+        ExternalFormat(rvalue.floatingPointValue.doubleValue,
+                       ivalue.floatingPointValue.doubleValue)
     }
 }
 
@@ -364,10 +364,12 @@ extension Complex: CustomDebugStringConvertible {
 
 extension Complex: CustomStringConvertible {
     internal var description: String {
-        if ivalue.isNegative {
-            String(describing: rvalue) + String(describing: ivalue) + "i"
+        let imagStr = String(describing: ivalue)
+
+        if imagStr.hasPrefix("-") || imagStr.hasPrefix("+") {
+            return String(describing: rvalue) + imagStr + "i"
         } else {
-            String(describing: rvalue) + "+" + String(describing: ivalue) + "i"
+            return String(describing: rvalue) + "+" + imagStr + "i"
         }
     }
 }

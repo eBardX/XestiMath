@@ -325,10 +325,10 @@ extension FloatingPointTests {
     }
 
     @Test
-    func test_inverseHyberbolicTangent() {
-        #expect(FloatingPoint.zero.inverseHyberbolicTangent().testEqual(to: _fp(0.0)))
-        #expect(_fp(0.5).inverseHyberbolicTangent().testEqual(to: _fp(Double.atanh(0.5))))
-        #expect(_fp(-0.5).inverseHyberbolicTangent().testEqual(to: _fp(Double.atanh(-0.5))))
+    func test_inverseHyperbolicTangent() {
+        #expect(FloatingPoint.zero.inverseHyperbolicTangent().testEqual(to: _fp(0.0)))
+        #expect(_fp(0.5).inverseHyperbolicTangent().testEqual(to: _fp(Double.atanh(0.5))))
+        #expect(_fp(-0.5).inverseHyperbolicTangent().testEqual(to: _fp(Double.atanh(-0.5))))
     }
 
     @Test

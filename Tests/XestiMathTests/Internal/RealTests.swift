@@ -473,9 +473,9 @@ extension RealTests {
     }
 
     @Test
-    func test_inverseHyberbolicTangent() {
-        #expect(_ei(0).inverseHyberbolicTangent().isEqual(to: _fp(0.0)))
-        #expect(_fp(0.0).inverseHyberbolicTangent().isEqual(to: _fp(0.0)))
+    func test_inverseHyperbolicTangent() {
+        #expect(_ei(0).inverseHyperbolicTangent().isEqual(to: _fp(0.0)))
+        #expect(_fp(0.0).inverseHyperbolicTangent().isEqual(to: _fp(0.0)))
     }
 
     @Test
@@ -670,20 +670,20 @@ extension RealTests {
 
 // MARK: -
 
- extension RealTests {
-     private func _ei<T: BinaryInteger>(_ val: T) -> Real {
-         Real(.exactInteger(ExactInteger(val)))
-     }
+extension RealTests {
+    private func _ei<T: BinaryInteger>(_ val: T) -> Real {
+        Real(.exactInteger(ExactInteger(val)))
+    }
 
-     private func _fp<T: BinaryFloatingPoint>(_ val: T) -> Real {
-         Real(.floatingPoint(FloatingPoint(val)))
-     }
+    private func _fp<T: BinaryFloatingPoint>(_ val: T) -> Real {
+        Real(.floatingPoint(FloatingPoint(val)))
+    }
 
-     private func _fr<T: BinaryInteger>(_ num: T,
-                                        _ den: T) -> Real {
-         Real(.fraction(Fraction(numerator: ExactInteger(num),
-                                 denominator: ExactInteger(den))))
-     }
+    private func _fr<T: BinaryInteger>(_ num: T,
+                                       _ den: T) -> Real {
+        Real(.fraction(Fraction(numerator: ExactInteger(num),
+                                denominator: ExactInteger(den))))
+    }
 }
 
 // swiftlint:enable force_unwrapping

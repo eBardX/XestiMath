@@ -42,8 +42,8 @@ extension Number {
 
     private static let radixes: [String: Radix] = ["#b": .binary,
                                                    "#d": .decimal,
-                                                   "#h": .hexadecimal,
-                                                   "#o": .octal]
+                                                   "#o": .octal,
+                                                   "#x": .hexadecimal]
 
     // MARK: Private Type Methods
 

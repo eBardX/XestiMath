@@ -341,7 +341,7 @@ extension Real {
         }
     }
 
-    // MARK: Internal Type Methods
+    // MARK: Internal Instance Methods
 
     internal func absoluteValue() -> Self {
         switch value {
@@ -569,8 +569,8 @@ extension Real {
         Self(.floatingPoint(_toFloatingPoint().inverseHyperbolicSine()))
     }
 
-    internal func inverseHyberbolicTangent() -> Self {
-        Self(.floatingPoint(_toFloatingPoint().inverseHyberbolicTangent()))
+    internal func inverseHyperbolicTangent() -> Self {
+        Self(.floatingPoint(_toFloatingPoint().inverseHyperbolicTangent()))
     }
 
     internal func inverseSine() -> Self {
@@ -869,8 +869,11 @@ extension Real {
                             denominator: .one,
                             reduce: false)
 
-        case .floatingPoint:
-            fatalError("impossible case")
+        case let .floatingPoint(val):
+            let (num, den) = Double.convertToFraction(val.doubleValue)
+
+            return Fraction(numerator: ExactInteger(num),
+                            denominator: ExactInteger(den))
 
         case let .fraction(val):
             return val
