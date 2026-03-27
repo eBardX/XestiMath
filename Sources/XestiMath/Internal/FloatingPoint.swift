@@ -1,7 +1,7 @@
 // © 2025—2026 John Gary Pusey (see LICENSE.md)
 
-import Darwin
-import RealModule
+private import Darwin
+private import RealModule
 
 internal struct FloatingPoint {
 

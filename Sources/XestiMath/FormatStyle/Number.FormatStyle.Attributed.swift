@@ -1,7 +1,8 @@
 // © 2025–2026 John Gary Pusey (see LICENSE.md)
 
-import BigInt
-import Foundation
+public import Foundation
+
+private import BigInt
 
 extension Number.FormatStyle {
 

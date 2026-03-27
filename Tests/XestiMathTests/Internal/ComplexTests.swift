@@ -1,5 +1,6 @@
 // © 2025—2026 John Gary Pusey (see LICENSE.md)
 
+import RealModule
 import Testing
 @testable import XestiMath
 

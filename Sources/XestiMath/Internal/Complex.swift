@@ -1,7 +1,7 @@
 // © 2025—2026 John Gary Pusey (see LICENSE.md)
 
-import ComplexModule
-import RealModule
+private import ComplexModule
+private import RealModule
 
 internal struct Complex {
 

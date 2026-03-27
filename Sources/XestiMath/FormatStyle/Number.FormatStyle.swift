@@ -1,8 +1,9 @@
 // © 2025—2026 John Gary Pusey (see LICENSE.md)
 
-import BigInt
-import Foundation
-import XestiTools
+public import Foundation
+
+private import BigInt
+private import XestiTools
 
 extension Number {
 
