@@ -1,4 +1,4 @@
-// © 2025—2026 John Gary Pusey (see LICENSE.md)
+// © 2025–2026 John Gary Pusey (see LICENSE.md)
 
 import RealModule
 import Testing
@@ -11,17 +11,38 @@ struct FloatingPointTests {
 
 extension FloatingPointTests {
     @Test
-    func test_parse() {}
+    func test_parse() {
+        #expect(FloatingPoint.parse(input: "3.14")?.testEqual(to: _fp(3.14)) == true)
+        #expect(FloatingPoint.parse(input: "-2.5")?.testEqual(to: _fp(-2.5)) == true)
+        #expect(FloatingPoint.parse(input: "0.0")?.isZero == true)
+        #expect(FloatingPoint.parse(input: "1.0")?.testEqual(to: _fp(1.0)) == true)
+        #expect(FloatingPoint.parse(input: "+inf.0")?.isInfinite == true)
+        #expect(FloatingPoint.parse(input: "-inf.0")?.isInfinite == true)
+        #expect(FloatingPoint.parse(input: "+nan.0")?.isNaN == true)
+        #expect(FloatingPoint.parse(input: "-nan.0")?.isNaN == true)
+        #expect(FloatingPoint.parse(input: "abc") == nil)
+    }
 }
 
 // MARK: - Test internal initializers
 
 extension FloatingPointTests {
     @Test
-    func test_init_binaryFloatingPoint() {}
+    func test_init_binaryFloatingPoint() {
+        #expect(_fp(3.14).testEqual(to: _fp(3.14)))
+        #expect(_fp(-2.5).testEqual(to: _fp(-2.5)))
+        #expect(_fp(0.0).isZero)
+        #expect(_fp(-0.0).isZero)
+        #expect(_fp(Double.infinity).isInfinite)
+        #expect(_fp(Double.nan).isNaN)
+    }
 
     @Test
-    func test_init_binaryInteger() {}
+    func test_init_binaryInteger() {
+        #expect(FloatingPoint(Int(42)).testEqual(to: _fp(42.0)))
+        #expect(FloatingPoint(Int(-7)).testEqual(to: _fp(-7.0)))
+        #expect(FloatingPoint(Int(0)).isZero)
+    }
 }
 
 // MARK: - Test internal instance properties
@@ -55,6 +76,11 @@ extension FloatingPointTests {
 
     @Test
     func test_doubleValue() {
+        #expect(FloatingPoint.one.doubleValue == 1.0)
+        #expect(FloatingPoint.zero.doubleValue == 0.0)
+        #expect(FloatingPoint.pi.doubleValue == Double.pi)
+        #expect(_fp(-2.5).doubleValue == -2.5)
+        #expect(FloatingPoint.nan.doubleValue.isNaN)
     }
 
     @Test
@@ -67,6 +93,10 @@ extension FloatingPointTests {
 
     @Test
     func test_floatValue() {
+        #expect(FloatingPoint.one.floatValue == 1.0)
+        #expect(FloatingPoint.zero.floatValue == 0.0)
+        #expect(_fp(-2.5).floatValue == -2.5)
+        #expect(FloatingPoint.nan.floatValue.isNaN)
     }
 
     @Test
@@ -162,46 +192,108 @@ extension FloatingPointTests {
 
 extension FloatingPointTests {
     @Test
-    func test_adding() {}
+    func test_adding() {
+        #expect(_fp(3.0).adding(_fp(4.0)).testEqual(to: _fp(7.0)))
+        #expect(_fp(-1.5).adding(_fp(2.5)).testEqual(to: _fp(1.0)))
+        #expect(FloatingPoint.zero.adding(_fp(5.0)).testEqual(to: _fp(5.0)))
+        #expect(_fp(-3.0).adding(_fp(-4.0)).testEqual(to: _fp(-7.0)))
+    }
 
     @Test
-    func test_ceiling() {}
+    func test_ceiling() {
+        #expect(_fp(3.2).ceiling().testEqual(to: _fp(4.0)))
+        #expect(_fp(-3.7).ceiling().testEqual(to: _fp(-3.0)))
+        #expect(_fp(3.0).ceiling().testEqual(to: _fp(3.0)))
+        #expect(_fp(-0.5).ceiling().isZero)
+    }
 
     @Test
-    func test_compare_to() {}
+    func test_compare_to() {
+        #expect(_fp(1.0).isLess(than: _fp(2.0)))
+        #expect(!_fp(2.0).isLess(than: _fp(1.0)))
+        #expect(!_fp(1.0).isLess(than: _fp(1.0)))
+        #expect(_fp(-1.0).isLess(than: _fp(0.0)))
+        #expect(FloatingPoint.negativeInfinity.isLess(than: _fp(0.0)))
+        #expect(!FloatingPoint.nan.isLess(than: _fp(0.0)))
+    }
 
     @Test
-    func test_cosine() {}
+    func test_cosine() {
+        #expect(FloatingPoint.zero.cosine().testEqual(to: _fp(1.0)))
+        #expect(FloatingPoint.pi.cosine().testEqual(to: _fp(-1.0)))
+        #expect(_fp(Double.pi / 3).cosine().testEqual(to: _fp(Double.cos(Double.pi / 3))))
+    }
 
     @Test
-    func test_divided_by() {}
+    func test_divided_by() {
+        #expect(_fp(10.0).divided(by: _fp(2.0)).testEqual(to: _fp(5.0)))
+        #expect(_fp(-6.0).divided(by: _fp(3.0)).testEqual(to: _fp(-2.0)))
+        #expect(_fp(1.0).divided(by: _fp(0.0)).isInfinite)
+        #expect(_fp(0.0).divided(by: _fp(0.0)).isNaN)
+    }
 
     @Test
-    func test_exponential() {}
+    func test_exponential() {
+        #expect(FloatingPoint.zero.exponential().testEqual(to: _fp(1.0)))
+        #expect(FloatingPoint.one.exponential().testEqual(to: _fp(Double.exp(1.0))))
+        #expect(_fp(2.0).exponential().testEqual(to: _fp(Double.exp(2.0))))
+    }
 
     @Test
-    func test_exponential_base() {}
+    func test_exponential_base() {
+        #expect(_fp(3.0).exponential(base: _fp(2.0)).testEqual(to: _fp(8.0)))
+        #expect(_fp(0.0).exponential(base: _fp(5.0)).testEqual(to: _fp(1.0)))
+        #expect(_fp(2.0).exponential(base: _fp(10.0)).testEqual(to: _fp(100.0)))
+    }
 
     @Test
-    func test_exponentialBase2() {}
+    func test_exponentialBase2() {
+        #expect(_fp(3.0).exponentialBase2().testEqual(to: _fp(8.0)))
+        #expect(_fp(0.0).exponentialBase2().testEqual(to: _fp(1.0)))
+        #expect(_fp(10.0).exponentialBase2().testEqual(to: _fp(1_024.0)))
+    }
 
     @Test
-    func test_exponentialBase10() {}
+    func test_exponentialBase10() {
+        #expect(_fp(2.0).exponentialBase10().testEqual(to: _fp(100.0)))
+        #expect(_fp(0.0).exponentialBase10().testEqual(to: _fp(1.0)))
+        #expect(_fp(3.0).exponentialBase10().testEqual(to: _fp(1_000.0)))
+    }
 
     @Test
-    func test_floor() {}
+    func test_floor() {
+        #expect(_fp(3.7).floor().testEqual(to: _fp(3.0)))
+        #expect(_fp(-3.2).floor().testEqual(to: _fp(-4.0)))
+        #expect(_fp(3.0).floor().testEqual(to: _fp(3.0)))
+    }
 
     @Test
-    func test_hyperbolicCosine() {}
+    func test_hyperbolicCosine() {
+        #expect(FloatingPoint.zero.hyperbolicCosine().testEqual(to: _fp(1.0)))
+        #expect(_fp(1.0).hyperbolicCosine().testEqual(to: _fp(Double.cosh(1.0))))
+        #expect(_fp(-1.0).hyperbolicCosine().testEqual(to: _fp(Double.cosh(-1.0))))
+    }
 
     @Test
-    func test_hyperbolicSine() {}
+    func test_hyperbolicSine() {
+        #expect(FloatingPoint.zero.hyperbolicSine().testEqual(to: _fp(0.0)))
+        #expect(_fp(1.0).hyperbolicSine().testEqual(to: _fp(Double.sinh(1.0))))
+        #expect(_fp(-1.0).hyperbolicSine().testEqual(to: _fp(Double.sinh(-1.0))))
+    }
 
     @Test
-    func test_hyperbolicTangent() {}
+    func test_hyperbolicTangent() {
+        #expect(FloatingPoint.zero.hyperbolicTangent().testEqual(to: _fp(0.0)))
+        #expect(_fp(1.0).hyperbolicTangent().testEqual(to: _fp(Double.tanh(1.0))))
+        #expect(_fp(-1.0).hyperbolicTangent().testEqual(to: _fp(Double.tanh(-1.0))))
+    }
 
     @Test
-    func test_hypotenuse_with() {}
+    func test_hypotenuse_with() {
+        #expect(_fp(3.0).hypotenuse(with: _fp(4.0)).testEqual(to: _fp(5.0)))
+        #expect(_fp(0.0).hypotenuse(with: _fp(5.0)).testEqual(to: _fp(5.0)))
+        #expect(_fp(1.0).hypotenuse(with: _fp(1.0)).testEqual(to: _fp(Double.sqrt(2.0))))
+    }
 
     @Test
     func test_inverseCosine() {
@@ -218,13 +310,26 @@ extension FloatingPointTests {
     }
 
     @Test
-    func test_inverseHyperbolicCosine() {}
+    func test_inverseHyperbolicCosine() {
+        #expect(_fp(1.0).inverseHyperbolicCosine().testEqual(to: _fp(0.0)))
+        #expect(_fp(2.0).inverseHyperbolicCosine().testEqual(to: _fp(Double.acosh(2.0))))
+        #expect(_fp(10.0).inverseHyperbolicCosine().testEqual(to: _fp(Double.acosh(10.0))))
+        #expect(_fp(0.5).inverseHyperbolicCosine().isNaN)
+    }
 
     @Test
-    func test_inverseHyperbolicSine() {}
+    func test_inverseHyperbolicSine() {
+        #expect(FloatingPoint.zero.inverseHyperbolicSine().testEqual(to: _fp(0.0)))
+        #expect(_fp(1.0).inverseHyperbolicSine().testEqual(to: _fp(Double.asinh(1.0))))
+        #expect(_fp(-1.0).inverseHyperbolicSine().testEqual(to: _fp(Double.asinh(-1.0))))
+    }
 
     @Test
-    func test_inverseHyberbolicTangent() {}
+    func test_inverseHyberbolicTangent() {
+        #expect(FloatingPoint.zero.inverseHyberbolicTangent().testEqual(to: _fp(0.0)))
+        #expect(_fp(0.5).inverseHyberbolicTangent().testEqual(to: _fp(Double.atanh(0.5))))
+        #expect(_fp(-0.5).inverseHyberbolicTangent().testEqual(to: _fp(Double.atanh(-0.5))))
+    }
 
     @Test
     func test_inverseSine() {
@@ -255,49 +360,116 @@ extension FloatingPointTests {
     }
 
     @Test
-    func test_inverseTangent2() {}
+    func test_inverseTangent2() {
+        #expect(_fp(1.0).inverseTangent(_fp(1.0)).testEqual(to: _fp(Double.atan2(y: 1.0, x: 1.0))))
+        #expect(_fp(0.0).inverseTangent(_fp(1.0)).testEqual(to: _fp(0.0)))
+        #expect(_fp(1.0).inverseTangent(_fp(0.0)).testEqual(to: _fp(Double.pi / 2)))
+        let atan2val = Double.atan2(y: -1.0, x: -1.0)
+        #expect(_fp(-1.0).inverseTangent(_fp(-1.0)).testEqual(to: _fp(atan2val)))
+    }
 
     @Test
-    func test_isEqual_to() {}
+    func test_isEqual_to() {
+        #expect(FloatingPoint.one.isEqual(to: _fp(1.0)))
+        #expect(!FloatingPoint.one.isEqual(to: _fp(2.0)))
+        #expect(FloatingPoint.zero.isEqual(to: _fp(0.0)))
+        #expect(!FloatingPoint.nan.isEqual(to: FloatingPoint.nan))
+    }
 
     @Test
-    func test_logarithm() {}
+    func test_logarithm() {
+        #expect(FloatingPoint.one.logarithm().testEqual(to: _fp(0.0)))
+        #expect(_fp(Double.exp(1.0)).logarithm().testEqual(to: _fp(1.0)))
+        #expect(_fp(Double.exp(2.0)).logarithm().testEqual(to: _fp(2.0)))
+        #expect(_fp(-1.0).logarithm().isNaN)
+    }
 
     @Test
-    func test_logarithm_base() {}
+    func test_logarithm_base() {
+        #expect(_fp(8.0).logarithm(base: _fp(2.0)).testEqual(to: _fp(3.0)))
+        #expect(_fp(100.0).logarithm(base: _fp(10.0)).testEqual(to: _fp(2.0)))
+        #expect(_fp(1.0).logarithm(base: _fp(5.0)).testEqual(to: _fp(0.0)))
+    }
 
     @Test
-    func test_logarithmBase2() {}
+    func test_logarithmBase2() {
+        #expect(_fp(8.0).logarithmBase2().testEqual(to: _fp(3.0)))
+        #expect(_fp(1.0).logarithmBase2().testEqual(to: _fp(0.0)))
+        #expect(_fp(1_024.0).logarithmBase2().testEqual(to: _fp(10.0)))
+    }
 
     @Test
-    func test_logarithmBase10() {}
+    func test_logarithmBase10() {
+        #expect(_fp(100.0).logarithmBase10().testEqual(to: _fp(2.0)))
+        #expect(_fp(1.0).logarithmBase10().testEqual(to: _fp(0.0)))
+        #expect(_fp(1_000.0).logarithmBase10().testEqual(to: _fp(3.0)))
+    }
 
     @Test
-    func test_multiplied_by() {}
+    func test_multiplied_by() {
+        #expect(_fp(3.0).multiplied(by: _fp(4.0)).testEqual(to: _fp(12.0)))
+        #expect(_fp(-2.0).multiplied(by: _fp(3.0)).testEqual(to: _fp(-6.0)))
+        #expect(FloatingPoint.zero.multiplied(by: _fp(42.0)).isZero)
+    }
 
     @Test
-    func test_negated() {}
+    func test_negated() {
+        #expect(FloatingPoint.one.negated().testEqual(to: _fp(-1.0)))
+        #expect(_fp(-3.5).negated().testEqual(to: _fp(3.5)))
+        #expect(FloatingPoint.zero.negated().isZero)
+    }
 
     @Test
-    func test_power() {}
+    func test_power() {
+        #expect(_fp(2.0).exponential(base: _fp(3.0)).testEqual(to: _fp(9.0)))
+        #expect(_fp(0.5).exponential(base: _fp(4.0)).testEqual(to: _fp(2.0)))
+        #expect(_fp(-1.0).exponential(base: _fp(2.0)).testEqual(to: _fp(0.5)))
+        #expect(_fp(0.0).exponential(base: _fp(7.0)).testEqual(to: _fp(1.0)))
+    }
 
     @Test
-    func test_round() {}
+    func test_round() {
+        #expect(_fp(3.3).round().testEqual(to: _fp(3.0)))
+        #expect(_fp(3.7).round().testEqual(to: _fp(4.0)))
+        #expect(_fp(-3.5).round().testEqual(to: _fp(-4.0)))
+        #expect(_fp(3.5).round().testEqual(to: _fp(4.0)))
+    }
 
     @Test
-    func test_sine() {}
+    func test_sine() {
+        #expect(FloatingPoint.zero.sine().testEqual(to: _fp(0.0)))
+        #expect(_fp(Double.pi / 2).sine().testEqual(to: _fp(1.0)))
+        #expect(_fp(Double.pi / 6).sine().testEqual(to: _fp(Double.sin(Double.pi / 6))))
+    }
 
     @Test
-    func test_squareRoot() {}
+    func test_squareRoot() {
+        #expect(_fp(4.0).squareRoot().testEqual(to: _fp(2.0)))
+        #expect(_fp(9.0).squareRoot().testEqual(to: _fp(3.0)))
+        #expect(FloatingPoint.zero.squareRoot().isZero)
+        #expect(_fp(-1.0).squareRoot().isNaN)
+    }
 
     @Test
-    func test_subtracting() {}
+    func test_subtracting() {
+        #expect(_fp(7.0).subtracting(_fp(3.0)).testEqual(to: _fp(4.0)))
+        #expect(_fp(3.0).subtracting(_fp(7.0)).testEqual(to: _fp(-4.0)))
+        #expect(FloatingPoint.zero.subtracting(FloatingPoint.zero).isZero)
+    }
 
     @Test
-    func test_tangent() {}
+    func test_tangent() {
+        #expect(FloatingPoint.zero.tangent().testEqual(to: _fp(0.0)))
+        #expect(_fp(Double.pi / 4).tangent().testEqual(to: _fp(Double.tan(Double.pi / 4))))
+        #expect(_fp(-Double.pi / 4).tangent().testEqual(to: _fp(Double.tan(-Double.pi / 4))))
+    }
 
     @Test
-    func test_truncate() {}
+    func test_truncate() {
+        #expect(_fp(3.7).truncate().testEqual(to: _fp(3.0)))
+        #expect(_fp(-3.7).truncate().testEqual(to: _fp(-3.0)))
+        #expect(_fp(3.0).truncate().testEqual(to: _fp(3.0)))
+    }
 }
 
 // MARK: -

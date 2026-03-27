@@ -1,4 +1,4 @@
-// © 2025—2026 John Gary Pusey (see LICENSE.md)
+// © 2025–2026 John Gary Pusey (see LICENSE.md)
 
 /// A generalized numeric value that supports a “number tower” patterned after
 /// that in the Scheme programming language.
