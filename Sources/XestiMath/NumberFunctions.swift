@@ -4,6 +4,11 @@
 
 /// Calculates the absolute value of the provided number and returns the result.
 ///
+/// - Warning:  This operation is only defined for real numbers. The operand
+///             must be a real number; applying this operation to a complex
+///             number with a nonzero imaginary part will result in a fatal
+///             error.
+///
 /// The equivalent Scheme procedure is:
 ///
 /// ```
@@ -118,6 +123,10 @@ public func atan(_ z: Number) -> Number {
 /// Calculates the inverse tangent of the two provided numbers and returns the
 /// result.
 ///
+/// - Warning:  This operation is only defined for real numbers. Both operands
+///             must be real numbers; applying this operation to complex numbers
+///             with a nonzero imaginary part will result in a fatal error.
+///
 /// The equivalent Scheme procedure is:
 ///
 /// ```
@@ -156,6 +165,11 @@ public func atanh(_ z: Number) -> Number {
 ///
 /// If the provided number is inexact, then the result will also be inexact. If
 /// the provided number is infinite or a NaN, then it is returned as is.
+///
+/// - Warning:  This operation is only defined for real numbers. The operand
+///             must be a real number; applying this operation to a complex
+///             number with a nonzero imaginary part will result in a fatal
+///             error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -294,6 +308,11 @@ public func exp2(_ z: Number) -> Number {
 /// If the provided number is inexact, then the result will also be inexact. If
 /// the provided number is infinite or a NaN, then it is returned as is.
 ///
+/// - Warning:  This operation is only defined for real numbers. The operand
+///             must be a real number; applying this operation to a complex
+///             number with a nonzero imaginary part will result in a fatal
+///             error.
+///
 /// The equivalent Scheme procedure is:
 ///
 /// ```
@@ -309,6 +328,10 @@ public func floor(_ x: Number) -> Number {
 
 /// Calculates the greatest common divisor of the two provided numbers and
 /// returns the result.
+///
+/// - Warning:  This operation is only defined for integers. Both operands must
+///             be integers; applying this operation to non-integers will result
+///             in a fatal error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -329,6 +352,10 @@ public func gcd(_ n1: Number,
 
 /// Calculates the least common multiple of the two provided numbers and returns
 /// the result.
+///
+/// - Warning:  This operation is only defined for integers. Both operands must
+///             be integers; applying this operation to non-integers will result
+///             in a fatal error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -430,6 +457,10 @@ public func log2(_ z: Number) -> Number {
 
 /// Determines the greater of the two provided numbers and returns the result.
 ///
+/// - Warning:  This operation is only defined for real numbers. Both operands
+///             must be real numbers; applying this operation to complex numbers
+///             with a nonzero imaginary part will result in a fatal error.
+///
 /// The equivalent Scheme procedure is:
 ///
 /// ```
@@ -447,6 +478,10 @@ public func max(_ x1: Number,
 }
 
 /// Determines the lesser of the two provided numbers and returns the result.
+///
+/// - Warning:  This operation is only defined for real numbers. Both operands
+///             must be real numbers; applying this operation to complex numbers
+///             with a nonzero imaginary part will result in a fatal error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -467,9 +502,9 @@ public func min(_ x1: Number,
 /// Calculates the modulo of the first provided number divided by the second and
 /// returns the result.
 ///
-/// - Warning:  In the Scheme number tower, this operation is only defined for
-///             integers. Both operands must be integers; applying this to
-///             non-integers will result in a fatal error.
+/// - Warning:  This operation is only defined for integers. Both operands must
+///             be integers; applying this operation to non-integers will result
+///             in a fatal error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -489,9 +524,9 @@ public func modulo(_ n1: Number,
 /// Calculates the quotient of the first provided number divided by the second
 /// and returns the result.
 ///
-/// - Warning:  In the Scheme number tower, this operation is only defined for
-///             integers. Both operands must be integers; applying this to
-///             non-integers will result in a fatal error.
+/// - Warning:  This operation is only defined for integers. Both operands must
+///             be integers; applying this operation to non-integers will result
+///             in a fatal error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -510,6 +545,10 @@ public func quotient(_ n1: Number,
 
 /// Determines the _simplest_ rational number differing from the first provided
 /// number by no more than the second and returns the result.
+///
+/// - Warning:  This operation is only defined for real numbers. Both operands
+///             must be real numbers; applying this operation to complex numbers
+///             with nonzero imaginary parts will result in a fatal error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -532,9 +571,9 @@ public func rationalize(_ x: Number,
 /// Calculates the remainder of the first provided number divided by the second
 /// and returns the result.
 ///
-/// - Warning:  In the Scheme number tower, this operation is only defined for
-///             integers. Both operands must be integers; applying this to
-///             non-integers will result in a fatal error.
+/// - Warning:  This operation is only defined for integers. Both operands must
+///             be integers; applying this operation to non-integers will result
+///             in a fatal error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -559,6 +598,11 @@ public func remainder(_ n1: Number,
 ///
 /// If the provided number is inexact, then the result will also be inexact. If
 /// the provided number is infinite or a NaN, then it is returned.
+///
+/// - Warning:  This operation is only defined for real numbers. The operand
+///             must be a real number; applying this operation to a complex
+///             number with a nonzero imaginary part will result in a fatal
+///             error.
 ///
 /// The equivalent Scheme procedure is:
 ///
@@ -678,6 +722,11 @@ public func tanh(_ z: Number) -> Number {
 ///
 /// If the provided number is inexact, then the result will also be inexact. If
 /// the provided number is infinite or a NaN, then it is returned.
+///
+/// - Warning:  This operation is only defined for real numbers. The operand
+///             must be a real number; applying this operation to a complex
+///             number with a nonzero imaginary part will result in a fatal
+///             error.
 ///
 /// The equivalent Scheme procedure is:
 ///

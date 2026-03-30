@@ -7,9 +7,9 @@ extension Number {
     /// Performs a bitwise AND operation on the two provided numbers and returns
     /// the result.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. Both operands must be integers;
-    ///             applying this to non-integers will result in a fatal error.
+    /// - Warning:  This operation is only defined for integers. Both operands
+    ///             must be integers; applying this operation to non-integers
+    ///             will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise AND
     ///                 operation.
@@ -25,9 +25,9 @@ extension Number {
     /// Performs a bitwise AND operation on the two provided numbers and stores
     /// the result in the left-hand-side variable.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. Both operands must be integers;
-    ///             applying this to non-integers will result in a fatal error.
+    /// - Warning:  This operation is only defined for integers. Both operands
+    ///             must be integers; applying this operation to non-integers
+    ///             will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise AND
     ///                 operation.
@@ -189,9 +189,9 @@ extension Number {
     /// Performs a bitwise OR operation on the two provided numbers and returns
     /// the result.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. Both operands must be integers;
-    ///             applying this to non-integers will result in a fatal error.
+    /// - Warning:  This operation is only defined for integers. Both operands
+    ///             must be integers; applying this operation to non-integers
+    ///             will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise OR
     ///                 operation.
@@ -207,9 +207,9 @@ extension Number {
     /// Performs a bitwise OR operation on the two provided numbers and stores
     /// the result in the left-hand-side variable.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. Both operands must be integers;
-    ///             applying this to non-integers will result in a fatal error.
+    /// - Warning:  This operation is only defined for integers. Both operands
+    ///             must be integers; applying this operation to non-integers
+    ///             will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise OR
     ///                 operation.
@@ -223,9 +223,9 @@ extension Number {
     /// Performs a bitwise XOR operation on the two provided numbers and returns
     /// the result.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. Both operands must be integers;
-    ///             applying this to non-integers will result in a fatal error.
+    /// - Warning:  This operation is only defined for integers. Both operands
+    ///             must be integers; applying this operation to non-integers
+    ///             will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise XOR
     ///                 operation.
@@ -241,9 +241,9 @@ extension Number {
     /// Performs a bitwise XOR operation on the two provided numbers and stores
     /// the result in the left-hand-side variable.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. Both operands must be integers;
-    ///             applying this to non-integers will result in a fatal error.
+    /// - Warning:  This operation is only defined for integers. Both operands
+    ///             must be integers; applying this operation to non-integers
+    ///             will result in a fatal error.
     ///
     /// - Parameter n1: The first number on which to perform the bitwise XOR
     ///                 operation.
@@ -257,10 +257,9 @@ extension Number {
     /// Shifts the provided number to the left by the specified bit count and
     /// returns the result.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. The number must be an integer;
-    ///             applying this to a non-integer will result in a fatal
-    ///             error.
+    /// - Warning:  This operation is only defined for integers. The first
+    ///             operand must be an integer; applying this operation to a
+    ///             non-integer will result in a fatal error.
     ///
     /// - Parameter n:  The number to shift left.
     /// - Parameter k:  The bit count by which to shift left.
@@ -274,10 +273,9 @@ extension Number {
     /// Shifts the provided number to the left by the specified bit count and
     /// stores the result in the left-hand-side variable.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. The number must be an integer;
-    ///             applying this to a non-integer will result in a fatal
-    ///             error.
+    /// - Warning:  This operation is only defined for integers. The first
+    ///             operand must be an integer; applying this operation to a
+    ///             non-integer will result in a fatal error.
     ///
     /// - Parameter n:  The number to shift left.
     /// - Parameter k:  The bit count by which to shift left.
@@ -289,10 +287,9 @@ extension Number {
     /// Shifts the provided number to the right by the specified bit count and
     /// returns the result.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. The number must be an integer;
-    ///             applying this to a non-integer will result in a fatal
-    ///             error.
+    /// - Warning:  This operation is only defined for integers. The first
+    ///             operand must be an integer; applying this operation to a
+    ///             non-integer will result in a fatal error.
     ///
     /// - Parameter n:  The number to shift right.
     /// - Parameter k:  The bit count by which to shift right.
@@ -306,10 +303,9 @@ extension Number {
     /// Shifts the provided number to the right by the specified bit count and
     /// stores the result in the left-hand-side variable.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. The number must be an integer;
-    ///             applying this to a non-integer will result in a fatal
-    ///             error.
+    /// - Warning:  This operation is only defined for integers. The first
+    ///             operand must be an integer; applying this operation to a
+    ///             non-integer will result in a fatal error.
     ///
     /// - Parameter n:  The number to shift right.
     /// - Parameter k:  The bit count by which to shift right.
@@ -321,10 +317,9 @@ extension Number {
     /// Performs a bitwise NOT operation on the provided number and returns the
     /// result.
     ///
-    /// - Warning:  In the Scheme number tower, bitwise operations are only
-    ///             defined for integers. The number must be an integer;
-    ///             applying this to a non-integer will result in a fatal
-    ///             error.
+    /// - Warning:  This operation is only defined for integers. The operand
+    ///             must be an integer; applying this operation to a non-integer
+    ///             will result in a fatal error.
     ///
     /// - Parameter n:  The number on which to perform the bitwise NOT
     ///                 operation.

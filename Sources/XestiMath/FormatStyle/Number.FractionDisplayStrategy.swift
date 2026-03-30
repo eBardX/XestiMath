@@ -62,7 +62,7 @@ extension Number {
         /// number.
         ///
         /// This display strategy formats the exact fraction as the combination
-        /// of a non-zero integer and a proper fraction (meaning the numerator
+        /// of a nonzero integer and a proper fraction (meaning the numerator
         /// is less than the denominator). The integer and fraction parts are
         /// separated by a space, unless one of the parts is zero. By default, a
         /// zero integer part is suppressed. A zero fraction part is always
