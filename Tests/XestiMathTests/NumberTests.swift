@@ -11,7 +11,7 @@ struct NumberTests {
 
 extension NumberTests {
     @Test
-    func test_codableRoundTrip() throws {
+    func test_codable_roundTrip() throws {
         let original = Number(42)
         let data = try JSONEncoder().encode(original)
         let decoded = try JSONDecoder().decode(Number.self, from: data)
@@ -71,7 +71,7 @@ extension NumberTests {
     }
 
     @Test
-    func test_equalityExactIntegers() {
+    func test_equality_exactIntegers() {
         let a = Number(42)
         let b = Number(42)
         let c = Number(99)
@@ -81,7 +81,7 @@ extension NumberTests {
     }
 
     @Test
-    func test_equalityMixedTypes() {
+    func test_equality_mixedTypes() {
         let real = Number(5)
         let complex = Number(realPart: Number(5), imaginaryPart: Number(0))
 

@@ -89,7 +89,7 @@ extension NumberRepresentableTests {
     }
 }
 
-// MARK: -
+// MARK: - Test Helpers
 
 private struct TestNumberType: NumberRepresentable {
     static func isValid(_ numberValue: Number) -> Bool {

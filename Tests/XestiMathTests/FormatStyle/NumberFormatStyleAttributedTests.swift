@@ -4,42 +4,47 @@ import Foundation
 import Testing
 @testable import XestiMath
 
-struct NumberFormatStyleAttributedTests {   // swiftlint:disable:this type_body_length
+struct NumberFormatStyleAttributedTests {
+}
+
+// MARK: -
+
+extension NumberFormatStyleAttributedTests {
     @Test
     func test_format_complex() {
         let fs = Number.FormatStyle().decimalPrecision(1...3).attributed
 
-        #expect(fs.format(_cx(123, 4_567)) ==
+        #expect(fs.format(ncx(123, 4_567)) ==
                 "123" +
-                _as("+", AttributeContainer.separator(.complex)) +
+                mas("+", AttributeContainer.separator(.complex)) +
                 "4,567i")
-        #expect(fs.format(_cx(-123, 4_567)) ==
+        #expect(fs.format(ncx(-123, 4_567)) ==
                 "-123" +
-                _as("+", AttributeContainer.separator(.complex)) +
+                mas("+", AttributeContainer.separator(.complex)) +
                 "4,567i")
-        #expect(fs.format(_cx(123.0, 4_567)) ==
+        #expect(fs.format(ncx(123.0, 4_567)) ==
                 "123" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "0" +
-                _as("+", AttributeContainer.separator(.complex)) +
+                mas("+", AttributeContainer.separator(.complex)) +
                 "4,567" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "0i")
-        #expect(fs.format(_cx(-123.0, 4_567)) ==
+        #expect(fs.format(ncx(-123.0, 4_567)) ==
                 "-123" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "0" +
-                _as("+", AttributeContainer.separator(.complex)) +
+                mas("+", AttributeContainer.separator(.complex)) +
                 "4,567" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "0i")
-        #expect(fs.format(_cx(1_234, 0)) ==
+        #expect(fs.format(ncx(1_234, 0)) ==
                 "1,234" +
-                _as("+", AttributeContainer.separator(.complex)) +
+                mas("+", AttributeContainer.separator(.complex)) +
                 "0i")
-        #expect(fs.format(_cx(1_234, -1)) ==
+        #expect(fs.format(ncx(1_234, -1)) ==
                 "1,234" +
-                _as("-", AttributeContainer.separator(.complex)) +
+                mas("-", AttributeContainer.separator(.complex)) +
                 "1i")
     }
 
@@ -63,23 +68,23 @@ struct NumberFormatStyleAttributedTests {   // swiftlint:disable:this type_body_
 
         #expect(fs.format(123.0) ==
                 "123" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "0")
         #expect(fs.format(1_234.25) ==
                 "1,234" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "25")
         #expect(fs.format(5_836_472.375) ==
                 "5,836,472" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "375")
         #expect(fs.format(-5_836_472.6125) ==
                 "-5,836,472" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "613")
         #expect(fs.format(.pi) ==
                 "3" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "142")
         #expect(fs.format(.nan) == "NaN")
         #expect(fs.format(.positiveInfinity) == "∞")
@@ -90,64 +95,64 @@ struct NumberFormatStyleAttributedTests {   // swiftlint:disable:this type_body_
     func test_format_fraction_decimal() {
         let fs = Number.FormatStyle().decimalPrecision(0...3).fractionDisplay(strategy: .decimal).attributed
 
-        #expect(fs.format(_fr(123, 4_567)) ==
+        #expect(fs.format(nfr(123, 4_567)) ==
                 "0" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "027")
-        #expect(fs.format(_fr(1_234, 56_789)) ==
+        #expect(fs.format(nfr(1_234, 56_789)) ==
                 "0" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "022")
-        #expect(fs.format(_fr(4_012, 1)) ==
+        #expect(fs.format(nfr(4_012, 1)) ==
                 "4,012" +
-                _as(".", AttributeContainer.separator(.decimal)))
-        #expect(fs.format(_fr(-583, 6_472)) ==
+                mas(".", AttributeContainer.separator(.decimal)))
+        #expect(fs.format(nfr(-583, 6_472)) ==
                 "-0" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "09")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,636,314,126,135,689,000,000,000,000,000,000,000,000,000,000" +
-                _as(".", AttributeContainer.separator(.decimal)))
-        #expect(fs.format(_fr(4_012, 9)) ==
+                mas(".", AttributeContainer.separator(.decimal)))
+        #expect(fs.format(nfr(4_012, 9)) ==
                 "445" +
-                _as(".", AttributeContainer.separator(.decimal)) +
+                mas(".", AttributeContainer.separator(.decimal)) +
                 "778")
-        #expect(fs.format(_fr(4_012, 4)) ==
+        #expect(fs.format(nfr(4_012, 4)) ==
                 "1,003" +
-                _as(".", AttributeContainer.separator(.decimal)))
+                mas(".", AttributeContainer.separator(.decimal)))
     }
 
     @Test
     func test_format_fraction_default() {
         let fs = Number.FormatStyle().attributed    // == .fractionDisplay(strategy: .simple(alwaysShowDenominator: true))
 
-        #expect(fs.format(_fr(123, 4_567)) ==
+        #expect(fs.format(nfr(123, 4_567)) ==
                 "123" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) ==
+        #expect(fs.format(nfr(1_234, 56_789)) ==
                 "1,234" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "56,789")
-        #expect(fs.format(_fr(4_012, 1)) ==
+        #expect(fs.format(nfr(4_012, 1)) ==
                 "4,012" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "1")
-        #expect(fs.format(_fr(-583, 6_472)) ==
+        #expect(fs.format(nfr(-583, 6_472)) ==
                 "-583" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,345,678,901,234,567,890,123,456,789,012,345,678,901,234,567,890" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "977")
-        #expect(fs.format(_fr(4_012, 9)) ==
+        #expect(fs.format(nfr(4_012, 9)) ==
                 "4,012" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "9")
-        #expect(fs.format(_fr(4_012, 4)) ==
+        #expect(fs.format(nfr(4_012, 4)) ==
                 "1,003" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "1")
     }
 
@@ -155,117 +160,117 @@ struct NumberFormatStyleAttributedTests {   // swiftlint:disable:this type_body_
     func test_format_fraction_mixed_default() {
         let fs = Number.FormatStyle().fractionDisplay(strategy: .mixed()).attributed    // == .mixed(alwaysShowInteger: false)
 
-        #expect(fs.format(_fr(123, 4_567)) ==
+        #expect(fs.format(nfr(123, 4_567)) ==
                 "123" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) ==
+        #expect(fs.format(nfr(1_234, 56_789)) ==
                 "1,234" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "56,789")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012")
-        #expect(fs.format(_fr(-583, 6_472)) ==
+        #expect(fs.format(nfr(4_012, 1)) == "4,012")
+        #expect(fs.format(nfr(-583, 6_472)) ==
                 "-583" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,636,314,126,135,688,730,934,960,889,470,159,343,808,837,838" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "164" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "977")
-        #expect(fs.format(_fr(4_012, 9)) ==
+        #expect(fs.format(nfr(4_012, 9)) ==
                 "445" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "7" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "9")
-        #expect(fs.format(_fr(-4_012, 9)) ==
+        #expect(fs.format(nfr(-4_012, 9)) ==
                 "-445" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "7" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "9")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003")
-        #expect(fs.format(_fr(0, 1)) == "0")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003")
+        #expect(fs.format(nfr(0, 1)) == "0")
     }
 
     @Test
     func test_format_fraction_mixed_true() {
         let fs = Number.FormatStyle().fractionDisplay(strategy: .mixed(alwaysShowInteger: true)).attributed
 
-        #expect(fs.format(_fr(123, 4_567)) ==
+        #expect(fs.format(nfr(123, 4_567)) ==
                 "0" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "123" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) ==
+        #expect(fs.format(nfr(1_234, 56_789)) ==
                 "0" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "1,234" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "56,789")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012")
-        #expect(fs.format(_fr(-583, 6_472)) ==
+        #expect(fs.format(nfr(4_012, 1)) == "4,012")
+        #expect(fs.format(nfr(-583, 6_472)) ==
                 "-0" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "583" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,636,314,126,135,688,730,934,960,889,470,159,343,808,837,838" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "164" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "977")
-        #expect(fs.format(_fr(4_012, 9)) ==
+        #expect(fs.format(nfr(4_012, 9)) ==
                 "445" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "7" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "9")
-        #expect(fs.format(_fr(-4_012, 9)) ==
+        #expect(fs.format(nfr(-4_012, 9)) ==
                 "-445" +
-                _as(" ", AttributeContainer.separator(.mixed)) +
+                mas(" ", AttributeContainer.separator(.mixed)) +
                 "7" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "9")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003")
-        #expect(fs.format(_fr(0, 1)) == "0")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003")
+        #expect(fs.format(nfr(0, 1)) == "0")
     }
 
     @Test
     func test_format_fraction_ratio() {
         let fs = Number.FormatStyle().fractionDisplay(strategy: .ratio).attributed
 
-        #expect(fs.format(_fr(123, 4_567)) ==
+        #expect(fs.format(nfr(123, 4_567)) ==
                 "123" +
-                _as(":", AttributeContainer.separator(.ratio)) +
+                mas(":", AttributeContainer.separator(.ratio)) +
                 "4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) ==
+        #expect(fs.format(nfr(1_234, 56_789)) ==
                 "1,234" +
-                _as(":", AttributeContainer.separator(.ratio)) +
+                mas(":", AttributeContainer.separator(.ratio)) +
                 "56,789")
-        #expect(fs.format(_fr(4_012, 1)) ==
+        #expect(fs.format(nfr(4_012, 1)) ==
                 "4,012" +
-                _as(":", AttributeContainer.separator(.ratio)) +
+                mas(":", AttributeContainer.separator(.ratio)) +
                 "1")
-        #expect(fs.format(_fr(-583, 6_472)) ==
+        #expect(fs.format(nfr(-583, 6_472)) ==
                 "-583" +
-                _as(":", AttributeContainer.separator(.ratio)) +
+                mas(":", AttributeContainer.separator(.ratio)) +
                 "6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,345,678,901,234,567,890,123,456,789,012,345,678,901,234,567,890" +
-                _as(":", AttributeContainer.separator(.ratio)) +
+                mas(":", AttributeContainer.separator(.ratio)) +
                 "977")
-        #expect(fs.format(_fr(4_012, 9)) ==
+        #expect(fs.format(nfr(4_012, 9)) ==
                 "4,012" +
-                _as(":", AttributeContainer.separator(.ratio)) +
+                mas(":", AttributeContainer.separator(.ratio)) +
                 "9")
-        #expect(fs.format(_fr(4_012, 4)) ==
+        #expect(fs.format(nfr(4_012, 4)) ==
                 "1,003" +
-                _as(":", AttributeContainer.separator(.ratio)) +
+                mas(":", AttributeContainer.separator(.ratio)) +
                 "1")
     }
 
@@ -273,66 +278,27 @@ struct NumberFormatStyleAttributedTests {   // swiftlint:disable:this type_body_
     func test_format_fraction_simple_false() {
         let fs = Number.FormatStyle().fractionDisplay(strategy: .simple(alwaysShowDenominator: false)).attributed
 
-        #expect(fs.format(_fr(123, 4_567)) ==
+        #expect(fs.format(nfr(123, 4_567)) ==
                 "123" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) ==
+        #expect(fs.format(nfr(1_234, 56_789)) ==
                 "1,234" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "56,789")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012")
-        #expect(fs.format(_fr(-583, 6_472)) ==
+        #expect(fs.format(nfr(4_012, 1)) == "4,012")
+        #expect(fs.format(nfr(-583, 6_472)) ==
                 "-583" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,345,678,901,234,567,890,123,456,789,012,345,678,901,234,567,890" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "977")
-        #expect(fs.format(_fr(4_012, 9)) ==
+        #expect(fs.format(nfr(4_012, 9)) ==
                 "4,012" +
-                _as("/", AttributeContainer.separator(.fraction)) +
+                mas("/", AttributeContainer.separator(.fraction)) +
                 "9")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003")
     }
-}
-
-// MARK: -
-
-extension NumberFormatStyleAttributedTests {
-    private func _as(_ val: AttributedString,
-                     _ attr: AttributeContainer) -> AttributedString {
-        val.mergingAttributes(attr)
-    }
-
-    private func _as(_ val: String,
-                     _ attr: AttributeContainer) -> AttributedString {
-        AttributedString(val,
-                         attributes: attr)
-    }
-
-    private func _cx(_ rp: Number,
-                     _ ip: Number) -> Number {
-        Number(realPart: rp,
-               imaginaryPart: ip)
-    }
-
-    private func _fr(_ num: Number,
-                     _ den: Number) -> Number {
-        Number(numerator: num,
-               denominator: den)
-    }
-}
-
-// swiftlint:disable:next static_operator
-private func + (_ val1: AttributedString,
-                _ val2: String) -> AttributedString {
-    val1 + AttributedString(val2)
-}
-
-// swiftlint:disable:next static_operator
-private func + (_ val1: String,
-                _ val2: AttributedString) -> AttributedString {
-    AttributedString(val1) + val2
 }

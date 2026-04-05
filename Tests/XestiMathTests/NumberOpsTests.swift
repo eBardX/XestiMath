@@ -25,7 +25,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_additionAssignment() {
+    func test_addition_assignment() {
         var n = Number(10)
 
         n += Number(5)
@@ -40,7 +40,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_bitwiseAndAssignment() {
+    func test_bitwiseAnd_assignment() {
         var n = Number(0b1100)
 
         n &= Number(0b1010)
@@ -66,7 +66,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_bitwiseOrAssignment() {
+    func test_bitwiseOr_assignment() {
         var n = Number(0b1100)
 
         n |= Number(0b1010)
@@ -81,7 +81,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_bitwiseXorAssignment() {
+    func test_bitwiseXor_assignment() {
         var n = Number(0b1100)
 
         n ^= Number(0b1010)
@@ -100,7 +100,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_divisionAssignment() {
+    func test_division_assignment() {
         var n = Number(10)
 
         n /= Number(2)
@@ -120,7 +120,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_multiplicationAssignment() {
+    func test_multiplication_assignment() {
         var n = Number(3)
 
         n *= Number(4)
@@ -146,7 +146,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_shiftLeftAssignment() {
+    func test_shiftLeft_assignment() {
         var n = Number(1)
 
         n <<= 4
@@ -161,7 +161,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_shiftRightAssignment() {
+    func test_shiftRight_assignment() {
         var n = Number(16)
 
         n >>= 2
@@ -181,7 +181,7 @@ extension NumberOpsTests {
     }
 
     @Test
-    func test_subtractionAssignment() {
+    func test_subtraction_assignment() {
         var n = Number(10)
 
         n -= Number(3)

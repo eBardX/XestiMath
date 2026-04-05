@@ -13,10 +13,10 @@ extension NumberFormatStyleTests {
     func test_format_complex() {
         let fs = Number.FormatStyle().decimalPrecision(1...3)
 
-        #expect(fs.format(_cx(123, 4_567)) == "123+4,567i")
-        #expect(fs.format(_cx(123.0, 4_567)) == "123.0+4,567.0i")
-        #expect(fs.format(_cx(1_234, 0)) == "1,234+0i")
-        #expect(fs.format(_cx(1_234, -1)) == "1,234-1i")
+        #expect(fs.format(ncx(123, 4_567)) == "123+4,567i")
+        #expect(fs.format(ncx(123.0, 4_567)) == "123.0+4,567.0i")
+        #expect(fs.format(ncx(1_234, 0)) == "1,234+0i")
+        #expect(fs.format(ncx(1_234, -1)) == "1,234-1i")
     }
 
     @Test
@@ -51,103 +51,87 @@ extension NumberFormatStyleTests {
     func test_format_fraction_decimal() {
         let fs = Number.FormatStyle().decimalPrecision(0...3).fractionDisplay(strategy: .decimal)
 
-        #expect(fs.format(_fr(123, 4_567)) == "0.027")
-        #expect(fs.format(_fr(1_234, 56_789)) == "0.022")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012.")
-        #expect(fs.format(_fr(-583, 6_472)) == "-0.09")
+        #expect(fs.format(nfr(123, 4_567)) == "0.027")
+        #expect(fs.format(nfr(1_234, 56_789)) == "0.022")
+        #expect(fs.format(nfr(4_012, 1)) == "4,012.")
+        #expect(fs.format(nfr(-583, 6_472)) == "-0.09")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,636,314,126,135,689,000,000,000,000,000,000,000,000,000,000.")
-        #expect(fs.format(_fr(4_012, 9)) == "445.778")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003.")
+        #expect(fs.format(nfr(4_012, 9)) == "445.778")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003.")
     }
 
     @Test
     func test_format_fraction_default() {
         let fs = Number.FormatStyle() // == .fractionDisplay(strategy: .simple(alwaysShowDenominator: true))
 
-        #expect(fs.format(_fr(123, 4_567)) == "123/4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) == "1,234/56,789")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012/1")
-        #expect(fs.format(_fr(-583, 6_472)) == "-583/6,472")
+        #expect(fs.format(nfr(123, 4_567)) == "123/4,567")
+        #expect(fs.format(nfr(1_234, 56_789)) == "1,234/56,789")
+        #expect(fs.format(nfr(4_012, 1)) == "4,012/1")
+        #expect(fs.format(nfr(-583, 6_472)) == "-583/6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,345,678,901,234,567,890,123,456,789,012,345,678,901,234,567,890/977")
-        #expect(fs.format(_fr(4_012, 9)) == "4,012/9")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003/1")
+        #expect(fs.format(nfr(4_012, 9)) == "4,012/9")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003/1")
     }
 
     @Test
     func test_format_fraction_mixed_default() {
         let fs = Number.FormatStyle().fractionDisplay(strategy: .mixed())   // == .mixed(alwaysShowInteger: false)
 
-        #expect(fs.format(_fr(123, 4_567)) == "123/4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) == "1,234/56,789")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012")
-        #expect(fs.format(_fr(-583, 6_472)) == "-583/6,472")
+        #expect(fs.format(nfr(123, 4_567)) == "123/4,567")
+        #expect(fs.format(nfr(1_234, 56_789)) == "1,234/56,789")
+        #expect(fs.format(nfr(4_012, 1)) == "4,012")
+        #expect(fs.format(nfr(-583, 6_472)) == "-583/6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,636,314,126,135,688,730,934,960,889,470,159,343,808,837,838 164/977")
-        #expect(fs.format(_fr(4_012, 9)) == "445 7/9")
-        #expect(fs.format(_fr(-4_012, 9)) == "-445 7/9")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003")
-        #expect(fs.format(_fr(0, 1)) == "0")
+        #expect(fs.format(nfr(4_012, 9)) == "445 7/9")
+        #expect(fs.format(nfr(-4_012, 9)) == "-445 7/9")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003")
+        #expect(fs.format(nfr(0, 1)) == "0")
     }
 
     @Test
     func test_format_fraction_mixed_true() {
         let fs = Number.FormatStyle().fractionDisplay(strategy: .mixed(alwaysShowInteger: true))
 
-        #expect(fs.format(_fr(123, 4_567)) == "0 123/4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) == "0 1,234/56,789")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012")
-        #expect(fs.format(_fr(-583, 6_472)) == "-0 583/6,472")
+        #expect(fs.format(nfr(123, 4_567)) == "0 123/4,567")
+        #expect(fs.format(nfr(1_234, 56_789)) == "0 1,234/56,789")
+        #expect(fs.format(nfr(4_012, 1)) == "4,012")
+        #expect(fs.format(nfr(-583, 6_472)) == "-0 583/6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,636,314,126,135,688,730,934,960,889,470,159,343,808,837,838 164/977")
-        #expect(fs.format(_fr(4_012, 9)) == "445 7/9")
-        #expect(fs.format(_fr(-4_012, 9)) == "-445 7/9")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003")
-        #expect(fs.format(_fr(0, 1)) == "0")
+        #expect(fs.format(nfr(4_012, 9)) == "445 7/9")
+        #expect(fs.format(nfr(-4_012, 9)) == "-445 7/9")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003")
+        #expect(fs.format(nfr(0, 1)) == "0")
     }
 
     @Test
     func test_format_fraction_ratio() {
         let fs = Number.FormatStyle().fractionDisplay(strategy: .ratio)
 
-        #expect(fs.format(_fr(123, 4_567)) == "123:4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) == "1,234:56,789")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012:1")
-        #expect(fs.format(_fr(-583, 6_472)) == "-583:6,472")
+        #expect(fs.format(nfr(123, 4_567)) == "123:4,567")
+        #expect(fs.format(nfr(1_234, 56_789)) == "1,234:56,789")
+        #expect(fs.format(nfr(4_012, 1)) == "4,012:1")
+        #expect(fs.format(nfr(-583, 6_472)) == "-583:6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,345,678,901,234,567,890,123,456,789,012,345,678,901,234,567,890:977")
-        #expect(fs.format(_fr(4_012, 9)) == "4,012:9")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003:1")
+        #expect(fs.format(nfr(4_012, 9)) == "4,012:9")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003:1")
     }
 
     @Test
     func test_format_fraction_simple_false() {
         let fs = Number.FormatStyle().fractionDisplay(strategy: .simple(alwaysShowDenominator: false))
 
-        #expect(fs.format(_fr(123, 4_567)) == "123/4,567")
-        #expect(fs.format(_fr(1_234, 56_789)) == "1,234/56,789")
-        #expect(fs.format(_fr(4_012, 1)) == "4,012")
-        #expect(fs.format(_fr(-583, 6_472)) == "-583/6,472")
+        #expect(fs.format(nfr(123, 4_567)) == "123/4,567")
+        #expect(fs.format(nfr(1_234, 56_789)) == "1,234/56,789")
+        #expect(fs.format(nfr(4_012, 1)) == "4,012")
+        #expect(fs.format(nfr(-583, 6_472)) == "-583/6,472")
         #expect(fs.format("-12345678901234567890123456789012345678901234567890/977") ==
                 "-12,345,678,901,234,567,890,123,456,789,012,345,678,901,234,567,890/977")
-        #expect(fs.format(_fr(4_012, 9)) == "4,012/9")
-        #expect(fs.format(_fr(4_012, 4)) == "1,003")
-    }
-}
-
-// MARK: -
-
-extension NumberFormatStyleTests {
-    private func _cx(_ rp: Number,
-                     _ ip: Number) -> Number {
-        Number(realPart: rp,
-               imaginaryPart: ip)
-    }
-
-    private func _fr(_ num: Number,
-                     _ den: Number) -> Number {
-        Number(numerator: num,
-               denominator: den)
+        #expect(fs.format(nfr(4_012, 9)) == "4,012/9")
+        #expect(fs.format(nfr(4_012, 4)) == "1,003")
     }
 }
