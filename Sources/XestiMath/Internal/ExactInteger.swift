@@ -2,6 +2,8 @@
 
 internal import BigInt
 
+private import XestiTools
+
 internal struct ExactInteger {
 
     // MARK: Internal Nested Types
@@ -447,7 +449,7 @@ extension ExactInteger {
             Self(.large(BigInt(val1).modulus(val2)))
 
         case let (.small(val1), .small(val2)):
-            Self(.small(Int.modulo(val1, val2)))
+            Self(.small(val1.modulo(val2)))
         }
     }
 

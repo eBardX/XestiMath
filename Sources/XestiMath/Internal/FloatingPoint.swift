@@ -2,6 +2,7 @@
 
 private import Darwin
 private import RealModule
+private import XestiTools
 
 internal struct FloatingPoint {
 
@@ -84,7 +85,7 @@ extension FloatingPoint {
     }
 
     internal var fractionValue: Fraction {
-        let frac = Double.convertToFraction(value)
+        let frac = value.rationalized()
 
         return Fraction(numerator: ExactInteger(frac.numerator),
                         denominator: ExactInteger(frac.denominator))

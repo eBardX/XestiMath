@@ -2,6 +2,8 @@
 
 // swiftlint:disable file_length
 
+private import XestiTools
+
 internal struct Real {
 
     // MARK: Internal Nested Types
@@ -870,7 +872,7 @@ extension Real {
                             reduce: false)
 
         case let .floatingPoint(val):
-            let (num, den) = Double.convertToFraction(val.doubleValue)
+            let (num, den) = val.doubleValue.rationalized()
 
             return Fraction(numerator: ExactInteger(num),
                             denominator: ExactInteger(den))
