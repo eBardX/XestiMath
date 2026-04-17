@@ -4,6 +4,17 @@ extension Double {
 
     // MARK: Public Type Methods
 
+    /// Converts the provided floating-point value to a rational approximation
+    /// expressed as a fraction.
+    ///
+    /// The approximation is computed using a continued fraction algorithm.
+    ///
+    /// - Parameter x:  The floating-point value to convert.
+    ///
+    /// - Returns:  A tuple containing the `numerator` and `denominator` of
+    ///             the fraction.
+    ///
+    /// - Precondition:  `x` must be a finite value.
     public static func convertToFraction(_ x: Double) -> (numerator: Int, denominator: Int) {
         //
         // Adapted from https://github.com/kevinboone/rationalize

@@ -28,6 +28,12 @@ public struct Number {
 // MARK: - Codable
 
 extension Number: Codable {
+    /// Creates a number by decoding from the provided decoder.
+    ///
+    /// - Parameter decoder:    The decoder to read from.
+    ///
+    /// - Throws:   `DecodingError.dataCorruptedError` if the decoded value is
+    ///             not a valid number.
     public init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         let stringValue = try container.decode(String.self)
@@ -39,6 +45,11 @@ extension Number: Codable {
         self = numberValue
     }
 
+    /// Encodes this number into the provided encoder.
+    ///
+    /// - Parameter encoder:    The encoder to write to.
+    ///
+    /// - Throws:   Any error thrown by the encoder.
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.singleValueContainer()
 

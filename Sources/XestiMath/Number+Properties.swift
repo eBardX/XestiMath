@@ -44,6 +44,10 @@ extension Number {
     /// Returns the exact number that is numerically closest to this number. If
     /// this number is already exact, then this number itself is returned.
     ///
+    /// - Warning:  This operation is only defined for finite numbers. This
+    ///             number must be finite; applying this operation to an
+    ///             infinite or NaN value will result in a fatal error.
+    ///
     /// The equivalent Scheme procedure is:
     ///
     /// ```
